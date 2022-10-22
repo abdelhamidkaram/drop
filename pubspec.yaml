@@ -1,0 +1,75 @@
+name: dropeg
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.3 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  equatable: ^2.0.5
+  dartz: ^0.10.1
+  flutter_bloc: ^8.1.1
+  bloc: ^8.1.0
+  get_it: ^7.2.0
+  firebase_core: ^1.24.0
+  firebase_auth: ^3.11.1
+  cloud_firestore: ^3.5.1
+  google_sign_in: ^5.4.2
+  flutter_facebook_auth: ^4.4.1+1
+  internet_connection_checker: ^1.0.0+1
+  shared_preferences: ^2.0.15
+  flutter_svg: ^1.1.5
+  flutter_easyloading: ^3.0.5
+  dio: ^4.0.6
+  google_maps_flutter: ^2.2.1
+  location: ^4.2.0
+  flutter_screenutil: ^5.5.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/on_boarding1.png
+    - assets/images/on_boarding2.png
+    - assets/images/on_boarding3.png
+    - assets/images/on_boarding4.png
+    - assets/images/logo.png
+    - assets/images/logovertical.png
+    - assets/images/bacgroundappbar.png
+
+  fonts:
+    - family: ridley
+      fonts:
+        - asset: assets/fonts/RidleyGroteskLight.ttf
+          weight: 300
+        - asset: assets/fonts/RidleyGroteskBold.ttf
+          weight: 700
+        - asset: assets/fonts/RidleyGroteskMedium.ttf
+          weight: 500
+        - asset: assets/fonts/RidleyGroteskRegular.ttf
+          weight: 400
+        - asset: assets/fonts/RidleyGroteskSemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/RidleyGroteskBlack.ttf
+        - asset: assets/fonts/RidleyGroteskExtraBold.ttf
+        - asset: assets/fonts/RidleyGroteskThin.ttf
+        - asset: assets/fonts/RidleyGroteskultraLight.ttf
+        - asset: assets/fonts/RidleyGroteskBlackItalic.ttf
+        - asset: assets/fonts/RidleyGroteskThinItalic.ttf
+        - asset: assets/fonts/RidleyGroteskBoldItalic.ttf
+        - asset: assets/fonts/RidleyGroteskExtraBoldItalic.ttf
+        - asset: assets/fonts/RidleyGroteskItalic.ttf
+        - asset: assets/fonts/RidleyGroteskLightItalic.ttf
+        - asset: assets/fonts/RidleyGroteskmediumItalic.ttf
+        - asset: assets/fonts/RidleyGroteskSemiBoldItalic.ttf
+

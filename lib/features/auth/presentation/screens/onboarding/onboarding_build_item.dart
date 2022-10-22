@@ -1,0 +1,96 @@
+import 'package:dropeg/core/utils/extensions.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/assets_manger.dart';
+import 'onboarding_model.dart';
+
+class OnBoardingBuildItem extends StatelessWidget {
+  const OnBoardingBuildItem({
+    Key? key,
+    required this.screensDetails, required this.index,
+  }) : super(key: key);
+
+  final List<OnBoardingScreenDetails> screensDetails;
+  final int  index ;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Image.asset(ImagesManger.logo, height: 35,),
+          ),
+          SizedBox(
+            height: context.height * 0.75 ,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: context.height * 0.65,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: Image.asset(screensDetails[index].imgPath).image,
+                              fit: BoxFit.fitWidth
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            screensDetails[index].title,
+                            style: Theme.of(context).textTheme.headline1,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            screensDetails[index].subTitle,
+                            style:
+                            Theme.of(context).textTheme.headline2!.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 16,),
+                          Center(child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children:List.generate(4, (dotIndex) => Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: dotIndex == index ? AppColors.primaryColor : AppColors.grey,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                height: dotIndex == index ? 7 : 5 ,
+                                width: dotIndex == index ? 16 : 12,
+                              ),
+                            )),
+                          )),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              ],
+
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

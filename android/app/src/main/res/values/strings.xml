@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="app_name">dropApp</string>
+    <string name="facebook_app_id">2986005201697085</string>
+    <string name="fb_login_protocol_scheme">fb2986005201697085</string>
+    <string name="facebook_client_token">009819cb1bb344ef8dc5ed09197faeda</string>
+</resources>
