@@ -48,6 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: const Text("welcome ")),
             ),
+            const SizedBox(
+              height: 15,
+            ),
+            Center(
+              child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRouteStrings.location);
+                  },
+                  child: const Text("location ")),
+            ),
           ],
         ),
       ),

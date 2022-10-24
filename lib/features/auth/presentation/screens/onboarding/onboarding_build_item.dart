@@ -24,15 +24,22 @@ class OnBoardingBuildItem extends StatelessWidget {
             child: Image.asset(ImagesManger.logo, height: 35,),
           ),
           SizedBox(
-            height: 510.h ,
+            height: 560.h ,
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(screensDetails[index].imgPath , height: 400.h,),
-                  ],
+                SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+
+                        child: Image.asset(screensDetails[index].imgPath ,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,

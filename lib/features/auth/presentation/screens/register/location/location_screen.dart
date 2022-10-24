@@ -13,6 +13,7 @@ import 'package:dropeg/features/auth/presentation/screens/register/location/bloc
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import '../../../../../../core/utils/app_colors.dart';
@@ -97,7 +98,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   Stack(
                     children: [
                       SizedBox(
-                        height: 380,
+                        height: 340.h,
                         child: myPosition == null
                             ? const Center(child: CircularProgressIndicator())
                             : GoogleMap(
@@ -135,7 +136,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
-                        height: 500,
+                        height: 410.h,
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
                             color: AppColors.white,
@@ -146,6 +147,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         child: Form(
                           key: locationKey,
                           child: ListView(
+                            physics: const BouncingScrollPhysics(),
                             children: [
                               const Padding(
                                 padding: EdgeInsets.all(8.0),
@@ -154,11 +156,9 @@ class _LocationScreenState extends State<LocationScreen> {
                                   subtitle: AppStrings.locationSubtitle,
                                 ),
                               ),
-                              const SizedBox(
-                                height: 25,
-                              ),
+
                               SizedBox(
-                                  height: 75,
+                                  height: 73.h,
                                   child: GestureDetector(
                                     onTap: (){
                                       Navigator.pushNamed(context, AppRouteStrings.compounds);
@@ -191,8 +191,8 @@ class _LocationScreenState extends State<LocationScreen> {
                                       ),
                                     ),
                                   )),
-                              const SizedBox(
-                                height: 25,
+                               SizedBox(
+                                height: 10.h,
                               ),
                               CustomDropDownField(
                                 locationFieldType: LocationFieldType.type,
@@ -304,7 +304,7 @@ class _CustomDropDownFieldState extends State<CustomDropDownField> {
     return Column(
       children: [
         SizedBox(
-          height: 70,
+          height:65.h,
           child: Card(
             elevation: 5,
             shape: const RoundedRectangleBorder(
@@ -360,8 +360,8 @@ class _CustomDropDownFieldState extends State<CustomDropDownField> {
             ),
           ),
         ),
-        const SizedBox(
-          height: 25,
+        SizedBox(
+          height: 10.h,
         ),
       ],
     );
