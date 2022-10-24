@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/app_values.dart';
@@ -13,7 +15,6 @@ abstract class ProfileRemoteDataSource{
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource{
   @override
   Future<Either<Failure, UserDetails>> getProfileDataSource(String uid) async {
-
  try{
    await FirebaseFirestore.instance.
    collection(FirebaseStrings.usersCollection).

@@ -175,24 +175,3 @@ class LoginWithEmailError extends AuthStates{
  List<Object?> get props => [msg];
 }
 
-// profile  states  -------------------------------------------------------------|
-
-class GetProfileDetailsLoading extends AuthStates{}
-class GetProfileDetailsSuccess extends AuthStates{
-
-  final UserDetails user ;
-
-  const  GetProfileDetailsSuccess({required this.user});
-
-  @override
-  List<Object?> get props => [user];
-}
-class GetProfileDetailsError extends AuthStates{
-
-  final String msg ;
-
-  const GetProfileDetailsError({required this.msg});
-
-  @override
-  List<Object?> get props => [msg];
-}

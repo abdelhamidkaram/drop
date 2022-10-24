@@ -28,7 +28,7 @@ class _CompoundsScreenState extends State<CompoundsScreen> {
             CompoundRegisterStates state, List<Compound> compounds) {
           if (state is CompoundRegisterLoading) {
             return const SafeArea(
-                child: Center(child: CircularProgressIndicator()));
+                child: Center(child: CircularProgressIndicator.adaptive()));
           } else if (state is CompoundRegisterSuccess) {
             List<Widget> list = List.generate(
               compounds.length,

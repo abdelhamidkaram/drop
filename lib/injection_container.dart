@@ -21,6 +21,7 @@ import 'features/auth/data/datasources/remote_data/profile_remote_data_source.da
 import 'features/auth/domain/repositories/register_repository.dart';
 import 'features/auth/domain/usecase/login_usecase.dart';
 import 'features/auth/domain/usecase/profile_usecase.dart';
+import 'features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'features/auth/presentation/screens/register/register_compound/bloc/compound_register_cuibt.dart';
 
 final sl = GetIt.instance;
@@ -37,10 +38,14 @@ Future<void> init() async {
         getRegisterWithFaceBook: sl() ,
         getRegisterWithGoogle: sl(),
         getLoginWithEmail: sl(),
-        getProfileUseCase: sl(),
       ));
 
   sl.registerFactory(() => CompoundCubit());
+
+  sl.registerFactory(() => ProfileCubit(
+    appPreferences: sl(),
+    getProfileUseCase: sl(),
+  ));
 
   // use cases
 

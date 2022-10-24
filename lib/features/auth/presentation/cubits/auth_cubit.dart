@@ -11,14 +11,12 @@ import 'package:dropeg/features/auth/domain/usecase/register_usecase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../core/api/firestore_strings.dart';
 import '../../../../core/utils/toasts.dart';
-import '../../domain/usecase/profile_usecase.dart';
 import 'package:dropeg/core/shared_prefs/app_prefs.dart';
 class AuthCubit extends Cubit<AuthStates> {
   final GetRegisterWithEmail getRegisterWithEmail;
   final GetRegisterWithFaceBook getRegisterWithFaceBook;
   final GetRegisterWithGoogle getRegisterWithGoogle;
   final GetLoginWithEmail getLoginWithEmail;
-  final GetProfileUseCase getProfileUseCase ;
   final AppPreferences appPreferences ;
 
   AuthCubit({
@@ -27,7 +25,6 @@ class AuthCubit extends Cubit<AuthStates> {
     required this.getRegisterWithEmail,
     required this.getRegisterWithFaceBook,
     required this.getRegisterWithGoogle,
-    required this.getProfileUseCase,
   }) : super(AuthInitialState());
 
   static AuthCubit get(context) => BlocProvider.of(context);
@@ -80,7 +77,7 @@ var fireStore = FirebaseFirestore.instance;
             },
             (user) async {
               AppToasts.loadingToast();
-              userDetails = userDetails = UserDetails(
+              userDetails = UserDetails(
                 refreshToken: user.user!.refreshToken,
                 isVerify: user.user!.emailVerified,
                 name: user.user!.displayName,
@@ -110,7 +107,22 @@ var fireStore = FirebaseFirestore.instance;
           emit(RegisterWithGoogleError(msg: failure.message));
         },
         (user) async {
-          AppToasts.successToast(AppStrings.welcome + (user.email ?? "") );
+          userDetails = UserDetails(
+            refreshToken: user.refreshToken,
+            isVerify: user.emailVerified,
+            name: user.displayName,
+            phone: user.phoneNumber,
+            email: user.email,
+            id: user.uid,
+          );
+          await  fireStore.collection(FirebaseStrings.usersCollection).doc(user.uid).get().then((value) async {
+            if(!value.exists){
+              await fireStore.collection(FirebaseStrings.usersCollection)
+                  .doc(user.uid)
+                  .set(userDetails!.toJson());
+            }});
+
+          AppToasts.successToast("${AppStrings.welcome} ${user.email ?? ""}" );
           await loginSuccessCache();
           emit(RegisterWithGoogleSuccess(user: user));
         });
@@ -133,22 +145,6 @@ Future loginWithEmail(LoginRequest loginRequest , BuildContext context ) async {
      emit(LoginWithAppleSuccess(user: user!));
    });
 }
-
-//--------- Profile
-
-Future profileDetails ()async {
-    emit(GetProfileDetailsLoading());
-   var  response =  await getProfileUseCase(userDetails!.id.toString());
-   response.fold((failure){
-     debugPrint(failure.message);
-     emit(GetProfileDetailsError(msg: failure.message ));
-   }, (userDetails ) {
-     debugPrint(userDetails.refreshToken);
-     emit(GetProfileDetailsSuccess(user: userDetails));
-   });
-}
-
-
 
 loginSuccessCache() async {
   await appPreferences.setUserLoggedIn();

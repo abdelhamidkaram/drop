@@ -32,13 +32,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       builder: (context, state) {
         var authCubit = AuthCubit.get(context);
         return Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              if (kDebugMode) {
-                print(token);
-              }
-            },
-          ),
+
           body: SafeArea(
               child: SingleChildScrollView(
             child: Column(

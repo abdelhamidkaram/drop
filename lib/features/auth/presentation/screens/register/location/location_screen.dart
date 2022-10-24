@@ -100,7 +100,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       SizedBox(
                         height: 340.h,
                         child: myPosition == null
-                            ? const Center(child: CircularProgressIndicator())
+                            ? const Center(child: CircularProgressIndicator.adaptive())
                             : GoogleMap(
                                 myLocationButtonEnabled: true,
                                 myLocationEnabled: true,
@@ -304,7 +304,7 @@ class _CustomDropDownFieldState extends State<CustomDropDownField> {
     return Column(
       children: [
         SizedBox(
-          height:65.h,
+          height:60.h,
           child: Card(
             elevation: 5,
             shape: const RoundedRectangleBorder(

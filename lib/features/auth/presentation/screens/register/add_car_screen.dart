@@ -37,7 +37,6 @@ class _AddCarScreenState extends State<AddCarScreen> {
           height: 232,
           title: AppStrings.signUp,
           isAddScreen: true
-
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -64,7 +63,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                 const SizedBox(height: 25),
                 licensePlate(),
                 const SizedBox(height: 25),
-                SignUpBTN(value: 0.0, onTap: () {
+                SignUpBTN(value: 0.0, onTap: () async {
                   if (addCarFormKey.currentState!.validate()) {
                     AppToasts.loadingToast();
                     Car carDetails = Car(
@@ -77,7 +76,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                       model: modelController.text,
                     );
 
-                    FirebaseFirestore.instance
+                   await FirebaseFirestore.instance
                         .collection(FirebaseStrings.usersCollection)
                         .doc(uId)
                         .collection(FirebaseStrings.carCollection)

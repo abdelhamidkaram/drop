@@ -27,12 +27,9 @@ class UserDetails extends Equatable {
 
   Map<String , dynamic > toJson()=>{
     "name":name,
-    "locations":locations,
-    "cars":cars,
     "phone":phone,
     "email":email,
     "id":id,
-    "orders":orders,
     "isEmailVerification":isVerify,
   };
   UserDetails.fromJson(Map<String , dynamic > json ){

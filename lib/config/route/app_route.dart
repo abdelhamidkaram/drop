@@ -9,6 +9,7 @@ import 'package:dropeg/features/auth/presentation/screens/register/register_scre
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/auth/presentation/screens/onboarding/onbording_screen.dart';
+import '../../features/auth/presentation/screens/profile/bloc/cubit.dart';
 import '../../features/auth/presentation/screens/register/location/location_screen.dart';
 import '../../features/auth/presentation/screens/welcome/welcome_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
@@ -96,7 +97,12 @@ class AppRoute {
         );
       case AppRouteStrings.profile:
         return MaterialPageRoute(
-          builder: (context) => const ProfileScreen(),
+          builder: (context) {
+            return BlocProvider(
+              create: (context) => di.sl<ProfileCubit>()..profileDetails(),
+              child: const ProfileScreen(),
+            );
+          },
         );
       default:
         return undefinedRoute();
