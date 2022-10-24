@@ -6,7 +6,6 @@ import 'package:dropeg/core/utils/toasts.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/bloc/compound_register_cuibt.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/bloc/compound_register_states.dart';
 import 'package:dropeg/features/auth/presentation/widgets/sign_up_btn.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,7 +19,6 @@ class CompoundsScreen extends StatefulWidget {
 }
 
 class _CompoundsScreenState extends State<CompoundsScreen> {
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CompoundCubit, CompoundRegisterStates>(
@@ -29,11 +27,12 @@ class _CompoundsScreenState extends State<CompoundsScreen> {
         Widget compoundsView(
             CompoundRegisterStates state, List<Compound> compounds) {
           if (state is CompoundRegisterLoading) {
-            return const SafeArea(child: Center(child: CircularProgressIndicator()));
+            return const SafeArea(
+                child: Center(child: CircularProgressIndicator()));
           } else if (state is CompoundRegisterSuccess) {
             List<Widget> list = List.generate(
               compounds.length,
-                  (index) {
+              (index) {
                 return BuildCompoundItem(
                   compounds: compounds,
                   index: index,
@@ -46,19 +45,29 @@ class _CompoundsScreenState extends State<CompoundsScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text(AppStrings.registeredCompoundsSubtitle , style: Theme.of(context).textTheme.headline3,),
+                    child: Text(
+                      AppStrings.registeredCompoundsSubtitle,
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
                   ),
                   Column(
-                    children: list + [
-                      const SizedBox(height: 16,),
-                      SignUpBTN(value: 0.30, onTap: (){
-                        CompoundCubit.get(context).choseCompounds.isEmpty
-                            ?
-                             AppToasts.errorToast(AppStrings.pleaseChooseAnyCompound)
-                            :Navigator.pushNamed(context , AppRouteStrings.addCar);
-                      }),
-                    ]
-                  ),
+                      children: list +
+                          [
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            SignUpBTN(
+                                value: 0.30,
+                                onTap: () {
+                                  CompoundCubit.get(context)
+                                          .choseCompounds
+                                          .isEmpty
+                                      ? AppToasts.errorToast(
+                                          AppStrings.pleaseChooseAnyCompound)
+                                      : Navigator.pushNamed(
+                                          context, AppRouteStrings.addCar);
+                                }),
+                          ]),
                 ],
               ),
             );
@@ -93,6 +102,7 @@ class BuildCompoundItem extends StatefulWidget {
 
 class _BuildCompoundItemState extends State<BuildCompoundItem> {
   bool isSelected = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -103,16 +113,21 @@ class _BuildCompoundItemState extends State<BuildCompoundItem> {
             onTap: () {
               setState(() {
                 isSelected = !isSelected;
-                if(CompoundCubit.get(context).choseCompounds.contains(widget.compounds[widget.index])){
-                  CompoundCubit.get(context).choseCompounds.remove(widget.compounds[widget.index]);
-                }else{
-                  CompoundCubit.get(context).choseCompounds.add(widget.compounds[widget.index]);
+                if (CompoundCubit.get(context)
+                    .choseCompounds
+                    .contains(widget.compounds[widget.index])) {
+                  CompoundCubit.get(context)
+                      .choseCompounds
+                      .remove(widget.compounds[widget.index]);
+                } else {
+                  CompoundCubit.get(context)
+                      .choseCompounds
+                      .add(widget.compounds[widget.index]);
                 }
               });
-
             },
             child: Card(
-              color: isSelected? AppColors.blueLight:AppColors.white,
+              color: isSelected ? AppColors.blueLight : AppColors.white,
               child: Container(
                 decoration: BoxDecoration(
                   border: isSelected
@@ -121,9 +136,7 @@ class _BuildCompoundItemState extends State<BuildCompoundItem> {
                           width: 2,
                           style: BorderStyle.solid)
                       : null,
-                  borderRadius: isSelected
-                      ? BorderRadius.circular(12)
-                      : null,
+                  borderRadius: isSelected ? BorderRadius.circular(12) : null,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),

@@ -60,7 +60,7 @@ class _LocationScreenState extends State<LocationScreen> {
         print("response ==== $formattedAddress");
       }
       addresstext = formattedAddress;
-      addressController.text = formattedAddress ?? "";
+      addressController.text = formattedAddress;
       return formattedAddress;
     }
     return null;

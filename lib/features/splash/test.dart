@@ -52,7 +52,7 @@ class _TestScreenState extends State<TestScreen> {
                 ),
               ],
             ),
-            const Text("splash screen "),
+            const Text("splash screens "),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, AppRouteStrings.login);

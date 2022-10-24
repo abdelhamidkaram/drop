@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dropeg/core/utils/extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/shared_prefs/app_prefs.dart';
 import '../../../../../core/utils/components/app_buttons.dart';
 import '../../../../../core/utils/assets_manger.dart';
@@ -47,7 +48,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   children: [
                     Container(
                       width: context.width,
-                      height: context.height / 3,
+                      height: 250.h,
                       decoration: BoxDecoration(
                           color: AppColors.primaryColor,
                           borderRadius: BorderRadius.only(
@@ -56,6 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     SizedBox(
                       width: context.width,
+                      height: 650.h,
                       child: Card(
                         margin: EdgeInsets.only(
                           top: context.height / 4.5,
@@ -72,33 +74,38 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Center(
                                   child: Image.asset(
                                 ImagesManger.logoVertical,
-                                height: 118.0,
+                                height: 90.0.h,
                               )),
                               const HelloThere(
                                   subtitle: AppStrings.pleaseLoginOrSignUp),
-                              const SizedBox(
-                                height: 32,
+                              // const SizedBox(
+                              //   height: 32,
+                              // ),
+                              Column(
+                                children: [
+                                  AppButtonBlue(
+                                    text: AppStrings.login,
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, AppRouteStrings.login);
+                                    },
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  AppButtonLight(
+                                    text: AppStrings.signUp,
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, AppRouteStrings.register);
+                                    },
+                                  ),
+                                ],
                               ),
-                              AppButtonBlue(
-                                text: AppStrings.login,
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, AppRouteStrings.login);
-                                },
-                              ),
-                              const SizedBox(height: 13),
-                              AppButtonLight(
-                                text: AppStrings.signUp,
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, AppRouteStrings.register);
-                                },
-                              ),
-                              const SizedBox(height: 32),
+                              // const SizedBox(height: 32),
                               Row(
                                 children: [
                                   Expanded(
@@ -123,50 +130,56 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   ))
                                 ],
                               ),
-                              const SizedBox(height: 32),
-                              AppSocialButton(
-                                  onTap: () async {
-                                    await authCubit
-                                        .registerWithFacebook()
-                                        .then((value) {
-                                      Navigator.pushNamed(
-                                          context, AppRouteStrings.location);
-                                    }).catchError((err) {
-                                      debugPrint(err.toString());
-                                    });
-                                  },
-                                  text: AppStrings.continueWithFacebook,
-                                  color: AppColors.faceBookColor,
-                                  icon: Icons.facebook_outlined),
-                              const SizedBox(height: 13),
-                              Platform.isIOS
-                                  ? AppSocialButton(
-                                      onTap: () async {
-                                        await signInWithApple().then((value) {
-                                          Navigator.pushNamed(context,
-                                              AppRouteStrings.location);
-                                        }).catchError((err) {
-                                          debugPrint(err.toString());
-                                        });
-                                      },
-                                      text: AppStrings.continueWithApple,
-                                      color: AppColors.black,
-                                      icon: Icons.apple_outlined)
-                                  : AppSocialButton(
+                              // const SizedBox(height: 32),
+                              Column(
+                                children: [
+                                  AppSocialButton(
                                       onTap: () async {
                                         await authCubit
-                                            .registerWithGoogle()
+                                            .registerWithFacebook()
                                             .then((value) {
-                                          Navigator.pushNamed(context,
-                                              AppRouteStrings.location);
-                                        }).catchError((err) {
-                                          debugPrint(err.toString());
+                                          if (state
+                                              is RegisterWithFaceBookSuccess) {
+                                            Navigator.pushNamed(context,
+                                                AppRouteStrings.location);
+                                          }
                                         });
                                       },
-                                      text: AppStrings.continueWithGmail,
-                                      color: AppColors.gmailColor,
-                                      icon: Icons.email_rounded),
-                              const SizedBox(height: 32),
+                                      text: AppStrings.continueWithFacebook,
+                                      color: AppColors.faceBookColor,
+                                      icon: Icons.facebook_outlined),
+                                  SizedBox(height: 8.h),
+                                  Platform.isIOS
+                                      ? AppSocialButton(
+                                          onTap: () async {
+                                            await signInWithApple()
+                                                .then((value) {
+                                              Navigator.pushNamed(context,
+                                                  AppRouteStrings.location);
+                                            }).catchError((err) {
+                                              debugPrint(err.toString());
+                                            });
+                                          },
+                                          text: AppStrings.continueWithApple,
+                                          color: AppColors.black,
+                                          icon: Icons.apple_outlined)
+                                      : AppSocialButton(
+                                          onTap: () async {
+                                            await authCubit
+                                                .registerWithGoogle()
+                                                .then((value) {
+                                              Navigator.pushNamed(context,
+                                                  AppRouteStrings.location);
+                                            }).catchError((err) {
+                                              debugPrint(err.toString());
+                                            });
+                                          },
+                                          text: AppStrings.continueWithGmail,
+                                          color: AppColors.gmailColor,
+                                          icon: Icons.email_rounded),
+                                ],
+                              ),
+                              // const SizedBox(height: 32),
                               Center(
                                   child: GestureDetector(
                                       onTap: () async {
@@ -175,8 +188,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                           Navigator.pushReplacementNamed(
                                               context, AppRouteStrings.home);
                                         } else {
-                                          Navigator.pushNamed(
-                                              context, AppRouteStrings.onBoarding);
+                                          Navigator.pushNamed(context,
+                                              AppRouteStrings.onBoarding);
                                         }
                                       },
                                       child: Text(

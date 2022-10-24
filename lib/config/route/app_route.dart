@@ -1,6 +1,7 @@
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/login/login_screen.dart';
+import 'package:dropeg/features/auth/presentation/screens/profile/profile_screen.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/add_car_screen.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/bloc/compound_register_cuibt.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/compounds_viwe.dart';
@@ -10,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/auth/presentation/screens/onboarding/onbording_screen.dart';
 import '../../features/auth/presentation/screens/register/location/location_screen.dart';
 import '../../features/auth/presentation/screens/welcome/welcome_screen.dart';
-import '../../features/home/home_screen.dart';
+import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/splash/splash.dart';
 import 'package:dropeg/injection_container.dart' as di;
 
@@ -24,6 +25,7 @@ class AppRouteStrings {
   static const String addCar = "addcar";
   static const String onBoarding = "onboarding";
   static const String compounds = "compounds";
+  static const String profile = "profile";
 }
 
 class AppRoute {
@@ -91,6 +93,10 @@ class AppRoute {
               child: const CompoundsScreen(),
             );
           },
+        );
+      case AppRouteStrings.profile:
+        return MaterialPageRoute(
+          builder: (context) => const ProfileScreen(),
         );
       default:
         return undefinedRoute();

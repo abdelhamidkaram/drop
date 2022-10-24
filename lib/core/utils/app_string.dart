@@ -63,8 +63,6 @@ class AppStrings {
   static const String locationTypeParking = "Parking";
   static const String locationTypeOther = "Other";
   static const String locationStateEgypt = "Egypt";
-  static const String skip = "Skip";
-  static const String goToHome = "Go Home >";
   static const String obBoarding1Title = "Car Services Digitized";
   static const String obBoarding1SubTitle = "Discover workshops to maintain, repair or customize your car";
   static const String obBoarding2Title = "Wash Your Car Anywhere";
@@ -73,9 +71,19 @@ class AppStrings {
   static const String obBoarding3SubTitle = "Offers a spotless wash, and saves 90% more water";
   static const String obBoarding4Title = "Whatever Your Payment";
   static const String obBoarding4SubTitle = "Be it cash, online or credit-card";
-
-
+  static const String skip = "Skip";
+  static const String goToHome = "Go Home >";
+  static const String account = "Account";
+  static const String home = "Home";
+  static const String help = "Help";
+  static const String myOrders = "My Orders";
+  static const String referrals = "Referrals";
+  static const String vouchers = "Vouchers";
+  static const String myLocations = "My Locations";
 }
+
+
+
 
 class FirebaseErrorMessage {
   static const String authErrorPasswordWeak = "The password provided is too weak." ;
