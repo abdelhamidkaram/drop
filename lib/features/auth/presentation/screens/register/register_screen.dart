@@ -26,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     var formKey = GlobalKey<FormState>();
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar:  CustomAppbars.loginAppbar(title: AppStrings.signUp, context: context, height:  233),
+      appBar:  CustomAppbars.loginAppbar(title: AppStrings.signUp, context: context),
         body:  BlocBuilder<AuthCubit , AuthStates>(
           builder: (context, state) {
             return  SingleChildScrollView(
@@ -51,6 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 10,
                           ),
                           CustomTextFormField(
+                            isPhone: true,
                             type: TextInputType.phone,
                             hint: AppStrings.phoneNumberHINT,
                             validateEmptyMSG: AppStrings.phoneNumberEmptyMSG,
@@ -91,7 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 );
                                await  AuthCubit.get(context).registerWithEmail(registerRequest , context );
                               }
-                              }),
+                              }, editOnPressed: () {  },),
                         ],
                       ),
                     )

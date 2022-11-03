@@ -29,15 +29,15 @@ class AuthCubit extends Cubit<AuthStates> {
 
   static AuthCubit get(context) => BlocProvider.of(context);
   UserDetails? userDetails;
-var fireStore = FirebaseFirestore.instance;
+  var fireStore = FirebaseFirestore.instance;
   //----------- Register
   Future<void> registerWithEmail(RegisterRequest registerRequest , BuildContext context) async {
     emit(RegisterWithEmailLoading());
     var response = await getRegisterWithEmail(registerRequest);
     response
         .fold((failure){
-          AppToasts.errorToast(failure.message);
-          emit(RegisterWithEmailError(msg:failure.message));
+      AppToasts.errorToast(failure.message);
+      emit(RegisterWithEmailError(msg:failure.message));
     }, (user) async {
       userDetails = UserDetails(
         isVerify: user.emailVerified,
@@ -45,9 +45,10 @@ var fireStore = FirebaseFirestore.instance;
         phone: registerRequest.phone,
         email: registerRequest.email,
         id: user.uid,
-        refreshToken: user.refreshToken,
+        photo: user.photoURL
       );
-       _sendUserToCollection(registerRequest, user);
+      _sendUserToCollection(registerRequest, user);
+       appPreferences.deleteUserDetailsAndNotLogOut().then((value) => null);
       AppToasts.successToast(user.email.toString());
       Navigator.pushReplacementNamed(context,
           AppRouteStrings.location);
@@ -61,9 +62,9 @@ var fireStore = FirebaseFirestore.instance;
         .collection(FirebaseStrings.usersCollection)
         .doc(user.uid)
         .set(userDetails!.toJson()).then((value){
-          debugPrint("FIRE STORE SUCCESS");
+      debugPrint("FIRE STORE SUCCESS");
     }).catchError((error){
-          debugPrint(error.toString());
+      debugPrint(error.toString());
     });
   }
 
@@ -72,48 +73,50 @@ var fireStore = FirebaseFirestore.instance;
     var response = await getRegisterWithFaceBook("");
     response.fold(
             (failure){
-              AppToasts.errorToast(failure.message);
-              emit(RegisterWithFaceBookError(msg: failure.message));
-            },
+          AppToasts.errorToast(failure.message);
+          emit(RegisterWithFaceBookError(msg: failure.message));
+        },
             (user) async {
-              AppToasts.loadingToast();
-              userDetails = UserDetails(
-                refreshToken: user.user!.refreshToken,
-                isVerify: user.user!.emailVerified,
-                name: user.user!.displayName,
-                phone: user.user!.phoneNumber,
-                email: user.user!.email,
-                id: user.user!.uid,
-              );
-            await  fireStore.collection(FirebaseStrings.usersCollection).doc(user.user!.uid).get().then((value) async {
-               if(!value.exists){
-                 await fireStore.collection(FirebaseStrings.usersCollection)
-                     .doc(user.user!.uid)
-                     .set(userDetails!.toJson());
-               }
-              });
-              AppToasts.successToast("${AppStrings.welcome} ${user.user!.displayName ?? user.user!.email!.split("@").first}");
-              await loginSuccessCache();
-              RegisterWithFaceBookSuccess(user: user.user!);
-            });
+          AppToasts.loadingToast();
+          userDetails = UserDetails(
+            isVerify: user.user!.emailVerified,
+            name: user.user!.displayName,
+            phone: user.user!.phoneNumber,
+            email: user.user!.email,
+            id: user.user!.uid,
+            photo: user.user!.photoURL,
+          );
+          
+          await  fireStore.collection(FirebaseStrings.usersCollection).doc(user.user!.uid).get().then((value) async {
+            if(!value.exists){
+              await fireStore.collection(FirebaseStrings.usersCollection)
+                  .doc(user.user!.uid)
+                  .set(userDetails!.toJson());
+            }
+            await appPreferences.deleteUserDetailsAndNotLogOut();
+          });
+          AppToasts.successToast("${AppStrings.welcome} ${user.user!.displayName ?? user.user!.email!.split("@").first}");
+          await loginSuccessCache();
+          RegisterWithFaceBookSuccess(user: user.user!);
+        });
   }
 
   Future<void> registerWithGoogle() async {
     AppToasts.loadingToast();
     var response = await getRegisterWithGoogle("");
     response.fold(
-        (failure){
+            (failure){
           AppToasts.errorToast(failure.message);
           emit(RegisterWithGoogleError(msg: failure.message));
         },
-        (user) async {
+            (user) async {
           userDetails = UserDetails(
-            refreshToken: user.refreshToken,
             isVerify: user.emailVerified,
             name: user.displayName,
             phone: user.phoneNumber,
             email: user.email,
             id: user.uid,
+            photo: user.photoURL
           );
           await  fireStore.collection(FirebaseStrings.usersCollection).doc(user.uid).get().then((value) async {
             if(!value.exists){
@@ -121,7 +124,7 @@ var fireStore = FirebaseFirestore.instance;
                   .doc(user.uid)
                   .set(userDetails!.toJson());
             }});
-
+          await appPreferences.deleteUserDetailsAndNotLogOut();
           AppToasts.successToast("${AppStrings.welcome} ${user.email ?? ""}" );
           await loginSuccessCache();
           emit(RegisterWithGoogleSuccess(user: user));
@@ -130,25 +133,27 @@ var fireStore = FirebaseFirestore.instance;
 
 //----------- login
 
-Future loginWithEmail(LoginRequest loginRequest , BuildContext context ) async {
+  Future loginWithEmail(LoginRequest loginRequest , BuildContext context ) async {
     emit(LoginWithEmailLoading());
     AppToasts.loadingToast();
-   var response = await getLoginWithEmail.call(loginRequest);
-   response.fold((failure){
-     AppToasts.errorToast(failure.message);
-     emit(LoginWithEmailError(msg: failure.message));
-   }, (user) async {
-     AppToasts.successToast("${AppStrings.welcome} ${user?.email!.split("@").first}");
-     Navigator.pushReplacementNamed(context,
-         AppRouteStrings.home);
-     await loginSuccessCache();
-     emit(LoginWithAppleSuccess(user: user!));
-   });
-}
+    var response = await getLoginWithEmail.call(loginRequest);
+    response.fold((failure){
+      AppToasts.errorToast(failure.message);
+      emit(LoginWithEmailError(msg: failure.message));
+    }, (user) async {
+      AppToasts.successToast("${AppStrings.welcome} ${user?.email!.split("@").first}");
+      Navigator.pushReplacementNamed(context,
+          AppRouteStrings.home);
+      await loginSuccessCache();
+      await appPreferences.deleteUserDetailsAndNotLogOut();
 
-loginSuccessCache() async {
-  await appPreferences.setUserLoggedIn();
-}
+      emit(LoginWithAppleSuccess(user: user!));
+    });
+  }
+
+  loginSuccessCache() async {
+    await appPreferences.setUserLoggedIn();
+  }
 
 
 

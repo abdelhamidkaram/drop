@@ -8,6 +8,7 @@ class Car extends Equatable {
    String? color;
    String?  licensePlate;
    String?  model;
+   String?  id ;
 
     Car({
       required this.a,
@@ -16,7 +17,8 @@ class Car extends Equatable {
       required this.brand,
       required this.color,
       required this.licensePlate,
-      required this.model
+      required this.model,
+      required this.id
     });
 
   Car.fromJson(Map<String , dynamic > json){
@@ -27,6 +29,7 @@ class Car extends Equatable {
    color =json["color"] ;
    licensePlate =json["licensePlate"] ;
    model =json["model"] ;
+   id = json["id"];
   }
 
   Map<String , dynamic > toJson (){
@@ -38,6 +41,7 @@ class Car extends Equatable {
       "color" : color,
       "licensePlate" : licensePlate,
       "model" : model,
+      "id" : id,
     };
   }
 

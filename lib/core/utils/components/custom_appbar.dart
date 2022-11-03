@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../config/route/app_route.dart';
+import '../../../features/auth/domain/entities/user.dart';
 import '../../../features/auth/presentation/widgets/hello_there.dart';
 import '../app_colors.dart';
 import '../app_string.dart';
@@ -10,17 +12,17 @@ import 'custom_menu_button.dart';
 class CustomAppbars {
   static PreferredSize loginAppbar({
     required BuildContext context,
-    required double height,
     String? title,
     bool isLocationScreen = false,
     bool isLoginScreen = false,
     bool isAddScreen = false,
     bool isAddCompoundsScreen = false,
+    bool isEditAccountScreen = false,
   }) =>
       PreferredSize(
-        preferredSize: const Size(double.infinity, 233),
+         preferredSize: const Size(double.infinity, 220),
         child: Container(
-          height: height,
+          height: 220,
           decoration: BoxDecoration(
               color: AppColors.white,
               image: isLocationScreen
@@ -36,7 +38,9 @@ class CustomAppbars {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Row(
                   children: [
-                    const CustomBackButton(),
+                    CustomBackButton(onPressed: isEditAccountScreen ? () async {
+                      Navigator.pushReplacementNamed(context, AppRouteStrings.account);
+                    } : null ),
                     const Spacer(),
                     isAddCompoundsScreen
                         ? Image.asset(
@@ -64,9 +68,9 @@ class CustomAppbars {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    isAddCompoundsScreen
-                        ? const SizedBox(
-                            height: 30,
+                    (isAddCompoundsScreen || isEditAccountScreen )
+                        ?  SizedBox(
+                            height: 30.h,
                           )
                         : Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -94,14 +98,16 @@ class CustomAppbars {
   static Container homeAppBar(
           {required BuildContext context,
           String? title,
-          required VoidCallback onTap}) =>
+          required VoidCallback onTap,
+          UserDetails? userDetails ,
+          }) =>
       Container(
         height: 233,
         decoration: BoxDecoration(
             color: AppColors.white,
             image: DecorationImage(
-                image: Image.asset(ImagesManger.backgroundAppbar).image,
-                fit: BoxFit.fitWidth)),
+                image: Image.asset(ImagesManger.backgroundAppbar).image ,
+                fit: BoxFit.fitWidth),),
         child: PreferredSize(
           preferredSize: const Size(double.infinity, 233),
           child: Column(

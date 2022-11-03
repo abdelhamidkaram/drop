@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:dropeg/config/route/app_route.dart';
-import 'package:dropeg/core/api/firestore_strings.dart';
 import 'package:dropeg/core/map_services/location_helper.dart';
 import 'package:dropeg/core/map_services/map_style.dart';
 import 'package:dropeg/core/utils/components/custom_back_button.dart';
 import 'package:dropeg/core/utils/toasts.dart';
 import 'package:dropeg/features/auth/domain/entities/location.dart';
+import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/location/bloc/cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/location/bloc/states.dart';
 import 'package:flutter/foundation.dart';
@@ -16,17 +15,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:uuid/uuid.dart';
+import '../../../../../../config/route/app_route_arguments.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_string.dart';
 import '../../../../../../core/utils/enums.dart';
-import '../../../../../../main.dart';
+import '../../../widgets/custom_drop_down_field.dart';
 import '../../../widgets/hello_there.dart';
 import '../../../widgets/sign_up_btn.dart';
 import '../../../../../../core/utils/components/custom_text_field.dart';
 import '../../../../../../core/utils/constant.dart';
 
+
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({Key? key}) : super(key: key);
+  final bool formProfileScreen;
+  final LocationEntity? locationEntity;
+
+  const LocationScreen(
+      {Key? key, this.formProfileScreen = false, required this.locationEntity})
+      : super(key: key);
 
   @override
   State<LocationScreen> createState() => _LocationScreenState();
@@ -34,14 +41,15 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   static LocationData? myPosition;
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
   @override
   initState() {
     super.initState();
     getMyCurrentLocation().whenComplete(() {
       getAddressFromLatLng(
-              context, myPosition!.latitude!, myPosition!.longitude!)
+          context, myPosition?.latitude ?? 30.005493,
+          myPosition?.longitude ?? 31.477898)
           .whenComplete(() {
         setState(() {});
       });
@@ -53,15 +61,21 @@ class _LocationScreenState extends State<LocationScreen> {
 
   Future<String?> getAddressFromLatLng(context, double lat, double lng) async {
     var response = await Dio().get(
-        "https://maps.google.com/maps/api/geocode/json?key=${AppConstants.mapKey}&language=en&latlng=$lat,$lng");
+        "https://maps.google.com/maps/api/geocode/json?key=${AppConstants
+            .mapKey}&language=en&latlng=$lat,$lng");
     if (response.statusCode == 200) {
       Map data = response.data;
       String formattedAddress = data["results"][0]["formatted_address"];
       if (kDebugMode) {
         print("response ==== $formattedAddress");
       }
-      addresstext = formattedAddress;
-      addressController.text = formattedAddress;
+      if (widget.locationEntity == null) {
+        addresstext = formattedAddress;
+        addressController.text = formattedAddress;
+      } else {
+        addresstext = widget.locationEntity!.address!;
+        addressController.text = widget.locationEntity!.address!;
+      }
       return formattedAddress;
     }
     return null;
@@ -84,8 +98,12 @@ class _LocationScreenState extends State<LocationScreen> {
     List<String> states = [AppStrings.locationStateEgypt];
     List<String> cities = AppConstants.cities;
     var locationKey = GlobalKey<FormState>();
-    return BlocProvider(
-      create: (context) => LocationCubit(),
+
+    return MultiBlocProvider(
+
+      providers: [
+        BlocProvider(create: (context) => LocationCubit(),),
+      ],
       child: BlocConsumer<LocationCubit, LocationStates>(
         listener: (context, state) => LocationCubit(),
         builder: (context, state) {
@@ -100,31 +118,32 @@ class _LocationScreenState extends State<LocationScreen> {
                       SizedBox(
                         height: 340.h,
                         child: myPosition == null
-                            ? const Center(child: CircularProgressIndicator.adaptive())
+                            ? const Center(
+                            child: CircularProgressIndicator.adaptive())
                             : GoogleMap(
-                                myLocationButtonEnabled: true,
-                                myLocationEnabled: true,
-                                zoomControlsEnabled: false,
-                                mapToolbarEnabled: true,
-                                liteModeEnabled: false,
-                                mapType: MapType.normal,
-                                onTap: (argument) {
-                                  setState(() {
-                                    getAddressFromLatLng(context,
-                                        argument.latitude, argument.longitude);
-                                  });
-                                },
-                                initialCameraPosition: CameraPosition(
-                                  target: LatLng(myPosition!.latitude!,
-                                      myPosition!.longitude!),
-                                  bearing: 0.0,
-                                  zoom: 17,
-                                ),
-                                onMapCreated: (GoogleMapController controller) {
-                                  _controller.complete(controller);
-                                  controller.setMapStyle(MapStyle.dark);
-                                },
-                              ),
+                          myLocationButtonEnabled: true,
+                          myLocationEnabled: true,
+                          zoomControlsEnabled: false,
+                          mapToolbarEnabled: true,
+                          liteModeEnabled: false,
+                          mapType: MapType.normal,
+                          onTap: (argument) {
+                            setState(() {
+                              getAddressFromLatLng(context,
+                                  argument.latitude, argument.longitude);
+                            });
+                          },
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(myPosition!.latitude!,
+                                myPosition!.longitude!),
+                            bearing: 0.0,
+                            zoom: 17,
+                          ),
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller.complete(controller);
+                            controller.setMapStyle(MapStyle.dark);
+                          },
+                        ),
                       ),
                       const Padding(
                         padding: EdgeInsets.all(20.0),
@@ -156,12 +175,16 @@ class _LocationScreenState extends State<LocationScreen> {
                                   subtitle: AppStrings.locationSubtitle,
                                 ),
                               ),
-
                               SizedBox(
                                   height: 73.h,
                                   child: GestureDetector(
-                                    onTap: (){
-                                      Navigator.pushNamed(context, AppRouteStrings.compounds);
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context, AppRouteStrings.compounds,
+                                        arguments: CompoundsViewArgs(
+                                            toAddCarScreen: !widget
+                                                .formProfileScreen),
+                                      );
                                     },
                                     child: Card(
                                       elevation: 5,
@@ -177,7 +200,8 @@ class _LocationScreenState extends State<LocationScreen> {
                                           children: [
                                             Text(
                                               AppStrings.registeredCompounds,
-                                              style: Theme.of(context)
+                                              style: Theme
+                                                  .of(context)
                                                   .textTheme
                                                   .headline5,
                                             ),
@@ -191,7 +215,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                       ),
                                     ),
                                   )),
-                               SizedBox(
+                              SizedBox(
                                 height: 10.h,
                               ),
                               CustomDropDownField(
@@ -199,22 +223,26 @@ class _LocationScreenState extends State<LocationScreen> {
                                 list: locationTypes,
                                 hint: AppStrings.locationTypeHIT,
                                 validateMSG: AppStrings.locationTypeEmptMSG,
+                                value: widget.locationEntity?.type,
                               ),
                               CustomDropDownField(
                                   locationFieldType: LocationFieldType.state,
                                   list: states,
                                   hint: AppStrings.stateLocationHIT,
-                                  validateMSG: AppStrings.stateEmptuMSG),
+                                  validateMSG: AppStrings.stateEmptuMSG,
+                                  value: widget.locationEntity?.state),
                               CustomDropDownField(
-                                  locationFieldType: LocationFieldType.city,
-                                  list: cities,
-                                  hint: AppStrings.cityLocationHIT,
-                                  validateMSG: AppStrings.cityEmptuMSG),
+                                locationFieldType: LocationFieldType.city,
+                                list: cities,
+                                hint: AppStrings.cityLocationHIT,
+                                validateMSG: AppStrings.cityEmptuMSG,
+                                value: widget.locationEntity?.city,
+                              ),
                               CustomTextFormField(
                                 hint: AppStrings.addressHIT,
                                 controller: addressController,
                                 validateEmptyMSG:
-                                    AppStrings.emailAddressEmptyMSG,
+                                AppStrings.emailAddressEmptyMSG,
                                 type: TextInputType.streetAddress,
                               ),
                               const SizedBox(
@@ -222,32 +250,70 @@ class _LocationScreenState extends State<LocationScreen> {
                               ),
                               Center(
                                 child: SignUpBTN(
-                                  value: 0.3,
+                                  locationId: widget.locationEntity?.id ?? "",
+                                  value: widget.formProfileScreen ? 0.0 : 0.3,
                                   onTap: () async {
                                     if (locationKey.currentState!.validate()) {
                                       AppToasts.loadingToast();
                                       LocationEntity location = LocationEntity(
                                         address: addressController.text,
-                                        state: LocationCubit.get(context)
+                                        state: LocationCubit
+                                            .get(context)
                                             .locationState,
-                                        city: LocationCubit.get(context).city,
-                                        type: LocationCubit.get(context)
+                                        city: LocationCubit
+                                            .get(context)
+                                            .city,
+                                        type: LocationCubit
+                                            .get(context)
                                             .locationType,
+                                        id: const Uuid().v4(),
                                       );
-                                      await FirebaseFirestore.instance
-                                          .collection(FirebaseStrings.usersCollection)
-                                          .doc(uId)
-                                          .collection(FirebaseStrings.locationsCollection)
-                                          .doc(addressController.text)
-                                          .set(location.toJson())
-                                          .then((value) {
-                                        AppToasts.successToast(
-                                            AppStrings.success);
-                                        Navigator.of(context)
-                                            .pushNamed(AppRouteStrings.addCar);
+                                      await LocationCubit.get(context)
+                                          .addLocation(
+                                          context, widget.formProfileScreen,
+                                          location)
+                                          .then((value) async {
+                                        await ProfileCubit.get(context)
+                                            .getLocations(isRefresh: true);
                                       });
                                     }
                                   },
+                                  editOnPressed: () {
+                                    LocationEntity location = LocationEntity(
+                                      address: addressController.text,
+                                      state: LocationCubit
+                                          .get(context)
+                                          .locationState ??
+                                          widget.locationEntity!.state,
+                                      city: LocationCubit
+                                          .get(context)
+                                          .city ?? widget.locationEntity!.city,
+                                      type: LocationCubit
+                                          .get(context)
+                                          .locationType ??
+                                          widget.locationEntity!.type,
+                                      id: widget.locationEntity!.id,
+                                    );
+                                    LocationCubit.get(context).editLocation(
+                                        widget.locationEntity!, location).then((
+                                        value) {
+                                      ProfileCubit.get(context).getLocations(
+                                          isRefresh: true).then((value) {
+                                        Navigator.of(context)
+                                            .pushReplacementNamed(
+                                            AppRouteStrings.account);
+                                      }).catchError((err) {
+                                        if (kDebugMode) {
+                                          print(err.toString());
+                                        }
+                                      });
+                                    }).catchError((err) {
+                                      if (kDebugMode) {
+                                        print(err.toString());
+                                      }
+                                    });
+                                  },
+                                  isEdit: widget.locationEntity != null,
                                 ),
                               ),
                               const SizedBox(
@@ -269,101 +335,3 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 }
 
-class CustomDropDownField extends StatefulWidget {
-  final LocationFieldType locationFieldType;
-  final String hint;
-  final String validateMSG;
-  final List<String> list;
-
-  const CustomDropDownField(
-      {Key? key,
-      required this.locationFieldType,
-      required this.list,
-      required this.hint,
-      required this.validateMSG})
-      : super(key: key);
-
-  @override
-  State<CustomDropDownField> createState() => _CustomDropDownFieldState();
-}
-
-class _CustomDropDownFieldState extends State<CustomDropDownField> {
-  @override
-  Widget build(BuildContext context) {
-    String? value;
-    switch (widget.locationFieldType) {
-      case LocationFieldType.city:
-        value = LocationCubit.get(context).city;
-        break;
-      case LocationFieldType.state:
-        value = LocationCubit.get(context).locationState;
-        break;
-      case LocationFieldType.type:
-        value = LocationCubit.get(context).locationType;
-    }
-    return Column(
-      children: [
-        SizedBox(
-          height:60.h,
-          child: Card(
-            elevation: 5,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(12.0),
-              ),
-            ),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: DropdownButtonFormField(
-                  validator: (value) {
-                    if (value == null) {
-                      return widget.validateMSG;
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                  ),
-                  dropdownColor: Colors.white,
-                  value: value,
-                  hint: Text(widget.hint),
-                  onChanged: (newValue) {
-                    setState(() {
-                      switch (widget.locationFieldType) {
-                        case LocationFieldType.city:
-                          LocationCubit.get(context).city =
-                              newValue!.toString();
-                          break;
-                        case LocationFieldType.state:
-                          LocationCubit.get(context).locationState =
-                              newValue!.toString();
-                          break;
-                        case LocationFieldType.type:
-                          LocationCubit.get(context).locationType =
-                              newValue!.toString();
-                      }
-                    });
-                  },
-                  items:
-                      widget.list.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 10.h,
-        ),
-      ],
-    );
-  }
-}

@@ -1,11 +1,22 @@
 import 'package:dropeg/core/utils/app_colors.dart';
+import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/assets_manger.dart';
+import 'package:dropeg/core/utils/components/app_buttons.dart';
+import 'package:dropeg/core/utils/components/custom_text_field.dart';
+import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../features/auth/domain/entities/user.dart';
+import '../toasts.dart';
 
 class ProfileHeader extends StatefulWidget {
   final bool isProfileScreen;
+  final UserDetails? userDetails;
+  final VoidCallback? onTap;
 
-  const ProfileHeader({Key? key, this.isProfileScreen = false})
+  const ProfileHeader(
+      {Key? key, this.isProfileScreen = false, required this.userDetails, this.onTap})
       : super(key: key);
 
   @override
@@ -15,6 +26,8 @@ class ProfileHeader extends StatefulWidget {
 class _ProfileHeaderState extends State<ProfileHeader> {
   @override
   Widget build(BuildContext context) {
+    var phoneController = TextEditingController();
+    var formKey = GlobalKey<FormState>();
     return Row(
       children: [
         Container(
@@ -22,11 +35,12 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           width: 70,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: Image.asset(ImagesManger.avatar).image,
+                  image: (widget.userDetails == null  ||  widget.userDetails!.photo!.isEmpty)
+                      ? Image.asset(ImagesManger.avatar).image
+                      : Image.network(widget.userDetails!.photo!).image,
                   fit: BoxFit.cover),
               shape: BoxShape.circle,
-          border: Border.all(color: AppColors.greyLight)
-          ),
+              border: Border.all(color: AppColors.greyLight)),
         ),
         const SizedBox(
           width: 24,
@@ -36,13 +50,86 @@ class _ProfileHeaderState extends State<ProfileHeader> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Youssef Elhossary",
+                widget.userDetails?.name ?? "..",
                 style: Theme.of(context).textTheme.headline3,
               ),
               const SizedBox(
                 height: 10,
               ),
-              const Text("+20 0103 32 328 03 "),
+              (widget.userDetails?.phone != null &&
+                      widget.userDetails!.phone!.isNotEmpty)
+                  ? Text(widget.userDetails?.phone ?? "..")
+                  : InkWell(
+                      onTap: () {
+                        showBottomSheet(
+                          elevation: 15,
+                          context: context,
+                          builder: (context) => SizedBox(
+                            child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: Form(
+                                  key: formKey,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          AppStrings.phoneNumberEmptyMSG,
+                                          style:
+                                              Theme.of(context).textTheme.headline3,
+                                        ),
+                                        SizedBox(height: 16.h,),
+                                        CustomTextFormField(
+                                          isPhone: true,
+                                          controller: phoneController,
+                                          validateEmptyMSG:
+                                              AppStrings.phoneNumberEmptyMSG,
+                                          type: TextInputType.phone,
+                                          hint: AppStrings.phoneNumberHINT,
+                                        ),
+                                        SizedBox(height: 16.h,),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                           children: [
+                                             Expanded(
+                                               child: AppButtonBlue(text: AppStrings.addPhone,
+                                                 onTap: () async {
+                                                 if(formKey.currentState!.validate()){
+                                                        await ProfileCubit.get(context).sendPhone(phoneController.text).then((value){
+                                                          AppToasts.successToast(AppStrings.success);
+                                                          Navigator.pop(context);
+                                                        }).catchError((err){
+                                                          AppToasts.errorToast(AppStrings.errorInternal);
+                                                        });
+
+                                                 }
+                                               },),
+                                             ),
+                                             SizedBox(width: 5.w,),
+                                             Expanded(
+                                               child: AppButtonRed(text: AppStrings.cancel, onTap: (){
+                                                 Navigator.of(context).pop();
+                                               }),
+                                             )
+                                           ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        AppStrings.addPhone,
+                        style: TextStyle(color: AppColors.primaryColor),
+                      )),
             ],
           ),
         ),

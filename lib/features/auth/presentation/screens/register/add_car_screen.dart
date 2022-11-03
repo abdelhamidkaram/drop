@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/core/api/firestore_strings.dart';
+import 'package:dropeg/core/shared_prefs/app_prefs.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/toasts.dart';
 import 'package:dropeg/features/auth/domain/entities/car.dart';
@@ -9,11 +9,16 @@ import 'package:dropeg/core/utils/components/custom_appbar.dart';
 import 'package:dropeg/core/utils/components/custom_text_field.dart';
 import 'package:dropeg/features/auth/presentation/widgets/sign_up_btn.dart';
 import 'package:dropeg/core/utils/constant.dart';
-
+import 'package:uuid/uuid.dart';
+import '../../../../../config/route/app_route.dart';
 import '../../../../../main.dart';
+import 'package:dropeg/injection_container.dart' as di ;
+
+import '../profile/bloc/cubit.dart';
 
 class AddCarScreen extends StatefulWidget {
-  const AddCarScreen({Key? key}) : super(key: key);
+  final bool  formProfileScreen ;
+  const AddCarScreen({Key? key, required this.formProfileScreen}) : super(key: key);
 
   @override
   State<AddCarScreen> createState() => _AddCarScreenState();
@@ -34,7 +39,6 @@ class _AddCarScreenState extends State<AddCarScreen> {
     return Scaffold(
       appBar: CustomAppbars.loginAppbar(
           context: context,
-          height: 232,
           title: AppStrings.signUp,
           isAddScreen: true
       ),
@@ -74,22 +78,40 @@ class _AddCarScreenState extends State<AddCarScreen> {
                       color: colorController.text,
                       licensePlate: licensePlateController.text,
                       model: modelController.text,
+                      id:const Uuid().v4(),
+
                     );
 
                    await FirebaseFirestore.instance
                         .collection(FirebaseStrings.usersCollection)
                         .doc(uId)
                         .collection(FirebaseStrings.carCollection)
-                        .doc("${carDetails.brand!} ${carDetails.model!}")
+                        .doc(carDetails.id)
                         .set(carDetails.toJson())
-                        .then((value){
-                          AppToasts.successToast(AppStrings.success);
-                          Navigator.of(context).pushReplacementNamed(AppRouteStrings.onBoarding);
+                        .then((value) async {
+
+                         if(!(await di.sl<AppPreferences>().isOnBoardingScreenViewed())){
+                           await di.sl<ProfileCubit>().getCars(isRefresh: true).then((value){
+                             Navigator.of(context).pushReplacementNamed(AppRouteStrings.onBoarding);
+                           });
+                           AppToasts.successToast(AppStrings.success);
+                         return;
+                         }else if(widget.formProfileScreen){
+                             ProfileCubit.get(context).getCars(isRefresh: true).then((value) {});
+                             Navigator.of(context).pushReplacementNamed(AppRouteStrings.account);
+                             AppToasts.successToast(AppStrings.success);
+                             return ;
+                         }else{
+                           Navigator.of(context).pushReplacementNamed(AppRouteStrings.home);
+                           AppToasts.successToast(AppStrings.success);
+                           return ;
+                         }
+
                     }).catchError((err){
                       AppToasts.errorToast(err.toString());
                     });
                   }
-                }),
+                }, editOnPressed: () {  },),
               ],
             ),
           ),

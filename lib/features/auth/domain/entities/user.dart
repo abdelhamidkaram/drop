@@ -1,29 +1,25 @@
-import 'package:dropeg/features/auth/domain/entities/location.dart';
 import 'package:equatable/equatable.dart';
-import 'car.dart';
-import 'orders.dart';
 
 class UserDetails extends Equatable {
-   String?  name;
-   String?  refreshToken;
-   String?  email;
-   String? phone;
-   String?  id;
-   bool? isVerify;
-   List<Car>? cars;
-   List<LocationEntity>? locations;
-   List<Order>? orders;
-   UserDetails(
+   final String?  name;
+   final String?  email;
+  final  String? phone;
+  final  String? photo;
+  final  String?  id;
+  final  bool? isVerify;
+  final  bool? isPhoneVerify;
+
+   const UserDetails(
       {
-      required this.refreshToken,
-      required this.isVerify,
-      this.orders,
-      this.locations,
-      this.cars,
-      required this.name,
-      required this.phone,
-      required this.email,
-      required this.id});
+      this.isVerify,
+       this.name,
+       this.phone,
+       this.email,
+       this.id,
+       this.photo,
+        this.isPhoneVerify,
+
+      });
 
   Map<String , dynamic > toJson()=>{
     "name":name,
@@ -31,18 +27,9 @@ class UserDetails extends Equatable {
     "email":email,
     "id":id,
     "isEmailVerification":isVerify,
+    "isPhoneVerification":isPhoneVerify,
+    "photo" : photo
   };
-  UserDetails.fromJson(Map<String , dynamic > json ){
-    name = json["name"] ?? "" ;
-    id = json["id"] ?? "" ;
-    email = json["email"] ?? "" ;
-    phone = json["phone"] ?? "" ;
-    cars = json["cars"] ?? "" ;
-    locations = json["locations"] ?? "" ;
-    orders = json["orders"] ?? "" ;
-    isVerify = json["isVerify"] ?? "" ;
-    refreshToken = json["refreshToken"] ?? "" ;
-  }
   @override
   List<Object?> get props => [id, phone, name, email];
 }

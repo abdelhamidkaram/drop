@@ -24,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: CustomAppbars.loginAppbar(title: AppStrings.login,
           context: context,
-          height: 233,
           isLoginScreen: true),
       body: BlocBuilder<AuthCubit, AuthStates>(builder: (context, state) {
         return Padding(

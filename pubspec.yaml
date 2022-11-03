@@ -19,7 +19,7 @@ dependencies:
   firebase_auth: ^3.11.1
   cloud_firestore: ^3.5.1
   google_sign_in: ^5.4.2
-  flutter_facebook_auth: ^4.4.1+1
+  #flutter_facebook_auth: ^5.0.0+2
   internet_connection_checker: ^1.0.0+1
   shared_preferences: ^2.0.15
   flutter_svg: ^1.1.5
@@ -28,6 +28,9 @@ dependencies:
   google_maps_flutter: ^2.2.1
   location: ^4.2.0
   flutter_screenutil: ^5.5.4
+  uuid: ^3.0.6
+  image_picker: ^0.8.6
+  firebase_storage: ^10.3.11
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +50,7 @@ flutter:
     - assets/images/logo.png
     - assets/images/logovertical.png
     - assets/images/bacgroundappbar.png
+    - assets/images/ticket.png
 
   fonts:
     - family: ridley

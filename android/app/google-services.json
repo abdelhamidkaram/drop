@@ -48,50 +48,6 @@
           ]
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1072229363531:android:c83bfbb6e59e8e8f66c2ce",
-        "android_client_info": {
-          "package_name": "com.dropeg.dropeg"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1072229363531-0hd43fiv29b2h9guddj1qrhaii6hkea6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.dropeg.dropeg",
-            "certificate_hash": "69463f96102efdd99884a145854fabe526999148"
-          }
-        },
-        {
-          "client_id": "1072229363531-kpitihumht62ddes9h78p1caatpcrr52.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCWsXKG0QYYD6UXLh0TiLu5G4eyfewE9e0"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1072229363531-kpitihumht62ddes9h78p1caatpcrr52.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1072229363531-b1lgkib9l5epbasgrgiii3ktp7heq461.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.dropeg.dropeg"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"

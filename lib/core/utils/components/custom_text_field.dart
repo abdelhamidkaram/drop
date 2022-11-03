@@ -1,3 +1,5 @@
+import 'package:dropeg/core/utils/app_string.dart';
+import 'package:dropeg/core/utils/constant.dart';
 import 'package:flutter/material.dart';
 
 import '../app_colors.dart';
@@ -8,10 +10,11 @@ class CustomTextFormField extends StatefulWidget {
   final String validateEmptyMSG ;
   final TextEditingController controller ;
   final bool? isPassword;
+  final bool? isPhone;
   final TextInputType type ;
   const CustomTextFormField({
     this.isPassword ,
-    Key? key, required this.hint, required this.controller,required this.validateEmptyMSG, required this.type,
+    Key? key, required this.hint, required this.controller,required this.validateEmptyMSG, required this.type, this.isPhone,
   }) : super(key: key);
 
   @override
@@ -39,6 +42,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               validator: (value) {
                 if(value == null || value.isEmpty){
                   return widget.validateEmptyMSG;
+                }
+                if(widget.isPhone == true && !value.contains(RegExp(AppConstants.phoneRegExp)) ){
+                  return AppStrings.phoneNumberEmptyMSG2;
                 }
                 return null;
               },

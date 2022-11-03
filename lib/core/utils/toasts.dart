@@ -4,7 +4,8 @@ class AppToasts{
     EasyLoading.showError(msg);
   }
   static loadingToast(){
-    EasyLoading.show();
+
+    EasyLoading.show(dismissOnTap: true);
   }
   static successToast(String msg){
     EasyLoading.showSuccess(msg);

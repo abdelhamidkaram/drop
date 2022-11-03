@@ -1,15 +1,55 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_string.dart';
+import '../../../../core/utils/components/app_buttons.dart';
+import '../screens/register/location/bloc/cubit.dart';
 
 class SignUpBTN extends StatelessWidget {
   final double value ;
   final VoidCallback? onTap ;
-  const SignUpBTN({Key? key, required this.value, required this.onTap}) : super(key: key);
+  final VoidCallback editOnPressed ;
+  final bool isEdit ;
+  final String? locationId ;
+  const SignUpBTN({Key? key, required this.value, required this.onTap,  this.isEdit = false, this.locationId, required this.editOnPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  GestureDetector(
+    return  isEdit ?   Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(
+          child: AppButtonBlue(
+            text: AppStrings.editLocation,
+            onTap: editOnPressed,
+          ),
+        ),
+        SizedBox(
+          width: 5.w,
+        ),
+        Expanded(
+          child: AppButtonRed(
+              text: AppStrings.cancel,
+              onTap: () {
+                Navigator.of(context).pop();
+              }),
+        ),
+        SizedBox(
+          width: 5.w,
+        ),
+        InkWell(
+          onTap: (){
+            LocationCubit.get(context).deleteLocation(locationId!).then((value){
+              Navigator.pop(context);
+            });
+          },
+          child: Text(AppStrings.deleteLocation , style: Theme.of(context).textTheme.headline6!.copyWith(
+              color: AppColors.red
+          ),),
+        )
+
+      ],
+    ) : GestureDetector(
       onTap: onTap,
       child: SizedBox(
         height: 80,
@@ -26,7 +66,7 @@ class SignUpBTN extends StatelessWidget {
                 value: value,
               ),
             ),
-            Center(
+             Center(
               child: Container(
                 height: 65,
                 width: 65,

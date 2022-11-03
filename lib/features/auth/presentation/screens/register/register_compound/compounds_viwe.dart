@@ -1,18 +1,20 @@
 import 'package:dropeg/config/route/app_route.dart';
+import 'package:dropeg/core/shared_prefs/app_prefs.dart';
 import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/components/custom_appbar.dart';
-import 'package:dropeg/core/utils/toasts.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/bloc/compound_register_cuibt.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/bloc/compound_register_states.dart';
 import 'package:dropeg/features/auth/presentation/widgets/sign_up_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../domain/entities/compound.dart';
+import 'package:dropeg/injection_container.dart' as di ;
 
 class CompoundsScreen extends StatefulWidget {
-  const CompoundsScreen({Key? key}) : super(key: key);
+  final bool toAddCarScreen ;
+  const CompoundsScreen({Key? key, required this.toAddCarScreen}) : super(key: key);
 
   @override
   State<CompoundsScreen> createState() => _CompoundsScreenState();
@@ -53,20 +55,20 @@ class _CompoundsScreenState extends State<CompoundsScreen> {
                   Column(
                       children: list +
                           [
-                            const SizedBox(
-                              height: 16,
+                             SizedBox(
+                              height: 16.h,
                             ),
                             SignUpBTN(
-                                value: 0.30,
-                                onTap: () {
-                                  CompoundCubit.get(context)
-                                          .choseCompounds
-                                          .isEmpty
-                                      ? AppToasts.errorToast(
-                                          AppStrings.pleaseChooseAnyCompound)
-                                      : Navigator.pushNamed(
-                                          context, AppRouteStrings.addCar);
-                                }),
+                                value: widget.toAddCarScreen ? 0.30 : 0.0,
+                                onTap: () async {
+                                  if (await CompoundCubit.get(context).addCompoundsToUser() ) {
+                                     await di.sl<AppPreferences>().setLocationAdded().then((value){
+                                       Navigator.pushNamed(
+                                           context, widget.toAddCarScreen ? AppRouteStrings.addCar : AppRouteStrings.account,
+                                       );
+                                     });
+                                  }
+                                }, editOnPressed: () {  },),
                           ]),
                 ],
               ),
@@ -80,7 +82,7 @@ class _CompoundsScreenState extends State<CompoundsScreen> {
 
         return Scaffold(
           appBar: CustomAppbars.loginAppbar(
-              context: context, height: 233, isAddCompoundsScreen: true),
+              context: context,isAddCompoundsScreen: true),
           body: compoundsView(state, compounds),
         );
       },
@@ -114,14 +116,14 @@ class _BuildCompoundItemState extends State<BuildCompoundItem> {
               setState(() {
                 isSelected = !isSelected;
                 if (CompoundCubit.get(context)
-                    .choseCompounds
+                    .chooseCompounds
                     .contains(widget.compounds[widget.index])) {
                   CompoundCubit.get(context)
-                      .choseCompounds
+                      .chooseCompounds
                       .remove(widget.compounds[widget.index]);
                 } else {
                   CompoundCubit.get(context)
-                      .choseCompounds
+                      .chooseCompounds
                       .add(widget.compounds[widget.index]);
                 }
               });

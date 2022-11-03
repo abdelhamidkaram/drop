@@ -9,12 +9,14 @@ import 'package:dropeg/features/auth/presentation/screens/register/register_scre
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/auth/presentation/screens/onboarding/onbording_screen.dart';
-import '../../features/auth/presentation/screens/profile/bloc/cubit.dart';
+import '../../features/auth/presentation/screens/profile/edit_profile.dart';
 import '../../features/auth/presentation/screens/register/location/location_screen.dart';
 import '../../features/auth/presentation/screens/welcome/welcome_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/splash/splash.dart';
 import 'package:dropeg/injection_container.dart' as di;
+
+import 'app_route_arguments.dart';
 
 class AppRouteStrings {
   static const String initial = "/";
@@ -26,7 +28,8 @@ class AppRouteStrings {
   static const String addCar = "addcar";
   static const String onBoarding = "onboarding";
   static const String compounds = "compounds";
-  static const String profile = "profile";
+  static const String account = "profile";
+  static const String accountEdit = "profileEdit";
 }
 
 class AppRoute {
@@ -70,7 +73,16 @@ class AppRoute {
       case AppRouteStrings.location:
         return MaterialPageRoute(
           builder: (context) {
-            return const LocationScreen();
+            LocationsArgs arg;
+            try {
+              arg = routeSettings.arguments as LocationsArgs;
+            } catch (err) {
+              arg = LocationsArgs(formProfileScreen: false);
+            }
+            return LocationScreen(
+              formProfileScreen: arg.formProfileScreen,
+              locationEntity: arg.locationEntity,
+            );
           },
         );
       case AppRouteStrings.onBoarding:
@@ -84,24 +96,34 @@ class AppRoute {
         );
       case AppRouteStrings.addCar:
         return MaterialPageRoute(
-          builder: (context) => const AddCarScreen(),
+          builder: (context) {
+            bool arg = routeSettings.arguments != null
+                ? routeSettings.arguments as bool
+                : false;
+            return AddCarScreen(formProfileScreen: arg);
+          },
         );
       case AppRouteStrings.compounds:
         return MaterialPageRoute(
           builder: (context) {
+            CompoundsViewArgs args =
+                routeSettings.arguments as CompoundsViewArgs;
             return BlocProvider(
               create: (context) => di.sl<CompoundCubit>()..getCompounds(),
-              child: const CompoundsScreen(),
+              child: CompoundsScreen(toAddCarScreen: args.toAddCarScreen),
             );
           },
         );
-      case AppRouteStrings.profile:
+      case AppRouteStrings.account:
         return MaterialPageRoute(
           builder: (context) {
-            return BlocProvider(
-              create: (context) => di.sl<ProfileCubit>()..profileDetails(),
-              child: const ProfileScreen(),
-            );
+            return const ProfileScreen();
+          },
+        );
+      case AppRouteStrings.accountEdit:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const ProfileEditScreen();
           },
         );
       default:

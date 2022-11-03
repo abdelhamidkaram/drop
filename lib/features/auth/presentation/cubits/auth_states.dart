@@ -1,4 +1,3 @@
-import 'package:dropeg/features/auth/domain/entities/user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

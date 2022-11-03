@@ -26,9 +26,10 @@ ThemeData appTheme() => ThemeData(
         ),
         fontFamily: AppStrings.fontFamily,
         scaffoldBackgroundColor: AppColors.backGround,
-        cardTheme: const CardTheme(
+        cardTheme:  CardTheme(
           elevation: 10,
-          shape: RoundedRectangleBorder(
+          color: AppColors.cardBackGround,
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(12.0),
             ),

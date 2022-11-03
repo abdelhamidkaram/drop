@@ -25,21 +25,18 @@ class OnBoardingBuildItem extends StatelessWidget {
           ),
           SizedBox(
             height: 560.h ,
-            child: Stack(
-              alignment: Alignment.bottomCenter,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-
-                        child: Image.asset(screensDetails[index].imgPath ,
-                        ),
-                      ),
-                    ],
+                Container(
+                  height: 380.h,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: Image.asset(screensDetails[index].imgPath ,  ).image,
+                      fit: BoxFit.fitWidth
+                    )
                   ),
+
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,

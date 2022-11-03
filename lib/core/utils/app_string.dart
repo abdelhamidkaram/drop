@@ -51,6 +51,7 @@ class AppStrings {
   static const String passwordHINT = "Password" ;
   static const String firstNameEmptyMSG  = "Enter your $firstNameHINT " ;
   static const String phoneNumberEmptyMSG  = "Enter your $phoneNumberHINT " ;
+  static const String phoneNumberEmptyMSG2  = "Invalid $phoneNumberHINT " ;
   static const String emailAddressEmptyMSG  = "Enter your $emailAddressHINT " ;
   static const String passwordEmptyMSG  = "Enter your $passwordHINT " ;
   static const String signUp = "Sign Up";
@@ -63,6 +64,12 @@ class AppStrings {
   static const String locationTypeParking = "Parking";
   static const String locationTypeOther = "Other";
   static const String locationStateEgypt = "Egypt";
+  static const String addLocation = "Add Location";
+  static const String addCar = "Add Car";
+  static const String editCar = "Edit Car";
+  static const String editAccount = "Edit Account";
+  static const String editLocations = "Edit Locations";
+  static const String editLocation = "Edit Location";
   static const String obBoarding1Title = "Car Services Digitized";
   static const String obBoarding1SubTitle = "Discover workshops to maintain, repair or customize your car";
   static const String obBoarding2Title = "Wash Your Car Anywhere";
@@ -80,6 +87,14 @@ class AppStrings {
   static const String referrals = "Referrals";
   static const String vouchers = "Vouchers";
   static const String myLocations = "My Locations";
+  static const String myCars = "My Cars";
+  static const String addPhone = "Add Phone";
+  static const String cancelOrder = "Cancel Order";
+  static const String cancel = "Cancel";
+  static const String delete = "Delete";
+  static const String deleteAccount = "Delete Account";
+  static const String deleteLocation = "Delete Location";
+  static const String deleted = "Deleted";
 }
 
 

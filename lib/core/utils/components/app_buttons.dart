@@ -68,3 +68,36 @@ class AppButtonBlue extends StatelessWidget {
     );
   }
 }
+
+class AppButtonRed extends StatelessWidget {
+  final String text;
+
+  final VoidCallback onTap;
+
+  const AppButtonRed({
+    Key? key,
+    required this.text,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 43,
+        decoration: BoxDecoration(
+          color: AppColors.red,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Center(
+            child: Text(
+          text,
+          style: Theme.of(context).textTheme.headline5!.copyWith(
+                color: AppColors.white,
+              ),
+        )),
+      ),
+    );
+  }
+}
