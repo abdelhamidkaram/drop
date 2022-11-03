@@ -3,6 +3,7 @@ import 'package:dropeg/core/shared_prefs/app_prefs.dart';
 import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/components/custom_appbar.dart';
+import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/bloc/compound_register_cuibt.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/bloc/compound_register_states.dart';
 import 'package:dropeg/features/auth/presentation/widgets/sign_up_btn.dart';
@@ -10,11 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../domain/entities/compound.dart';
-import 'package:dropeg/injection_container.dart' as di ;
+import 'package:dropeg/injection_container.dart' as di;
 
 class CompoundsScreen extends StatefulWidget {
-  final bool toAddCarScreen ;
-  const CompoundsScreen({Key? key, required this.toAddCarScreen}) : super(key: key);
+  final bool toAddCarScreen;
+  const CompoundsScreen({Key? key, required this.toAddCarScreen})
+      : super(key: key);
 
   @override
   State<CompoundsScreen> createState() => _CompoundsScreenState();
@@ -55,20 +57,30 @@ class _CompoundsScreenState extends State<CompoundsScreen> {
                   Column(
                       children: list +
                           [
-                             SizedBox(
+                            SizedBox(
                               height: 16.h,
                             ),
                             SignUpBTN(
-                                value: widget.toAddCarScreen ? 0.30 : 0.0,
-                                onTap: () async {
-                                  if (await CompoundCubit.get(context).addCompoundsToUser() ) {
-                                     await di.sl<AppPreferences>().setLocationAdded().then((value){
-                                       Navigator.pushNamed(
-                                           context, widget.toAddCarScreen ? AppRouteStrings.addCar : AppRouteStrings.account,
-                                       );
-                                     });
-                                  }
-                                }, editOnPressed: () {  },),
+                              value: widget.toAddCarScreen ? 0.30 : 0.0,
+                              onTap: () async {
+                                await CompoundCubit.get(context)
+                                    .addCompoundsToUser()
+                                    .then((value) {
+                                  ProfileCubit.get(context)
+                                      .getCompounds(isRefresh: true)
+                                      .then((value) => null);
+                                  widget.toAddCarScreen
+                                      ? Navigator.pushReplacementNamed(
+                                          context, AppRouteStrings.addCar)
+                                      : Navigator.pushNamed(
+                                          context,
+                                          AppRouteStrings.account,
+                                        );
+                                });
+                              },
+                              isEdit: false,
+                              editOnPressed: () {},
+                            ),
                           ]),
                 ],
               ),
@@ -82,7 +94,7 @@ class _CompoundsScreenState extends State<CompoundsScreen> {
 
         return Scaffold(
           appBar: CustomAppbars.loginAppbar(
-              context: context,isAddCompoundsScreen: true),
+              context: context, isAddCompoundsScreen: true),
           body: compoundsView(state, compounds),
         );
       },

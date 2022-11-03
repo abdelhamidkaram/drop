@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dropeg/injection_container.dart' as di;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../config/route/app_route.dart';
-import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_string.dart';
-import '../../../../../core/utils/assets_manger.dart';
-import '../../../../../core/utils/toasts.dart';
-import '../../../domain/entities/user.dart';
-import 'bloc/cubit.dart';
-import 'bloc/state.dart';
+import '../../../../../../config/route/app_route.dart';
+import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_string.dart';
+import '../../../../../../core/utils/assets_manger.dart';
+import '../../../../../../core/utils/toasts.dart';
+import '../../../../domain/entities/user.dart';
+import '../bloc/cubit.dart';
+import '../bloc/state.dart';
 import 'package:dropeg/core/utils/components/custom_text_field.dart';
 import 'package:dropeg/core/utils/components/app_buttons.dart';
 import 'package:dropeg/core/utils/components/custom_appbar.dart';
@@ -23,9 +23,16 @@ class ProfileEditScreen extends StatefulWidget {
 
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
   @override
+  void initState() {
+    super.initState();
+    ProfileCubit.get(context).getProfileDetails().then((value) {
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: ()async{
+      onWillPop: () async {
         Navigator.pushReplacementNamed(context, AppRouteStrings.account);
         return Future.value(true);
       },
@@ -135,10 +142,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               isPhoneVerify: profile?.isPhoneVerify ?? false,
                               phone: phoneController.text,
                               email: emailController.text,
-                              id: profile?.id ?? "");
+                              id: profile?.id ?? "",
+                              refarCode: profile?.refarCode ?? "");
                           if (profile != newUserDetails) {
                             if (formKey.currentState!.validate()) {
-                              await ProfileCubit.get(context).updateProfileDetails(newUserDetails);
+                              await ProfileCubit.get(context)
+                                  .updateProfileDetails(newUserDetails);
                             }
                           }
                         }),
@@ -155,6 +164,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 AppToasts.successToast(AppStrings.deleted);
                                 Navigator.pushReplacementNamed(
                                     context, AppRouteStrings.home);
+                              }).catchError((err) {
+                                AppToasts.errorToast(AppStrings.errorInternal);
                               });
                             },
                             child: Text(

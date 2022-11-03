@@ -64,7 +64,7 @@ class LocationCubit extends Cubit<LocationStates> {
     });
   }
 
-  Future deleteLocation(String locationId) async {
+  Future deleteLocation(String locationId, BuildContext context) async {
     AppToasts.loadingToast();
     await FirebaseFirestore.instance
         .collection(FirebaseStrings.usersCollection)
@@ -73,7 +73,12 @@ class LocationCubit extends Cubit<LocationStates> {
         .doc(locationId)
         .delete()
         .then((value) {
-      AppToasts.successToast(AppStrings.deleted);
+       ProfileCubit.get(context)
+          .getLocations(isRefresh: true)
+          .whenComplete(() {
+             AppToasts.successToast(AppStrings.deleted);
+          });
+      
     }).catchError((err) {
       AppToasts.errorToast(AppStrings.errorInternal);
     });

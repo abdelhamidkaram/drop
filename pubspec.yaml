@@ -15,9 +15,9 @@ dependencies:
   flutter_bloc: ^8.1.1
   bloc: ^8.1.0
   get_it: ^7.2.0
-  firebase_core: ^1.24.0
-  firebase_auth: ^3.11.1
-  cloud_firestore: ^3.5.1
+  firebase_core: ^2.1.1
+  firebase_auth: ^4.1.0
+  cloud_firestore: ^4.0.3
   google_sign_in: ^5.4.2
   #flutter_facebook_auth: ^5.0.0+2
   internet_connection_checker: ^1.0.0+1
@@ -30,7 +30,9 @@ dependencies:
   flutter_screenutil: ^5.5.4
   uuid: ^3.0.6
   image_picker: ^0.8.6
-  firebase_storage: ^10.3.11
+  firebase_storage: ^11.0.3
+  share_plus: ^6.2.0
+  lottie: ^1.4.3
 
 dev_dependencies:
   flutter_test:
@@ -43,6 +45,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/json/
     - assets/images/on_boarding1.png
     - assets/images/on_boarding2.png
     - assets/images/on_boarding3.png
@@ -51,6 +54,7 @@ flutter:
     - assets/images/logovertical.png
     - assets/images/bacgroundappbar.png
     - assets/images/ticket.png
+    - assets/images/refar.png
 
   fonts:
     - family: ridley

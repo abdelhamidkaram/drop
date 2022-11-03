@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:dropeg/core/api/firestore_strings.dart';
 import 'package:dropeg/core/error/failure.dart';
 import 'package:dropeg/core/shared_prefs/app_prefs.dart';
 import 'package:dropeg/core/utils/app_values.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../../core/utils/app_string.dart';
@@ -68,17 +71,24 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
   Future<Either<Failure, User>> registerWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+       if (googleUser == null) {
+       return const Left(ServerFailure(
+          code: AppErrorValues.serverErrorCode,
+          message: ""));
+      }
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
+      
       var userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       uId = userCredential.user?.uid ?? "";
       await appPreferences.loginAllCache(token, uId);
       debugPrint(userCredential.user!.email);
+     
       return Right(userCredential.user!);
     } catch (err) {
       if (kDebugMode) {

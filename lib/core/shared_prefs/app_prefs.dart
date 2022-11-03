@@ -29,7 +29,21 @@ class AppPreferences {
     return _sharedPreferences.getBool(AppPrefsKes.login) ?? false;
 
   }
+  
+    //profileFristBuild
+
+  Future<void> setProfileNotFristBuild() async {
+    await _sharedPreferences.setBool(AppPrefsKes.profileFristBuild, true);
+    debugPrint( " preference : profileFristBuild  ") ;
+  }
+
+  Future<bool> isProfileNotFristBuild() async {
+    return _sharedPreferences.getBool(AppPrefsKes.profileFristBuild) ?? false;
+  }
+  
+  
   //location
+
   Future<void> setLocationAdded() async {
     await _sharedPreferences.setBool(AppPrefsKes.locationAdd, true);
     debugPrint( " preference : setLocationAdded ") ;
@@ -89,6 +103,7 @@ class AppPreferences {
     await _sharedPreferences.remove(AppPrefsKes.cachedLocations);
     await _sharedPreferences.remove(AppPrefsKes.cachedCars);
     await _sharedPreferences.remove(AppPrefsKes.cachedProfileDetails);
+    await _sharedPreferences.remove(AppPrefsKes.profileFristBuild);
   }
 
 
@@ -97,6 +112,7 @@ class AppPreferences {
     await _sharedPreferences.remove(AppPrefsKes.cachedLocations);
     await _sharedPreferences.remove(AppPrefsKes.cachedCars);
     await _sharedPreferences.remove(AppPrefsKes.cachedProfileDetails);
+    await _sharedPreferences.remove(AppPrefsKes.profileFristBuild);
   }
 
 

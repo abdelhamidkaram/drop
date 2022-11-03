@@ -163,3 +163,15 @@ class UploadImageError extends ProfileStates {}
 
 class UpdateAccountSuccess extends ProfileStates {}
 
+//-------------------- send phone 
+
+class SendPhoneSuccess extends ProfileStates {
+
+}
+class SendPhoneError extends ProfileStates {
+  
+}
+class SendPhoneLoading extends ProfileStates {
+  
+}
+

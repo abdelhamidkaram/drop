@@ -14,6 +14,7 @@ extension Usermodelmapper on UserDetailsModel {
         phone: phone ?? "",
         photo: photo ?? "",
         isPhoneVerify: isPhoneVerify ?? false,
+        refarCode: refarCode ?? "",
       );
 }
 

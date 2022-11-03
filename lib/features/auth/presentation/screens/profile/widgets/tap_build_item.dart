@@ -9,26 +9,31 @@ class TapBuildItem extends StatelessWidget {
     required this.context,
     required this.assetSvgIcon,
     required this.text,
+     this.onTab
   }) : super(key: key);
 
   final BuildContext context;
   final String assetSvgIcon;
   final String text;
+  final VoidCallback? onTab;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        SvgPicture.asset(assetSvgIcon),
-        Text(
-          text,
-          style: Theme.of(context)
-              .textTheme
-              .headline6!
-              .copyWith(color: AppColors.black),
-        ),
-      ],
+    return GestureDetector(
+      onTap: onTab,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          SvgPicture.asset(assetSvgIcon),
+          Text(
+            text,
+            style: Theme.of(context)
+                .textTheme
+                .headline6!
+                .copyWith(color: AppColors.black),
+          ),
+        ],
+      ),
     );
   }
 }

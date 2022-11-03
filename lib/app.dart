@@ -23,7 +23,7 @@ class DropApp extends StatelessWidget {
             providers: [
               BlocProvider(
                 create: (context) => di.sl<ProfileCubit>()
-                  ..profileDetails()
+                  ..getProfileDetails()
                   ..getLocations()
                   ..getCars()
                   ..getCompounds(),

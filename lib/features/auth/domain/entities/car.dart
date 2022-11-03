@@ -18,7 +18,7 @@ class Car extends Equatable {
       required this.color,
       required this.licensePlate,
       required this.model,
-      required this.id
+      required this.id,
     });
 
   Car.fromJson(Map<String , dynamic > json){

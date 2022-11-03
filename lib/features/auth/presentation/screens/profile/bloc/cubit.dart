@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropeg/core/api/firestore_strings.dart';
 import 'package:dropeg/core/utils/app_string.dart';
@@ -47,7 +46,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
   static ProfileCubit get(context) => BlocProvider.of(context);
   UserDetails? userDetails;
 
-  Future profileDetails({bool isRefresh = false}) async {
+  Future getProfileDetails({bool isRefresh = false}) async {
     emit(const GetProfileDetailsLoading());
     var response = await getProfileUseCase(
         ProfileDetailsRequest(isRefresh: isRefresh, uid: uId));
@@ -61,22 +60,22 @@ class ProfileCubit extends Cubit<ProfileStates> {
   }
 
   Future<bool> updateProfileDetails(UserDetails newUserDetails) async {
-    bool isUpdate = false ;
+    bool isUpdate = false;
     await FirebaseFirestore.instance
         .collection(FirebaseStrings.usersCollection)
         .doc(uId)
         .update(newUserDetails.toJson())
         .then((value) {
-      profileDetails(isRefresh: true).then((value) => null);
+      getProfileDetails(isRefresh: true).then((value) => null);
       AppToasts.successToast(AppStrings.success);
       emit(UpdateAccountSuccess());
-      isUpdate =  true;
+      isUpdate = true;
     }).catchError((err) {
       debugPrint(err.toString());
       AppToasts.errorToast(AppStrings.errorInternal);
-      isUpdate =  false;
+      isUpdate = false;
     });
-    return isUpdate ;
+    return isUpdate;
   }
 
   Future getLocations({bool isRefresh = false}) async {
@@ -145,11 +144,18 @@ class ProfileCubit extends Cubit<ProfileStates> {
   }
 
   Future sendPhone(String phone) async {
-    await FirebaseFirestore.instance
-        .collection(FirebaseStrings.usersCollection)
-        .doc(uId)
-        .update({FirebaseStrings.phoneField: phone});
-    await profileDetails(isRefresh: true);
+    emit(SendPhoneLoading());
+    try {
+      await FirebaseFirestore.instance
+          .collection(FirebaseStrings.usersCollection)
+          .doc(uId)
+          .update({FirebaseStrings.phoneField: phone});
+      await getProfileDetails(isRefresh: true);
+      emit(SendPhoneSuccess());
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      emit(SendPhoneError());
+    }
   }
 
   Future deleteAccount() async {
@@ -163,7 +169,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
       });
       await appPreferences.deleteUserDetailsAndLogOut();
     }).catchError((err) {
-      debugPrint(err);
+      debugPrint(err.toString());
     });
   }
 
@@ -229,9 +235,10 @@ class ProfileCubit extends Cubit<ProfileStates> {
                         isVerify: userDetails!.isVerify,
                         photo: await p0.ref.getDownloadURL(),
                         name: userDetails!.name,
+                        refarCode: userDetails?.refarCode ?? "",
                       ).toJson())
                       .then((value) {
-                    profileDetails(isRefresh: true).then((value) {
+                    getProfileDetails(isRefresh: true).then((value) {
                       AppToasts.successToast(AppStrings.success);
                       emit(UploadImageSuccess());
                     });

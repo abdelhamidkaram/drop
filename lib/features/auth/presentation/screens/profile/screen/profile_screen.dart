@@ -10,19 +10,19 @@ import 'package:dropeg/core/utils/components/custom_appbar.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../config/route/app_route.dart';
-import '../../../../../core/utils/components/category_title.dart';
-import '../../../../../core/utils/components/profile_header.dart';
-import '../../../../../core/utils/drawer.dart';
-import '../../../domain/entities/car.dart';
-import '../../../domain/entities/compound.dart';
-import '../../../domain/entities/location.dart';
-import 'bloc/cubit.dart';
-import 'bloc/state.dart';
-import 'package:dropeg/injection_container.dart'as di ;
+import '../../../../../../config/route/app_route.dart';
+import '../../../../../../core/utils/components/category_title.dart';
+import '../../../../../../core/utils/components/profile_header.dart';
+import '../../../../../../core/utils/drawer.dart';
+import '../../../../domain/entities/car.dart';
+import '../../../../domain/entities/compound.dart';
+import '../../../../domain/entities/location.dart';
+import '../bloc/cubit.dart';
+import '../bloc/state.dart';
+import 'package:dropeg/injection_container.dart' as di;
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
-
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -30,21 +30,27 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   GlobalKey<ScaffoldState> profileScaffoldStateKey = GlobalKey<ScaffoldState>();
   @override
+  void initState() {
+    super.initState();
+    ProfileCubit.get(context).getCars().then((value) => null);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: ()async{
+      onWillPop: () async {
         Navigator.of(context).pushReplacementNamed(AppRouteStrings.home);
         return Future.value(true);
       },
       child: BlocListener<ProfileCubit, ProfileStates>(
-        listener:(context, state) =>  di.sl<ProfileCubit>() ,
+        listener: (context, state) => di.sl<ProfileCubit>(),
         child: BlocBuilder<ProfileCubit, ProfileStates>(
           bloc: di.sl<ProfileCubit>(),
           builder: (context, state) {
             var profileCubit = ProfileCubit.get(context);
-            List<LocationEntity> locations = profileCubit.locations ?? [] ;
-            List<Compound> compounds = profileCubit.compounds ?? [] ;
-            List<Car> cars = profileCubit.cars ?? [] ;
+            List<LocationEntity> locations = profileCubit.locations ?? [];
+            List<Compound> compounds = profileCubit.compounds ?? [];
+            List<Car> cars = profileCubit.cars ?? [];
             Widget profileBody() {
               if (state is GetProfileDetailsLoading) {
                 return const Center(
@@ -66,7 +72,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             CustomAppbars.homeAppBar(
                                 context: context,
                                 title: AppStrings.account,
-                                userDetails: profileCubit.userDetails,
                                 onTap: () {
                                   profileScaffoldStateKey.currentState!
                                       .openDrawer();
@@ -82,9 +87,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       Navigator.pushNamed(
                                           context, AppRouteStrings.accountEdit);
                                     },
-                                    child: ProfileHeader(
-                                      isProfileScreen: true,
-                                      userDetails: profileCubit.userDetails,
+                                    child: BlocListener<ProfileCubit,
+                                        ProfileStates>(
+                                      listener: (context, state) =>
+                                          di.sl<ProfileCubit>(),
+                                      child: const ProfileHeader(
+                                        isProfileScreen: true,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -107,61 +116,72 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 SizedBox(
                                   height: 20.h,
                                 ),
-                                const CategoryTitle(title: AppStrings.myLocations),
+                                const CategoryTitle(
+                                    title: AppStrings.myLocations),
                                 const SizedBox(
                                   height: 16,
                                 ),
-                                BlocListener<ProfileCubit , ProfileStates>(
-                                    listener: (context, state) =>di.sl<ProfileCubit>() ,
-                                    child: BlocBuilder<ProfileCubit , ProfileStates>(
-                                      builder: (context, state)
-                                      {
-                                        List<Widget>? compoundsView = List.generate(
+                                BlocListener<ProfileCubit, ProfileStates>(
+                                    listener: (context, state) =>
+                                        di.sl<ProfileCubit>(),
+                                    child: BlocBuilder<ProfileCubit,
+                                        ProfileStates>(
+                                      builder: (context, state) {
+                                        List<Widget>? compoundsView =
+                                            List.generate(
                                           compounds.length,
-                                              (index) => CompoundCardItem(
+                                          (index) => CompoundCardItem(
                                             index: index,
-                                            compounds: compounds ,
+                                            compounds: compounds,
+                                            setStateFun: () {
+                                              setState(() {
+                                                
+                                              });
+                                            },
                                           ),
                                         );
-                                        List<Widget>? locationsView = List.generate(
-                                            locations.length,
+                                        List<Widget>? locationsView =
+                                            List.generate(
+                                                locations.length,
                                                 (index) => LocationCardItem(
-                                              index: index,
-                                              locations: locations,
-                                            ));
+                                                      index: index,
+                                                      locations: locations,
+                                                    ));
                                         if (state is GetCompoundsSuccess) {
                                           if (state.compounds != null) {
                                             compoundsView = List.generate(
                                               state.compounds!.length,
-                                                  (index) => CompoundCardItem(
+                                              (index) => CompoundCardItem(
                                                 index: index,
-                                                compounds: state.compounds ?? [],
+                                                compounds:
+                                                    state.compounds ?? [],
                                               ),
                                             );
-                                          }else{
+                                          } else {
                                             compoundsView = [];
                                           }
                                         }
                                         if (state is GetLocationsSuccess) {
                                           if (state.locations != null) {
-                                            locationsView= List.generate(
+                                            locationsView = List.generate(
                                                 state.locations!.length,
-                                                    (index) => LocationCardItem(
-                                                  index: index,
-                                                  locations: state.locations ?? [],
-                                                ));
-                                          }else{
+                                                (index) => LocationCardItem(
+                                                      index: index,
+                                                      locations:
+                                                          state.locations ?? [],
+                                                    ));
+                                          } else {
                                             locationsView = [];
                                           }
                                         }
                                         return Column(
                                           children: [
-                                                Column(children: compoundsView),
-                                                Column(children: locationsView),
-                                          ] ,
-                                        ) ; },
-                                    )
-                                ),
+                                            Column(children: compoundsView),
+                                            Column(children: locationsView),
+                                          ],
+                                        );
+                                      },
+                                    )),
                                 AddLocationButton(profileCubit: profileCubit),
                                 SizedBox(
                                   height: 20.h,
@@ -170,39 +190,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 SizedBox(
                                   height: 16.h,
                                 ),
-                                BlocListener<ProfileCubit , ProfileStates>(
-                                  listener: (context, state) =>di.sl<ProfileCubit>() ,
-                                  child: BlocBuilder<ProfileCubit , ProfileStates>(
-                                    builder: (context, state)
-                                    {
-                                      List<Widget>? carsView = List.generate(
-                                        cars.length,
-                                            (index) => CarCardItem(
-                                          scaffoldKey: profileScaffoldStateKey,
-                                          profileCubit: profileCubit,
-                                          index: index,
-                                        ),
-                                      );
-                                      if (state is GetCarsSuccess) {
-                                        if (state.cars != null) {
-                                          carsView = List.generate(
-                                            state.cars?.length ?? 0 ,
-                                                (index) => CarCardItem(
-                                              scaffoldKey: profileScaffoldStateKey,
-                                              profileCubit: profileCubit,
-                                              index: index,
-                                            ),
-                                          );
-
-                                        }else{
-                                          carsView = [];
+                                BlocListener<ProfileCubit, ProfileStates>(
+                                    listener: (context, state) =>
+                                        di.sl<ProfileCubit>(),
+                                    child: BlocBuilder<ProfileCubit,
+                                        ProfileStates>(
+                                      builder: (context, state) {
+                                        List<Widget>? carsView = List.generate(
+                                          cars.length,
+                                          (index) => CarCardItem(
+                                            scaffoldKey:
+                                                profileScaffoldStateKey,
+                                            profileCubit: profileCubit,
+                                            index: index,
+                                          ),
+                                        );
+                                        if (state is GetCarsSuccess) {
+                                          if (state.cars != null) {
+                                            carsView = List.generate(
+                                              state.cars?.length ?? 0,
+                                              (index) => CarCardItem(
+                                                scaffoldKey:
+                                                    profileScaffoldStateKey,
+                                                profileCubit: profileCubit,
+                                                index: index,
+                                              ),
+                                            );
+                                          } else {
+                                            carsView = [];
+                                          }
                                         }
-                                      }
-                                      return Column(
-                                      children: carsView,
-                                    ) ; },
-                                  )
-                                ),
+                                        return Column(
+                                          children: carsView,
+                                        );
+                                      },
+                                    )),
                                 const AddCarButton()
                               ],
                             ),
@@ -218,12 +240,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return Scaffold(
               floatingActionButton: FloatingActionButton(
                 onPressed: () async {
-                  await profileCubit.getLocations(isRefresh: true);
+                  await profileCubit.getProfileDetails(isRefresh: true);
                 },
               ),
               key: profileScaffoldStateKey,
-              drawer:
-                  drawer(drawerSelected: DrawerSelected.account, context: context),
+              drawer: drawer(
+                  drawerSelected: DrawerSelected.account, context: context),
               body: profileBody(),
             );
           },

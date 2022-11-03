@@ -1,3 +1,4 @@
+import 'package:dropeg/config/route/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/utils/app_colors.dart';
@@ -15,7 +16,8 @@ class SignUpBTN extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  isEdit ?   Row(
+    return  isEdit ?
+       Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(
@@ -39,8 +41,8 @@ class SignUpBTN extends StatelessWidget {
         ),
         InkWell(
           onTap: (){
-            LocationCubit.get(context).deleteLocation(locationId!).then((value){
-              Navigator.pop(context);
+            LocationCubit.get(context).deleteLocation(locationId! , context ).then((value){
+              Navigator.pushReplacementNamed(context , AppRouteStrings.account);
             });
           },
           child: Text(AppStrings.deleteLocation , style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -49,7 +51,9 @@ class SignUpBTN extends StatelessWidget {
         )
 
       ],
-    ) : GestureDetector(
+    ) 
+    
+    : GestureDetector(
       onTap: onTap,
       child: SizedBox(
         height: 80,

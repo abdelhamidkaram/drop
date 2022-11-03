@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../app_colors.dart';
 
 class AppButtonLight extends StatelessWidget {
@@ -95,6 +96,40 @@ class AppButtonRed extends StatelessWidget {
           text,
           style: Theme.of(context).textTheme.headline5!.copyWith(
                 color: AppColors.white,
+              ),
+        )),
+      ),
+    );
+  }
+}
+
+class AppButtonWhite extends StatelessWidget {
+  final String text;
+
+  final VoidCallback onTap;
+
+  const AppButtonWhite({
+    Key? key,
+    required this.text,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 43,
+        width: 120.w,
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: Center(
+            child: Text(
+          text,
+          style: Theme.of(context).textTheme.headline5!.copyWith(
+                color: AppColors.primaryColor,
               ),
         )),
       ),

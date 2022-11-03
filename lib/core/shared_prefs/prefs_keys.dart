@@ -4,6 +4,7 @@ class AppPrefsKes{
   static const String  uid = "uid";
   static const String  onBoardingViewed = "onBoardingViewed";
   static const String  locationAdd = "locationAdd";
+  static const String  profileFristBuild = "profileFristBuild";
   static const String  cachedProfileDetails = "cachedProfileDetails";
   static const String  cachedLocations = "cachedLocations";
   static const String  cachedCars = "cachedCars";

@@ -16,7 +16,7 @@ Drawer drawer(
     {required BuildContext context, required DrawerSelected drawerSelected}) {
   return Drawer(
     child: BlocProvider(
-      create: (context) => di.sl<ProfileCubit>()..profileDetails(),
+      create: (context) => di.sl<ProfileCubit>()..getProfileDetails(),
       child: BlocBuilder<ProfileCubit, ProfileStates>(
         builder: (context, state) => ListView(
           padding: EdgeInsets.zero,
@@ -27,8 +27,7 @@ Drawer drawer(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ProfileCubit.get(context).userDetails != null
-                      ? ProfileHeader(
-                          userDetails: ProfileCubit.get(context).userDetails!)
+                      ? const ProfileHeader()
                       : const SizedBox(),
                 ],
               )),
@@ -88,7 +87,7 @@ Drawer drawer(
               title: Text(
                 AppStrings.help,
                 style: Theme.of(context).textTheme.headline3!.copyWith(
-                    color: drawerSelected == DrawerSelected.home
+                    color: drawerSelected == DrawerSelected.help
                         ? AppColors.primaryColor
                         : null),
               ),

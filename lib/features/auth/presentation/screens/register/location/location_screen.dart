@@ -26,7 +26,6 @@ import '../../../widgets/sign_up_btn.dart';
 import '../../../../../../core/utils/components/custom_text_field.dart';
 import '../../../../../../core/utils/constant.dart';
 
-
 class LocationScreen extends StatefulWidget {
   final bool formProfileScreen;
   final LocationEntity? locationEntity;
@@ -42,16 +41,19 @@ class LocationScreen extends StatefulWidget {
 class _LocationScreenState extends State<LocationScreen> {
   static LocationData? myPosition;
   final Completer<GoogleMapController> _controller = Completer();
-
   @override
   initState() {
     super.initState();
     getMyCurrentLocation().whenComplete(() {
-      getAddressFromLatLng(
-          context, myPosition?.latitude ?? 30.005493,
-          myPosition?.longitude ?? 31.477898)
+      getAddressFromLatLng(context, myPosition?.latitude ?? 30.005493,
+              myPosition?.longitude ?? 31.477898)
           .whenComplete(() {
-        setState(() {});
+        setState(() {
+          if (widget.locationEntity != null) {
+            addresstext = widget.locationEntity!.address!;
+            addressController.text = widget.locationEntity!.address!;
+          }
+        });
       });
     });
   }
@@ -61,30 +63,25 @@ class _LocationScreenState extends State<LocationScreen> {
 
   Future<String?> getAddressFromLatLng(context, double lat, double lng) async {
     var response = await Dio().get(
-        "https://maps.google.com/maps/api/geocode/json?key=${AppConstants
-            .mapKey}&language=en&latlng=$lat,$lng");
+        "https://maps.google.com/maps/api/geocode/json?key=${AppConstants.mapKey}&language=en&latlng=$lat,$lng");
     if (response.statusCode == 200) {
       Map data = response.data;
       String formattedAddress = data["results"][0]["formatted_address"];
       if (kDebugMode) {
         print("response ==== $formattedAddress");
       }
-      if (widget.locationEntity == null) {
-        addresstext = formattedAddress;
-        addressController.text = formattedAddress;
-      } else {
-        addresstext = widget.locationEntity!.address!;
-        addressController.text = widget.locationEntity!.address!;
-      }
+
+      addresstext = formattedAddress;
+      addressController.text = formattedAddress;
+
       return formattedAddress;
     }
     return null;
   }
 
   Future<void> getMyCurrentLocation() async {
-    myPosition = await LocationHelper().getCurrentLocation().whenComplete(() {
-      setState(() {});
-    });
+    myPosition =
+        await LocationHelper().getCurrentLocation().whenComplete(() {});
   }
 
   @override
@@ -100,9 +97,10 @@ class _LocationScreenState extends State<LocationScreen> {
     var locationKey = GlobalKey<FormState>();
 
     return MultiBlocProvider(
-
       providers: [
-        BlocProvider(create: (context) => LocationCubit(),),
+        BlocProvider(
+          create: (context) => LocationCubit(),
+        ),
       ],
       child: BlocConsumer<LocationCubit, LocationStates>(
         listener: (context, state) => LocationCubit(),
@@ -119,31 +117,31 @@ class _LocationScreenState extends State<LocationScreen> {
                         height: 340.h,
                         child: myPosition == null
                             ? const Center(
-                            child: CircularProgressIndicator.adaptive())
+                                child: CircularProgressIndicator.adaptive())
                             : GoogleMap(
-                          myLocationButtonEnabled: true,
-                          myLocationEnabled: true,
-                          zoomControlsEnabled: false,
-                          mapToolbarEnabled: true,
-                          liteModeEnabled: false,
-                          mapType: MapType.normal,
-                          onTap: (argument) {
-                            setState(() {
-                              getAddressFromLatLng(context,
-                                  argument.latitude, argument.longitude);
-                            });
-                          },
-                          initialCameraPosition: CameraPosition(
-                            target: LatLng(myPosition!.latitude!,
-                                myPosition!.longitude!),
-                            bearing: 0.0,
-                            zoom: 17,
-                          ),
-                          onMapCreated: (GoogleMapController controller) {
-                            _controller.complete(controller);
-                            controller.setMapStyle(MapStyle.dark);
-                          },
-                        ),
+                                myLocationButtonEnabled: true,
+                                myLocationEnabled: true,
+                                zoomControlsEnabled: false,
+                                mapToolbarEnabled: true,
+                                liteModeEnabled: false,
+                                mapType: MapType.normal,
+                                onTap: (argument) {
+                                  setState(() {
+                                    getAddressFromLatLng(context,
+                                        argument.latitude, argument.longitude);
+                                  });
+                                },
+                                initialCameraPosition: CameraPosition(
+                                  target: LatLng(myPosition!.latitude!,
+                                      myPosition!.longitude!),
+                                  bearing: 0.0,
+                                  zoom: 17,
+                                ),
+                                onMapCreated: (GoogleMapController controller) {
+                                  _controller.complete(controller);
+                                  controller.setMapStyle(MapStyle.dark);
+                                },
+                              ),
                       ),
                       const Padding(
                         padding: EdgeInsets.all(20.0),
@@ -180,10 +178,11 @@ class _LocationScreenState extends State<LocationScreen> {
                                   child: GestureDetector(
                                     onTap: () {
                                       Navigator.pushNamed(
-                                        context, AppRouteStrings.compounds,
+                                        context,
+                                        AppRouteStrings.compounds,
                                         arguments: CompoundsViewArgs(
-                                            toAddCarScreen: !widget
-                                                .formProfileScreen),
+                                            toAddCarScreen:
+                                                !widget.formProfileScreen),
                                       );
                                     },
                                     child: Card(
@@ -200,8 +199,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                           children: [
                                             Text(
                                               AppStrings.registeredCompounds,
-                                              style: Theme
-                                                  .of(context)
+                                              style: Theme.of(context)
                                                   .textTheme
                                                   .headline5,
                                             ),
@@ -242,7 +240,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                 hint: AppStrings.addressHIT,
                                 controller: addressController,
                                 validateEmptyMSG:
-                                AppStrings.emailAddressEmptyMSG,
+                                    AppStrings.emailAddressEmptyMSG,
                                 type: TextInputType.streetAddress,
                               ),
                               const SizedBox(
@@ -257,21 +255,18 @@ class _LocationScreenState extends State<LocationScreen> {
                                       AppToasts.loadingToast();
                                       LocationEntity location = LocationEntity(
                                         address: addressController.text,
-                                        state: LocationCubit
-                                            .get(context)
+                                        state: LocationCubit.get(context)
                                             .locationState,
-                                        city: LocationCubit
-                                            .get(context)
-                                            .city,
-                                        type: LocationCubit
-                                            .get(context)
+                                        city: LocationCubit.get(context).city,
+                                        type: LocationCubit.get(context)
                                             .locationType,
                                         id: const Uuid().v4(),
                                       );
                                       await LocationCubit.get(context)
                                           .addLocation(
-                                          context, widget.formProfileScreen,
-                                          location)
+                                              context,
+                                              widget.formProfileScreen,
+                                              location)
                                           .then((value) async {
                                         await ProfileCubit.get(context)
                                             .getLocations(isRefresh: true);
@@ -281,27 +276,26 @@ class _LocationScreenState extends State<LocationScreen> {
                                   editOnPressed: () {
                                     LocationEntity location = LocationEntity(
                                       address: addressController.text,
-                                      state: LocationCubit
-                                          .get(context)
-                                          .locationState ??
+                                      state: LocationCubit.get(context)
+                                              .locationState ??
                                           widget.locationEntity!.state,
-                                      city: LocationCubit
-                                          .get(context)
-                                          .city ?? widget.locationEntity!.city,
-                                      type: LocationCubit
-                                          .get(context)
-                                          .locationType ??
+                                      city: LocationCubit.get(context).city ??
+                                          widget.locationEntity!.city,
+                                      type: LocationCubit.get(context)
+                                              .locationType ??
                                           widget.locationEntity!.type,
                                       id: widget.locationEntity!.id,
                                     );
-                                    LocationCubit.get(context).editLocation(
-                                        widget.locationEntity!, location).then((
-                                        value) {
-                                      ProfileCubit.get(context).getLocations(
-                                          isRefresh: true).then((value) {
+                                    LocationCubit.get(context)
+                                        .editLocation(
+                                            widget.locationEntity!, location)
+                                        .then((value) {
+                                      ProfileCubit.get(context)
+                                          .getLocations(isRefresh: true)
+                                          .then((value) {
                                         Navigator.of(context)
                                             .pushReplacementNamed(
-                                            AppRouteStrings.account);
+                                                AppRouteStrings.account);
                                       }).catchError((err) {
                                         if (kDebugMode) {
                                           print(err.toString());
@@ -334,4 +328,3 @@ class _LocationScreenState extends State<LocationScreen> {
     );
   }
 }
-

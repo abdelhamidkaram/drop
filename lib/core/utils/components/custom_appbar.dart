@@ -1,7 +1,7 @@
+import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../config/route/app_route.dart';
-import '../../../features/auth/domain/entities/user.dart';
 import '../../../features/auth/presentation/widgets/hello_there.dart';
 import '../app_colors.dart';
 import '../app_string.dart';
@@ -18,6 +18,8 @@ class CustomAppbars {
     bool isAddScreen = false,
     bool isAddCompoundsScreen = false,
     bool isEditAccountScreen = false,
+    bool isMyOrdersScreen = false,
+    bool isVouchersScreen = false,
   }) =>
       PreferredSize(
          preferredSize: const Size(double.infinity, 220),
@@ -68,7 +70,7 @@ class CustomAppbars {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    (isAddCompoundsScreen || isEditAccountScreen )
+                    (isAddCompoundsScreen || isEditAccountScreen || isMyOrdersScreen )
                         ?  SizedBox(
                             height: 30.h,
                           )
@@ -78,9 +80,11 @@ class CustomAppbars {
                               isAddScreen
                                   ? const HelloThere(
                                       title: AppStrings.carDetails,
-                                      subtitle:
-                                          AppStrings.pleaseEnterYourCarDetails)
-                                  : HelloThere(
+                                      subtitle: AppStrings.pleaseEnterYourCarDetails)
+                                  :isVouchersScreen ? HelloThere(
+                                          title: "${AppStrings.hey} ${ProfileCubit.get(context).userDetails?.name},",
+                                          subtitle:AppStrings.hereAreYourEarnedVouchers,
+                                          ): HelloThere(
                                       subtitle: isLoginScreen
                                           ? AppStrings.loginHere
                                           : AppStrings.pleaseCreateAccount),
@@ -96,10 +100,13 @@ class CustomAppbars {
       );
 
   static Container homeAppBar(
-          {required BuildContext context,
+          {
+          required BuildContext context,
           String? title,
           required VoidCallback onTap,
-          UserDetails? userDetails ,
+          String? helloTitle ,
+          String? hellosubTitle ,
+
           }) =>
       Container(
         height: 233,
@@ -138,8 +145,18 @@ class CustomAppbars {
                 ),
               ),
               const Spacer(),
+             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
               SizedBox(
                 height: 40.h,
+                width: double.infinity,
+                child: helloTitle == null
+                ? null 
+                : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: HelloThere(title: helloTitle, subtitle: hellosubTitle?? ""),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -152,8 +169,13 @@ class CustomAppbars {
                   ],
                 ),
               ),
+                ],
+              )
+              
             ],
           ),
         ),
+        
       );
+
 }

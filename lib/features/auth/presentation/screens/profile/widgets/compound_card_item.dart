@@ -7,12 +7,13 @@ import '../../../../domain/entities/compound.dart';
 
 class CompoundCardItem extends StatefulWidget {
   final List<Compound> compounds;
-
   final int index;
-
-  const CompoundCardItem({Key? key,
-    required this.index,
-    required this.compounds})
+  final VoidCallback? setStateFun;
+  const CompoundCardItem(
+      {Key? key,
+      required this.index,
+      required this.compounds,
+      this.setStateFun})
       : super(key: key);
 
   @override
@@ -57,10 +58,7 @@ class _CompoundCardItemState extends State<CompoundCardItem> {
                     children: [
                       Text(
                         widget.compounds[widget.index].name ?? "..",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline3,
+                        style: Theme.of(context).textTheme.headline3,
                       ),
                       const SizedBox(
                         height: 10,
@@ -69,11 +67,18 @@ class _CompoundCardItemState extends State<CompoundCardItem> {
                     ],
                   ),
                 ),
-                 IconButton(onPressed: (){
-                   ProfileCubit.get(context)
-                       .getDeleteCompounds(widget.compounds[widget.index].name)
-                       .then((value){});
-                 } , icon: const Icon(Icons.delete_forever),)
+                IconButton(
+                  onPressed: () {
+                    ProfileCubit.get(context)
+                        .getDeleteCompounds(widget.compounds[widget.index].name)
+                        .then((value) {
+                      if (widget.setStateFun != null) {
+                        widget.setStateFun!();
+                      }
+                    });
+                  },
+                  icon: const Icon(Icons.delete_forever),
+                )
               ],
             ),
             SizedBox(

@@ -33,18 +33,18 @@ class _CarCardItemState extends State<CarCardItem> {
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     var modelController = TextEditingController(
-        text: widget.profileCubit.cars![widget.index].model);
+        text: widget.profileCubit.cars?[widget.index].model);
     var colorController = TextEditingController(
-        text: widget.profileCubit.cars![widget.index].color);
+        text: widget.profileCubit.cars?[widget.index].color);
     var aController =
-        TextEditingController(text: widget.profileCubit.cars![widget.index].a);
+        TextEditingController(text: widget.profileCubit.cars?[widget.index].a);
     var bController =
-        TextEditingController(text: widget.profileCubit.cars![widget.index].b);
+        TextEditingController(text: widget.profileCubit.cars?[widget.index].b);
     var cController =
-        TextEditingController(text: widget.profileCubit.cars![widget.index].c);
-    String? value = widget.profileCubit.cars![widget.index].brand;
+        TextEditingController(text: widget.profileCubit.cars?[widget.index].c);
+    String? value = widget.profileCubit.cars?[widget.index].brand;
     var licensePlateController = TextEditingController(
-        text: widget.profileCubit.cars![widget.index].licensePlate);
+        text: widget.profileCubit.cars?[widget.index].licensePlate);
     Row licensePlate() {
       return Row(
         children: [
