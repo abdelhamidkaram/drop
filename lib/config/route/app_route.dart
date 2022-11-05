@@ -12,6 +12,7 @@ import 'package:dropeg/features/auth/presentation/screens/register/add_car_scree
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/bloc/compound_register_cuibt.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/compounds_viwe.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_screen.dart';
+import 'package:dropeg/features/home/presentation/bloc/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/auth/presentation/screens/onboarding/onbording_screen.dart';
@@ -67,8 +68,14 @@ class AppRoute {
           },
         );
       case AppRouteStrings.home:
+        
         return MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
+          builder: (context) {
+            return BlocProvider(
+              create: (context) => di.sl<HomeCubit>(),
+              child: const HomeScreen(),
+            );
+          },
         );
       case AppRouteStrings.welcome:
         return MaterialPageRoute(
@@ -132,7 +139,7 @@ class AppRoute {
                     .sl<ProfileCubit>()
                     .getProfileDetails(isRefresh: true)
                     .then((value) => null);
-                    di
+                di
                     .sl<ProfileCubit>()
                     .getCars(isRefresh: true)
                     .then((value) => null);

@@ -1,12 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:dropeg/core/api/firestore_strings.dart';
 import 'package:dropeg/core/error/failure.dart';
 import 'package:dropeg/core/shared_prefs/app_prefs.dart';
 import 'package:dropeg/core/utils/app_values.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../../core/utils/app_string.dart';
 import '../../../../../main.dart';
@@ -50,16 +48,15 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
   @override
   Future<Either<Failure, UserCredential>> registerWithFacebook() async {
     try {
-      throw Exception(); //TODO: FACEBOOK
-      // final LoginResult loginResult = await FacebookAuth.instance
-      //     .login(permissions: ["public_profile", "email"]);
-      // final OAuthCredential facebookAuthCredential =
-      //     FacebookAuthProvider.credential(loginResult.accessToken!.token);
-      // var userCredential = await FirebaseAuth.instance
-      //     .signInWithCredential(facebookAuthCredential);
-      // uId = userCredential.user?.uid ?? "";
-      // await appPreferences.loginAllCache(token, uId);
-      // return Right(userCredential);
+      final LoginResult loginResult = await FacebookAuth.instance
+          .login(permissions: ["public_profile", "email"]);
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      var userCredential = await FirebaseAuth.instance
+          .signInWithCredential(facebookAuthCredential);
+      uId = userCredential.user?.uid ?? "";
+      await appPreferences.loginAllCache(token, uId);
+      return Right(userCredential);
     } catch (err) {
       return const Left(ServerFailure(
           code: AppErrorValues.serverErrorCode,

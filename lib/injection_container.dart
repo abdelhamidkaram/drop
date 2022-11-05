@@ -14,6 +14,7 @@ import 'package:dropeg/features/auth/domain/repositories/login_repository.dart';
 import 'package:dropeg/features/auth/domain/repositories/profile_repositry.dart';
 import 'package:dropeg/features/auth/domain/usecase/register_usecase.dart';
 import 'package:dropeg/features/auth/presentation/cubits/auth_cubit.dart';
+import 'package:dropeg/features/home/presentation/bloc/home_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,9 +43,33 @@ import 'features/auth/presentation/screens/register/register_compound/bloc/compo
 
 final sl = GetIt.instance;
 
-Future<void> init() async {
-  /// ---------------features
+Future<void> initAppModule() async {
+  /// ---------------------core
 
+  sl.registerLazySingleton<NetworkInfo>(
+      () => NetworkInfoImp(connectionChecker: sl()));
+  sl.registerLazySingleton<ApiConsumer>(() => DioConsumer(client: sl()));
+  sl.registerLazySingleton<AppPreferences>(() => AppPreferences(sl()));
+
+  /// ---------------external
+
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton(() => InternetConnectionChecker());
+  sl.registerLazySingleton(() => sharedPreferences);
+  sl.registerLazySingleton(() => AppInterceptors());
+  sl.registerLazySingleton(() => LogInterceptor(
+        request: true,
+        requestBody: true,
+        responseBody: true,
+        requestHeader: true,
+        error: true,
+        responseHeader: true,
+      ));
+  sl.registerLazySingleton(() => Dio());
+  sl.registerLazySingleton(() => LocationHelper());
+}
+
+Future initLoginModule() async {
   // blocs
 
   sl.registerFactory(() => AuthCubit(
@@ -131,28 +156,18 @@ Future<void> init() async {
       () => CarsLocalDataSourceImpl(sharedPreferences: sl()));
   sl.registerLazySingleton<CompoundsLocalDataSource>(
       () => CompoundsLocalDataSourceImpl(sharedPreferences: sl()));
+}
 
-  /// ---------------------core
+Future initHomeModule() async {
+  if (!GetIt.I.isRegistered<HomeCubit>()) {
+  //bloc
+    sl.registerFactory<HomeCubit>(() => HomeCubit());
 
-  sl.registerLazySingleton<NetworkInfo>(
-      () => NetworkInfoImp(connectionChecker: sl()));
-  sl.registerLazySingleton<ApiConsumer>(() => DioConsumer(client: sl()));
-  sl.registerLazySingleton<AppPreferences>(() => AppPreferences(sl()));
+  //repository
 
-  /// ---------------external
+  // data source
 
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  sl.registerLazySingleton(() => InternetConnectionChecker());
-  sl.registerLazySingleton(() => sharedPreferences);
-  sl.registerLazySingleton(() => AppInterceptors());
-  sl.registerLazySingleton(() => LogInterceptor(
-        request: true,
-        requestBody: true,
-        responseBody: true,
-        requestHeader: true,
-        error: true,
-        responseHeader: true,
-      ));
-  sl.registerLazySingleton(() => Dio());
-  sl.registerLazySingleton(() => LocationHelper());
+  //usecase
+  }
+
 }

@@ -148,12 +148,14 @@ class CustomAppbars {
              Column(
               crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-              SizedBox(
+              helloTitle == null
+                ? SizedBox(
                 height: 40.h,
                 width: double.infinity,
-                child: helloTitle == null
-                ? null 
-                : Padding(
+              ): SizedBox(
+                height: 45.h,
+                width: double.infinity,
+                child:Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: HelloThere(title: helloTitle, subtitle: hellosubTitle?? ""),
                 ),
