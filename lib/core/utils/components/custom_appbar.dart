@@ -1,3 +1,4 @@
+import 'package:dropeg/core/utils/components/img_network_with_cached.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +23,7 @@ class CustomAppbars {
     bool isVouchersScreen = false,
   }) =>
       PreferredSize(
-         preferredSize: const Size(double.infinity, 220),
+        preferredSize: const Size(double.infinity, 220),
         child: Container(
           height: 220,
           decoration: BoxDecoration(
@@ -40,9 +41,13 @@ class CustomAppbars {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Row(
                   children: [
-                    CustomBackButton(onPressed: isEditAccountScreen ? () async {
-                      Navigator.pushReplacementNamed(context, AppRouteStrings.account);
-                    } : null ),
+                    CustomBackButton(
+                        onPressed: isEditAccountScreen
+                            ? () async {
+                                Navigator.pushReplacementNamed(
+                                    context, AppRouteStrings.account);
+                              }
+                            : null),
                     const Spacer(),
                     isAddCompoundsScreen
                         ? Image.asset(
@@ -70,8 +75,10 @@ class CustomAppbars {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    (isAddCompoundsScreen || isEditAccountScreen || isMyOrdersScreen )
-                        ?  SizedBox(
+                    (isAddCompoundsScreen ||
+                            isEditAccountScreen ||
+                            isMyOrdersScreen)
+                        ? SizedBox(
                             height: 30.h,
                           )
                         : Row(
@@ -80,14 +87,19 @@ class CustomAppbars {
                               isAddScreen
                                   ? const HelloThere(
                                       title: AppStrings.carDetails,
-                                      subtitle: AppStrings.pleaseEnterYourCarDetails)
-                                  :isVouchersScreen ? HelloThere(
-                                          title: "${AppStrings.hey} ${ProfileCubit.get(context).userDetails?.name},",
-                                          subtitle:AppStrings.hereAreYourEarnedVouchers,
-                                          ): HelloThere(
-                                      subtitle: isLoginScreen
-                                          ? AppStrings.loginHere
-                                          : AppStrings.pleaseCreateAccount),
+                                      subtitle:
+                                          AppStrings.pleaseEnterYourCarDetails)
+                                  : isVouchersScreen
+                                      ? HelloThere(
+                                          title:
+                                              "${AppStrings.hey} ${ProfileCubit.get(context).userDetails?.name},",
+                                          subtitle: AppStrings
+                                              .hereAreYourEarnedVouchers,
+                                        )
+                                      : HelloThere(
+                                          subtitle: isLoginScreen
+                                              ? AppStrings.loginHere
+                                              : AppStrings.pleaseCreateAccount),
                             ],
                           ),
                     const SizedBox(height: 33),
@@ -99,22 +111,21 @@ class CustomAppbars {
         ),
       );
 
-  static Container homeAppBar(
-          {
-          required BuildContext context,
-          String? title,
-          required VoidCallback onTap,
-          String? helloTitle ,
-          String? hellosubTitle ,
-
-          }) =>
+  static Container homeAppBar({
+    required BuildContext context,
+    String? title,
+    required VoidCallback onTap,
+    String? helloTitle,
+    String? hellosubTitle,
+  }) =>
       Container(
         height: 233,
         decoration: BoxDecoration(
-            color: AppColors.white,
-            image: DecorationImage(
-                image: Image.asset(ImagesManger.backgroundAppbar).image ,
-                fit: BoxFit.fitWidth),),
+          color: AppColors.white,
+          image: DecorationImage(
+              image: Image.asset(ImagesManger.backgroundAppbar).image,
+              fit: BoxFit.fitWidth),
+        ),
         child: PreferredSize(
           preferredSize: const Size(double.infinity, 233),
           child: Column(
@@ -125,7 +136,9 @@ class CustomAppbars {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Row(
                   children: [
-                    CustomMenuButton(onTap: onTap,),
+                    CustomMenuButton(
+                      onTap: onTap,
+                    ),
                     const Spacer(),
                     title == null
                         ? Image.asset(
@@ -145,39 +158,130 @@ class CustomAppbars {
                 ),
               ),
               const Spacer(),
-             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-              helloTitle == null
-                ? SizedBox(
-                height: 40.h,
-                width: double.infinity,
-              ): SizedBox(
-                height: 45.h,
-                width: double.infinity,
-                child:Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: HelloThere(title: helloTitle, subtitle: hellosubTitle?? ""),
-                ),
+                  helloTitle == null
+                      ? SizedBox(
+                          height: 40.h,
+                          width: double.infinity,
+                        )
+                      : SizedBox(
+                          height: 45.h,
+                          width: double.infinity,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: HelloThere(
+                                title: helloTitle,
+                                subtitle: hellosubTitle ?? ""),
+                          ),
+                        ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: const [
+                        SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+
+  static Container appBarWithCard({
+    required BuildContext context,
+    String? title,
+    String? subTitle,
+    String? img,
+  }) =>
+      Container(
+        height: 320,
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          image: DecorationImage(
+              image: Image.asset(ImagesManger.backgroundAppbar).image,
+              fit: BoxFit.fitWidth),
+        ),
+        child: PreferredSize(
+          preferredSize: const Size(double.infinity, 310),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 35.0.h,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
-                    SizedBox(
-                      height: 30,
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  children: [
+                    const CustomBackButton(),
+                    const Spacer(),
+                    Image.asset(
+                      ImagesManger.logo,
+                      color: Colors.white,
+                    ),
+                    const Spacer(),
+                    const SizedBox(
+                      width: 40,
                     ),
                   ],
                 ),
               ),
-                ],
-              )
-              
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Card(
+                  child: SizedBox(
+                    height: 100.h,
+                    width: double.infinity,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    title ?? "",
+                                    style:
+                                        Theme.of(context).textTheme.headline2,
+                                  ),
+                                  SizedBox(
+                                    height: 5.0.h,
+                                  ),
+                                  Text(
+                                    subTitle ?? "",
+                                    style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    maxLines: 3,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            img != null
+                                ? ImageNetworkWithCached(
+                                    imgUrl: img, width: 85.w)
+                                : const SizedBox(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
-        
       );
-
 }

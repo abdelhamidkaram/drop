@@ -134,9 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             index: index,
                                             compounds: compounds,
                                             setStateFun: () {
-                                              setState(() {
-                                                
-                                              });
+                                              setState(() {});
                                             },
                                           ),
                                         );
@@ -238,11 +236,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             }
 
             return Scaffold(
-              floatingActionButton: FloatingActionButton(
-                onPressed: () async {
-                  await profileCubit.getProfileDetails(isRefresh: true);
-                },
-              ),
               key: profileScaffoldStateKey,
               drawer: drawer(
                   drawerSelected: DrawerSelected.account, context: context),

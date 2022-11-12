@@ -12,7 +12,9 @@ class CustomTextFormField extends StatefulWidget {
   final bool? isPassword;
   final bool? isPhone;
   final TextInputType type ;
+  final bool validation; 
   const CustomTextFormField({
+     this.validation = true,
     this.isPassword ,
     Key? key, required this.hint, required this.controller,required this.validateEmptyMSG, required this.type, this.isPhone,
   }) : super(key: key);
@@ -39,7 +41,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           child: Center(
             child: TextFormField(
               controller: widget.controller,
-              validator: (value) {
+              validator: widget.validation ? (value) {
                 if(value == null || value.isEmpty){
                   return widget.validateEmptyMSG;
                 }
@@ -47,7 +49,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                   return AppStrings.phoneNumberEmptyMSG2;
                 }
                 return null;
-              },
+              } : null ,
               obscureText: (showPassword && widget.isPassword == true ),
               keyboardType: widget.type ,
               decoration:  InputDecoration(

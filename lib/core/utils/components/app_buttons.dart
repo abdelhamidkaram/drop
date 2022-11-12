@@ -41,11 +41,13 @@ class AppButtonBlue extends StatelessWidget {
   final String text;
 
   final VoidCallback onTap;
+  final double? height;
 
   const AppButtonBlue({
     Key? key,
     required this.text,
     required this.onTap,
+    this.height,
   }) : super(key: key);
 
   @override
@@ -53,7 +55,7 @@ class AppButtonBlue extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 43,
+        height: height ?? 43.h,
         decoration: BoxDecoration(
           color: AppColors.primaryColor,
           borderRadius: BorderRadius.circular(12),
@@ -132,6 +134,31 @@ class AppButtonWhite extends StatelessWidget {
                 color: AppColors.primaryColor,
               ),
         )),
+      ),
+    );
+  }
+}
+
+class AppChangeButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onTap;
+  const AppChangeButton({super.key, required this.text, required this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 24.h,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+          color: AppColors.primaryColor.withOpacity(0.18),
+          borderRadius: BorderRadius.circular(50)),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(color: AppColors.primaryColor),
+          ),
+        ),
       ),
     );
   }

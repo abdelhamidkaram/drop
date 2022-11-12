@@ -1,8 +1,6 @@
-import 'package:dropeg/core/shared_prefs/app_prefs.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/login/login_screen.dart';
-import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/screen/Refer/refar_screen.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/screen/my_order/myorder/presentation/cubit/myorder_cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/screen/my_order/myorder/presentation/pages/my_order.dart';
@@ -12,7 +10,13 @@ import 'package:dropeg/features/auth/presentation/screens/register/add_car_scree
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/bloc/compound_register_cuibt.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/compounds_viwe.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_screen.dart';
-import 'package:dropeg/features/home/presentation/bloc/home_cubit.dart';
+import 'package:dropeg/features/home/bloc/home_cubit.dart';
+import 'package:dropeg/features/home/features/services/presentation/cubit/provider_services_cubit.dart';
+import 'package:dropeg/features/home/features/services/presentation/screens/appointment_order_confirmed_sreen.dart';
+import 'package:dropeg/features/home/features/services/presentation/screens/schedule_appointment.dart';
+import 'package:dropeg/features/home/features/services/presentation/screens/sigle_provider_services_screen.dart';
+import 'package:dropeg/features/home/features/services/presentation/screens/single_provider_screen.dart';
+import 'package:dropeg/features/order/presentation/pages/order_main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/auth/presentation/screens/onboarding/onbording_screen.dart';
@@ -27,19 +31,27 @@ import 'app_route_arguments.dart';
 
 class AppRouteStrings {
   static const String initial = "/";
-  static const String welcome = "welcome";
-  static const String login = "login";
-  static const String register = "register";
-  static const String home = "home";
-  static const String location = "location";
-  static const String addCar = "addcar";
-  static const String onBoarding = "onboarding";
-  static const String compounds = "compounds";
-  static const String account = "profile";
-  static const String accountEdit = "profileEdit";
-  static const String myOrders = "myOrders";
-  static const String refar = "myRefar";
-  static const String vouchers = "vouchers";
+  static const String welcome = "/welcome";
+  static const String login = "/login";
+  static const String register = "/register";
+  static const String home = "/home";
+  static const String location = "/location";
+  static const String addCar = "/addcar";
+  static const String onBoarding = "/onboarding";
+  static const String compounds = "/compounds";
+  static const String account = "/profile";
+  static const String accountEdit = "/profile/profileEdit";
+  static const String myOrders = "/profile/myOrders";
+  static const String refar = "/profile/myRefar";
+  static const String vouchers = "/profile/vouchers";
+  static const String singleProvider = "/services/single";
+  static const String singleProviderServices = "/services/single/services";
+  static const String singleProviderScheduleAppointment =
+      "/services/single/services/schedule";
+  static const String singleProviderOrderConfirmed =
+      "/services/single/services/schedule/orderconfirmed";
+
+  static const String order = "/Order";
 }
 
 class AppRoute {
@@ -68,11 +80,10 @@ class AppRoute {
           },
         );
       case AppRouteStrings.home:
-        
         return MaterialPageRoute(
           builder: (context) {
             return BlocProvider(
-              create: (context) => di.sl<HomeCubit>(),
+              create: (context) => di.sl<HomeCubit>()..getServices(),
               child: const HomeScreen(),
             );
           },
@@ -133,22 +144,6 @@ class AppRoute {
       case AppRouteStrings.account:
         return MaterialPageRoute(
           builder: (context) {
-            di.sl<AppPreferences>().isProfileNotFristBuild().then((value) {
-              if (!value) {
-                di
-                    .sl<ProfileCubit>()
-                    .getProfileDetails(isRefresh: true)
-                    .then((value) => null);
-                di
-                    .sl<ProfileCubit>()
-                    .getCars(isRefresh: true)
-                    .then((value) => null);
-                di
-                    .sl<AppPreferences>()
-                    .setProfileNotFristBuild()
-                    .then((value) => null);
-              }
-            });
             return const ProfileScreen();
           },
         );
@@ -178,6 +173,53 @@ class AppRoute {
           builder: (context) {
             return const VouchersScreen();
           },
+        );
+      case AppRouteStrings.singleProvider:
+        var args = routeSettings.arguments as SingleProviderArgs;
+        return MaterialPageRoute(
+          builder: (context) =>
+              SingleProviderScreen(serviceEntity: args.serviceEntity),
+        );
+      case AppRouteStrings.singleProviderServices:
+        var args = routeSettings.arguments as SingleProviderServicesArgs;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => ProviderServicesCubit(),
+            child: SingleProviderServicesScreen(
+              serviceEntity: args.serviceEntity,
+              index: args.index,
+            ),
+          ),
+        );
+      case AppRouteStrings.singleProviderScheduleAppointment:
+        var args = routeSettings.arguments as ScheduleAppointmentArgs;
+        return MaterialPageRoute(
+          builder: (context) {
+            return BlocProvider(
+              create: (context) => ProviderServicesCubit()
+                ..changeSelectedProvider(
+                    args.serviceEntity.serviceProviders[args.index]),
+              child: ScheduleAppointmentScreen(
+                serviceEntity: args.serviceEntity,
+                index: args.index,
+                serviceProvideList: args.serviceProvideList,
+              ),
+            );
+          },
+        );
+      case AppRouteStrings.singleProviderOrderConfirmed:
+        var arg = routeSettings.arguments as SingleProviderOrderConfirmedArgs;
+        return MaterialPageRoute(
+          builder: (context) {
+            return SingleProviderOrderConfirmedScreen(
+                serviceProvideList: arg.serviceProvideList);
+          },
+        );
+
+      case AppRouteStrings.order:
+        var arg = routeSettings.arguments as OrderMainArgs;
+        return MaterialPageRoute(
+          builder: (context) => OrderMainScreen(location: arg.locationEntity),
         );
 
       default:

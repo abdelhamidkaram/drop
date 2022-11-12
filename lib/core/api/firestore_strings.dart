@@ -4,6 +4,7 @@ class FirebaseStrings{
   static const  String  carCollection = "cars";
   static const  String  ordersCollection = "orders";
   static const  String  servicesCollection = "services";
+  static const  String  appointmentsList = "appointmentslist";
   static const  String  vouchers = "vouchers";
   static const  String  compoundsCollection = "compounds";
   static const  String  refarCollection = "refar";

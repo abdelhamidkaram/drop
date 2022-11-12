@@ -14,7 +14,11 @@ import 'package:dropeg/features/auth/domain/repositories/login_repository.dart';
 import 'package:dropeg/features/auth/domain/repositories/profile_repositry.dart';
 import 'package:dropeg/features/auth/domain/usecase/register_usecase.dart';
 import 'package:dropeg/features/auth/presentation/cubits/auth_cubit.dart';
-import 'package:dropeg/features/home/presentation/bloc/home_cubit.dart';
+import 'package:dropeg/features/home/features/services/data/data_source/remote_data/services_remote_datasource.dart';
+import 'package:dropeg/features/home/features/services/data/repository/services_repository_impl.dart';
+import 'package:dropeg/features/home/features/services/domain/repository/service_repository.dart';
+import 'package:dropeg/features/home/features/services/data/data_source/local_data/services_local_datasource.dart';
+import 'package:dropeg/features/home/features/services/domain/usecase/serviec_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,6 +44,7 @@ import 'features/auth/domain/usecase/login_usecase.dart';
 import 'features/auth/domain/usecase/profile_usecase.dart';
 import 'features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'features/auth/presentation/screens/register/register_compound/bloc/compound_register_cuibt.dart';
+import 'features/home/bloc/home_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -160,14 +165,32 @@ Future initLoginModule() async {
 
 Future initHomeModule() async {
   if (!GetIt.I.isRegistered<HomeCubit>()) {
-  //bloc
-    sl.registerFactory<HomeCubit>(() => HomeCubit());
+    //bloc
+    sl.registerFactory<HomeCubit>(() => HomeCubit(
+          serviceUseCase: sl(),
+        ));
+    //usecase
+    sl.registerLazySingleton<ServiceUseCase>(
+        () => ServiceUseCase(serviceRepository: sl<ServicesRepository>()));
 
-  //repository
+    //repository
+    sl.registerLazySingleton<ServicesRepository>(() => ServicesRepositoryImpl(
+          remoteDataSource: sl<ServicesRemoteDataSource>(),
+          localDataSource: sl<ServicesLocalDataSource>(),
+          networkInfo: sl<NetworkInfo>(),
+          appPreferences: sl<AppPreferences>(),
+        ));
+    // data source
+    sl.registerLazySingleton<ServicesLocalDataSource>(() =>
+        ServicesLocalDataSourceImpl(
+            sharedPreferences: sl<SharedPreferences>()));
+    sl.registerLazySingleton<ServicesRemoteDataSource>(
+        () => ServicesRemoteDataSourceImpl(
+        ));
+  
 
-  // data source
-
-  //usecase
+  
   }
+
 
 }

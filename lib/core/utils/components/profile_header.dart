@@ -1,9 +1,9 @@
 import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
-import 'package:dropeg/core/utils/assets_manger.dart';
 import 'package:dropeg/core/utils/components/app_buttons.dart';
 import 'package:dropeg/core/utils/components/custom_text_field.dart';
+import 'package:dropeg/core/utils/components/img_network_with_cached.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/bloc/state.dart';
 import 'package:flutter/material.dart';
@@ -38,19 +38,12 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           var formKey = GlobalKey<FormState>();
           return Row(
             children: [
-              Container(
+              ImageNetworkWithCached(
+                imgUrl:  ProfileCubit.get(context).userDetails?.photo ?? "",
                 height: 70,
                 width: 70,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: (ProfileCubit.get(context).userDetails == null ||
-                                ProfileCubit.get(context).userDetails!.photo!.isEmpty)
-                            ? Image.asset(ImagesManger.avatar).image
-                            : Image.network(ProfileCubit.get(context).userDetails!.photo!).image,
-                        fit: BoxFit.cover),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.greyLight)),
-              ),
+                isCircular: true,
+                ),
               const SizedBox(
                 width: 24,
               ),

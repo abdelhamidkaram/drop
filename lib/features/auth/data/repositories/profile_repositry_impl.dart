@@ -25,8 +25,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<Either<Failure, UserDetails>> getProfileData(
       String uid, bool isRefresh) async {
-    try {
-      if (!isRefresh) {
+    try { ///TODO:
+      if (false) { 
+       
         final userDetailsModel = await profileLocalDataSource.getProfileDetails();
         debugPrint("profile details  local  ---------------------------------------------------------");
         return Right(userDetailsModel.toDomain());

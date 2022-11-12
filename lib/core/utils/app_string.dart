@@ -44,11 +44,13 @@ class AppStrings {
   static const String carColorlHint = "Color";
   static const String carColorHintEmptMSG = "Enter $carColorlHint";
   static const String carAHint = "A";
-  static const String carAHintEmptMSG = " ";
+  static const String carAHintEmptMSG = "...";
   static const String carBHint = "B";
-  static const String carBHintEmptMSG = " ";
+  static const String carBHintEmptMSG = "...";
   static const String carCHint = "C";
-  static const String carCHintEmptMSG = " ";
+  static const String carCHintEmptMSG = "...";
+  static const String cardHint = "d";
+
   static const String carLicensePlateHint = "License Plate";
   static const String carLicensePlateHintEmptMSG =" Enter $carLicensePlateHint ";
   static const String welcome = "welcome";
@@ -111,6 +113,7 @@ class AppStrings {
   static const String egp = "EGP";
   static const String noOrders = "No Orders";
   static const String noVoucher = "No Voucher now";
+  static const String noServices = "No Services now";
   static const String get1FreeWash = "Get 1 Free Wash";
   static const String foreveryfriendyourefer = "For every friend you refer";
   static const String share = "Share";
@@ -124,6 +127,19 @@ class AppStrings {
   static const String carWashAnyWhere = "Carwash, Anywhere!";
   static const String change = "Change";
   static const String notifications = "Notifications:";
+  static const String availableProviders = "Available Providers:";
+  static const String scheduleAppointment = "Schedule Appointment";
+  static const String provider = "Provider:";
+  static const String selectedService = "Selected Service:";
+  static const String service = "Service:";
+  static const String addAComment = "Add a comment";
+  static const String addACommentHit = "Please have someone ready to recieve my car, as I have a full schedule today";
+  static const String confirmAppointment = "Confirm Appointment";
+  static const String orderConfirmed = "Order Confirmed";
+  static const String whooraaay = "Whooraaay…";
+  static const String yourAppointmentIsConfirmed = "Your appointment is confirmed";
+  static const String orderedServices = "Ordered Services";
+
 }
 
 class FirebaseErrorMessage {

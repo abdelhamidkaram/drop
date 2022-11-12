@@ -1,10 +1,9 @@
 import 'package:dropeg/config/route/app_route.dart';
+import 'package:dropeg/core/utils/components/location_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../../../../config/route/app_route_arguments.dart';
-import '../../../../../../core/utils/app_string.dart';
-import '../../../../../../core/utils/assets_manger.dart';
 import '../../../../domain/entities/location.dart';
 
 class LocationCardItem extends StatefulWidget {
@@ -13,9 +12,7 @@ class LocationCardItem extends StatefulWidget {
   final int index;
 
   const LocationCardItem(
-      {Key? key,
-      required this.index,
-      required this.locations})
+      {Key? key, required this.index, required this.locations})
       : super(key: key);
 
   @override
@@ -48,8 +45,7 @@ class _LocationCardItemState extends State<LocationCardItem> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SvgPicture.asset(
-                          locationIcon(
-                              widget.locations[widget.index].type!),
+                          locationIcon(widget.locations[widget.index].type!),
                           height: 30,
                           width: 30,
                         ),
@@ -85,18 +81,5 @@ class _LocationCardItemState extends State<LocationCardItem> {
         ],
       ),
     );
-  }
-
-  String locationIcon(String type) {
-    switch (type) {
-      case AppStrings.locationTypeHome:
-        return IconsManger.locationHome;
-      case AppStrings.locationTypeOffice:
-        return IconsManger.locationOffice;
-        case AppStrings.locationTypeParking:
-        return IconsManger.locationParking;
-      default:
-        return IconsManger.locationOther;
-    }
   }
 }

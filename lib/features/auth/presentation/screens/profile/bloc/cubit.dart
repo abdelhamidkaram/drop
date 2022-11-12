@@ -47,7 +47,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
   UserDetails? userDetails;
 
   Future getProfileDetails({bool isRefresh = false}) async {
-    emit(const GetProfileDetailsLoading());
+    if(userDetails == null ){
+emit(const GetProfileDetailsLoading());
     var response = await getProfileUseCase(
         ProfileDetailsRequest(isRefresh: isRefresh, uid: uId));
     response.fold((failure) {
@@ -57,6 +58,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
       this.userDetails = userDetails;
       emit(GetProfileDetailsSuccess(user: userDetails));
     });
+    }
   }
 
   Future<bool> updateProfileDetails(UserDetails newUserDetails) async {
