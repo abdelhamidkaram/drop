@@ -16,6 +16,8 @@ class AppStrings {
   static const String pleaseCreateAccount = "Please create an account";
   static const String pleaseEnterYourCarDetails =
       "Please enter your car details";
+static const String pleaseChooseCar =
+      " You must choose a car ";
   static const String carDetails = "Car Details";
   static const String continueWithFacebook = "Continue with Facebook";
   static const String continueWithApple = "Continue with Apple";
@@ -37,24 +39,22 @@ class AppStrings {
   static const String cityEmptuMSG = "choese $cityLocationHIT";
   static const String addressHIT = "Address";
   static const String addressEmptuMSG = "choese $addressHIT";
-  static const String manufacturerHint = "ManufacturerHit";
+  static const String manufacturerHint = "Manufacturer";
   static const String manufacturerEmptMSG = "choese $manufacturerHint";
   static const String carModelHint = "model";
   static const String carModelHintEmptMSG = "Enter $carModelHint";
   static const String carColorlHint = "Color";
   static const String carColorHintEmptMSG = "Enter $carColorlHint";
-  static const String carAHint = "A";
-  static const String carAHintEmptMSG = "...";
-  static const String carBHint = "B";
-  static const String carBHintEmptMSG = "...";
-  static const String carCHint = "C";
-  static const String carCHintEmptMSG = "...";
-  static const String cardHint = "d";
+  static const String carlicenseNumberHint = "licenseNumber ";
+  static const String carAHintEmptMSG = "Enter $carlicenseNumberHint";
 
   static const String carLicensePlateHint = "License Plate";
-  static const String carLicensePlateHintEmptMSG =" Enter $carLicensePlateHint ";
+  static const String carLicensePlateHintEmptMSG =
+      " Enter $carLicensePlateHint ";
   static const String welcome = "welcome";
   static const String firstNameHINT = "First Name";
+  static const String nameHINT = "Your Name";
+  static const String idNumberHINT = "Your ID Number";
   static const String phoneNumberHINT = "Phone Number";
   static const String emailAddressHINT = "Email Address";
   static const String passwordHINT = "Password";
@@ -93,10 +93,12 @@ class AppStrings {
   static const String skip = "Skip";
   static const String goToHome = "Go Home >";
   static const String account = "Account";
+  static const String confirmTiming = "Confirm Timing";
   static const String off = "Off";
   static const String redeem = "Redeem";
   static const String home = "Home";
   static const String help = "Help";
+  static const String logOut = "Logout";
   static const String myOrders = "My Orders";
   static const String myRefar = "Refer a friend";
   static const String referrals = "Referrals";
@@ -118,7 +120,8 @@ class AppStrings {
   static const String foreveryfriendyourefer = "For every friend you refer";
   static const String share = "Share";
   static const String copied = "Copied";
-  static const String hereAreYourEarnedVouchers ="Here are your earned vouchers";
+  static const String hereAreYourEarnedVouchers =
+      "Here are your earned vouchers";
   static const String hey = "Hey";
   static const String expires = "-Expires";
   static const String welcomeBack = "Welcome back!";
@@ -133,12 +136,64 @@ class AppStrings {
   static const String selectedService = "Selected Service:";
   static const String service = "Service:";
   static const String addAComment = "Add a comment";
-  static const String addACommentHit = "Please have someone ready to recieve my car, as I have a full schedule today";
+  static const String addACommentHit =
+      "Please have someone ready to recieve my car, as I have a full schedule today";
   static const String confirmAppointment = "Confirm Appointment";
   static const String orderConfirmed = "Order Confirmed";
   static const String whooraaay = "Whooraaay…";
-  static const String yourAppointmentIsConfirmed = "Your appointment is confirmed";
+  static const String yourAppointmentIsConfirmed =
+      "Your appointment is confirmed";
   static const String orderedServices = "Ordered Services";
+
+  static const String pleaseSelectedService =
+      "Please select required services:";
+  static const String startingByYourCars = "Starting by your car's exterior";
+  static const String exterior = "Exterior";
+  static const String interior = "Interior";
+  static const String washNow = "Wash Now";
+  static const String total = "Total:";
+  static const String subtotal = "Subtotal:";
+  static const String vat14 = "VAT (14%):";
+  static const String grandTotal = "Grand Total:";
+  static const String discount = "Discount:";
+  static const String benefits = "Benefits:";
+  static const String whatIsIncluded = "What's Included?: ";
+  static const String addToCart = "Add to cart";
+
+  static const String orderSummary = "Order Summary";
+  static const String chooseAtLeastOneServices = "Choose at least one service";
+  static const String carInformation = "Car Information";
+  static const String locationInformation = "Location Information";
+  static const String rightNow = "Right now!";
+  static const String scheduleForLater = "Schedule for later…";
+  static const String cashOnDelivery = "Cash on delivery";
+  static const String payWithVisa = "Pay with a credit card";
+  static const String paymentMethod = "Payment Method";
+  static const String promoCode = "Promo Code";
+  static const String promoCodeHint = "Enter your promo code here";
+  static const String apply = "Apply";
+  static const String notValid = "Promo code not valid";
+  static const String essentialAddOns = "Essential Add-Ons";
+  static const String orderDone = "Done.";
+  static const String orderCancel = "The order has been cancelled";
+  static const String orderProgress = "In progress….";
+  static const String orderOnTheWay = "On its way….";
+  static const String yourWashDropIs = "Your WashDrop is";
+  static const String youHaveWashDrop = "You Have WashDrop ";
+  static const String reserveNow = "Reserve Now!";
+  static const String checkDetails = "Check Details";
+  static const String checkStatus = "Check Status";
+  static const String confirmReservation = "Confirm Reservation";
+  static const String date = "Date:";
+  static const String price = "Price:";
+  static const String comment = "Comment:";
+  static const String deliveringTo = "Delivering to:";
+
+  static const String requiredLogin = "You must be logged in to continue";
+  static const String time = "Time";
+  static const String orderNotification = "Orders Notification";
+  static const String appointmentNotification = "Appointments Notification";
+  static const String eventNotification = "Events Notification";
 
 }
 

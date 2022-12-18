@@ -25,7 +25,7 @@ class LocationCubit extends Cubit<LocationStates> {
       LocationEntity location) async {
     await FirebaseFirestore.instance
         .collection(FirebaseStrings.usersCollection)
-        .doc(uId)
+        .doc(userInfo!.id)
         .collection(FirebaseStrings.locationsCollection)
         .doc(location.id)
         .set(location.toJson())

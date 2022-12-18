@@ -1,4 +1,3 @@
-import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/components/app_buttons.dart';
 import 'package:dropeg/core/utils/components/location_icon.dart';
@@ -49,13 +48,14 @@ class MainLocation extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              location?.type ?? "",
+                              AppStrings.deliveringTo,
                               style: Theme.of(context).textTheme.headline3,
                             ),
                             Text(
-                              location?.address ?? "",
-                              maxLines: 3,
+                              "${location?.type ?? ""}:${location?.address ?? ""}",
+                              maxLines: 2,
                               style: const TextStyle(
+                                 height: 0.99,
                                   overflow: TextOverflow.ellipsis),
                             ),
                           ],

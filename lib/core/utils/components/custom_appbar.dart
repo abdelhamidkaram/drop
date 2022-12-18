@@ -1,5 +1,4 @@
 import 'package:dropeg/core/utils/components/img_network_with_cached.dart';
-import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../config/route/app_route.dart';
@@ -20,14 +19,15 @@ class CustomAppbars {
     bool isAddCompoundsScreen = false,
     bool isEditAccountScreen = false,
     bool isMyOrdersScreen = false,
-    bool isVouchersScreen = false,
+    double? height,
+    Color? color ,
   }) =>
       PreferredSize(
-        preferredSize: const Size(double.infinity, 220),
+        preferredSize:  Size(double.infinity, height ?? 220),
         child: Container(
-          height: 220,
+          height: height ??  220,
           decoration: BoxDecoration(
-              color: AppColors.white,
+              color: color ?? AppColors.white,
               image: isLocationScreen
                   ? null
                   : DecorationImage(
@@ -89,14 +89,7 @@ class CustomAppbars {
                                       title: AppStrings.carDetails,
                                       subtitle:
                                           AppStrings.pleaseEnterYourCarDetails)
-                                  : isVouchersScreen
-                                      ? HelloThere(
-                                          title:
-                                              "${AppStrings.hey} ${ProfileCubit.get(context).userDetails?.name},",
-                                          subtitle: AppStrings
-                                              .hereAreYourEarnedVouchers,
-                                        )
-                                      : HelloThere(
+                                  :  HelloThere(
                                           subtitle: isLoginScreen
                                               ? AppStrings.loginHere
                                               : AppStrings.pleaseCreateAccount),
@@ -114,12 +107,13 @@ class CustomAppbars {
   static Container homeAppBar({
     required BuildContext context,
     String? title,
-    required VoidCallback onTap,
+    required VoidCallback? onTap,
     String? helloTitle,
     String? hellosubTitle,
+    double? height,
   }) =>
       Container(
-        height: 233,
+        height: height ??  233,
         decoration: BoxDecoration(
           color: AppColors.white,
           image: DecorationImage(
@@ -127,7 +121,7 @@ class CustomAppbars {
               fit: BoxFit.fitWidth),
         ),
         child: PreferredSize(
-          preferredSize: const Size(double.infinity, 233),
+          preferredSize:  Size(double.infinity, height ?? 233),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -136,9 +130,9 @@ class CustomAppbars {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Row(
                   children: [
-                    CustomMenuButton(
+                    onTap != null ? CustomMenuButton(
                       onTap: onTap,
-                    ),
+                    ): const CustomBackButton(),
                     const Spacer(),
                     title == null
                         ? Image.asset(
@@ -151,7 +145,7 @@ class CustomAppbars {
                                 .headline1!
                                 .copyWith(color: AppColors.white)),
                     const Spacer(),
-                    const SizedBox(
+                     const SizedBox(
                       width: 40,
                     ),
                   ],
@@ -167,7 +161,7 @@ class CustomAppbars {
                           width: double.infinity,
                         )
                       : SizedBox(
-                          height: 45.h,
+                          height: height!=null ? 70.h  : 45.h,
                           width: double.infinity,
                           child: Padding(
                             padding:
@@ -177,7 +171,7 @@ class CustomAppbars {
                                 subtitle: hellosubTitle ?? ""),
                           ),
                         ),
-                  Padding(
+                  height!=null ? const SizedBox() : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,

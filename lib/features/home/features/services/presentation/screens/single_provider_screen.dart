@@ -12,33 +12,42 @@ class SingleProviderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size(double.infinity, 233),
-          child: CustomAppbars.appBarWithCard(
-              context: context,
-              title: serviceEntity.title,
-              subTitle: serviceEntity.details,
-              img: serviceEntity.img)),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          physics: const BouncingScrollPhysics(),
+     
+      body: SingleChildScrollView(
+        child: Column(
           children: [
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 250,
+              child: CustomAppbars.appBarWithCard(
+                  context: context,
+                  title: serviceEntity.title,
+                  subTitle: serviceEntity.details,
+                  img: serviceEntity.img , 
+                  ),
             ),
-            const CategoryTitle(title: AppStrings.availableProviders),
-            const SizedBox(
-              height: 20,
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const CategoryTitle(title: AppStrings.availableProviders),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    children: List.generate(
+                        serviceEntity.serviceProviders.length,
+                        (index) => ServicesProviderListItem(
+                              serviceEntity: serviceEntity,
+                              index: index,
+                            )),
+                  )
+                ],
+              ),
             ),
-            Column(
-              children: List.generate(
-                  serviceEntity.serviceProviders.length,
-                  (index) => ServicesProviderListItem(
-                        serviceEntity: serviceEntity,
-                        index: index,
-                      )),
-            )
           ],
         ),
       ),

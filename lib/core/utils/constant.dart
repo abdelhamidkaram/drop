@@ -2,7 +2,7 @@ class AppConstants {
   static const String mapKey = "AIzaSyApgce6NlM3Lc86tXP3V5MPxb_3jbHtWxg";
   static const String mapApiKey = "AIzaSyCSlffgAvcUs3Y47F7xr4OqB88I84AD27k";
   static const String phoneRegExp = "^(00201|\\+201|01)[0-2,5]{1}[0-9]{8}\$";
-
+ static const int  referralDiscount = 5;
   static const List<String> cities = [
     "Cairo",
     "Giza",

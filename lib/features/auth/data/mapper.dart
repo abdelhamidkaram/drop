@@ -7,6 +7,8 @@ import 'package:dropeg/features/auth/domain/entities/user.dart';
 
 extension Usermodelmapper on UserDetailsModel {
   UserDetails toDomain() => UserDetails(
+        freeWashTotal: freeWashTotal ?? 1,
+        freeWashUsed: freeWashUsed ?? 0,
         email: email ?? "",
         name: name ?? "",
         id: id ?? "",
@@ -20,19 +22,17 @@ extension Usermodelmapper on UserDetailsModel {
 
 extension LocationEntityMapper on LocationEntity {
   LocationEntity toDomain() => LocationEntity(
-      address: address ?? "",
-      state: state ?? "",
-      city: city ?? "",
-      type: type ?? AppStrings.locationTypeOther,
-      id: id,
-  );
+        address: address ?? "",
+        state: state ?? "",
+        city: city ?? "",
+        type: type ?? AppStrings.locationTypeOther,
+        id: id,
+      );
 }
 
 extension CarEntityMapper on Car {
   Car toDomain() => Car(
-      a: a ?? "",
-      b: b ?? "",
-      c: c ?? "",
+      licenseNumber: licenseNumber ?? "",
       brand: brand ?? "",
       color: color ?? "",
       licensePlate: licensePlate ?? "",
@@ -42,8 +42,8 @@ extension CarEntityMapper on Car {
 
 extension CompoundMapper on Compound {
   Compound toDomain() => Compound(
-    name: name ?? "",
-    address: address ?? "",
-    imgUrl: imgUrl ?? "",
-  );
+        name: name ?? "",
+        address: address ?? "",
+        imgUrl: imgUrl ?? "",
+      );
 }

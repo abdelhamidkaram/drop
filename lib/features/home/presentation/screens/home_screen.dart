@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropeg/core/api/firestore_strings.dart';
 import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/components/category_title.dart';
@@ -9,13 +7,19 @@ import 'package:dropeg/core/utils/enums.dart';
 import 'package:dropeg/features/auth/domain/entities/location.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:dropeg/features/home/bloc/home_cubit.dart';
+import 'package:dropeg/features/home/bloc/home_states.dart';
 import 'package:dropeg/features/home/features/services/presentation/screens/services_view.dart';
 import 'package:dropeg/features/home/features/services/presentation/widgets/location_show.dart';
+import 'package:dropeg/features/home/features/top_notifications/presentation/pages/top_notifications_view.dart';
 import 'package:dropeg/features/home/presentation/widgets/main_location.dart';
 import 'package:dropeg/features/home/presentation/widgets/main_btn.dart';
+import 'package:dropeg/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:dropeg/injection_container.dart' as di;
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -40,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    LocationEntity? location = ProfileCubit.get(context).locations?[0];
+    LocationEntity? location = HomeCubit.get(context).mainLocation;
     List<LocationEntity>? locations = ProfileCubit.get(context).locations;
     return WillPopScope(
       onWillPop: () async {
@@ -48,62 +52,80 @@ class _HomeScreenState extends State<HomeScreen> {
         return Future.value(true);
       },
       child: Scaffold(
+        
         key: homeScaffoldStateKey,
-        drawer: drawer(context: context, drawerSelected: DrawerSelected.home),
-        appBar: PreferredSize(
-            preferredSize: const Size(double.infinity, 233),
-            child: CustomAppbars.homeAppBar(
-                context: context,
-                helloTitle:
-                    "${AppStrings.hello} ${ProfileCubit.get(context).userDetails?.name ?? ''},",
-                hellosubTitle: AppStrings.welcomeBack,
-                onTap: () {
-                  homeScaffoldStateKey.currentState?.openDrawer();
-                })),
-        body: ListView(
-          physics: const BouncingScrollPhysics(),
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
-              child: location != null
-                  ? MainLocation(
-                      onTap: () {
-                        if (locations != null) {
-                          showLocationChoose(
-                            homeScaffoldStateKey: homeScaffoldStateKey,
-                            location: location,
-                            locations: locations,
-                          );
-                        }
-                      },
-                    )
-                  : null,
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            MainButton(location: location!),
-            SizedBox(
-              height: 20.0.h,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                children: [
-                  const ServicesListView(),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  const CategoryTitle(title: AppStrings.notifications),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  const Notifications()
-                ],
+        drawer: drawer(
+          context: context,
+          drawerSelected: DrawerSelected.home,
+          ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              CustomAppbars.homeAppBar(
+                  context: context,
+                  helloTitle: "${AppStrings.hello} ${userInfo?.name ?? ''},",
+                  hellosubTitle: AppStrings.welcomeBack,
+                  onTap: () {
+                    homeScaffoldStateKey.currentState?.openDrawer();
+                  }),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 16.0, right: 16.0, bottom: 20.0),
+                child: locations != null
+                    ? MainLocation(
+                        onTap: () {
+                          if (location != null) {
+                            showLocationChoose(
+                              homeScaffoldStateKey: homeScaffoldStateKey,
+                              location: location,
+                              locations: locations,
+                            );
+                          }
+                        },
+                      )
+                    : null,
               ),
-            )
-          ],
+              SizedBox(
+                height: 10.h,
+              ),
+              BlocConsumer<HomeCubit, HomeStates>(
+                listener: (context, state) => di.sl<HomeCubit>(),
+                builder: (context, state) {
+                  var location = HomeCubit.get(context).mainLocation;
+                  return MainButton(
+                      location: location ?? 
+                      LocationEntity(
+                        address: "address",
+                        state: "state",
+                        city: "city",
+                        type: "Home",
+                        id: "id",
+                        )
+                           );
+                },
+              ),
+              SizedBox(
+                height: 20.0.h,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: [
+                    const TopNotificationsView(),
+                    const ServicesListView(),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    const CategoryTitle(title: AppStrings.notifications),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    const Notifications()
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -166,20 +188,21 @@ class Notifications extends StatelessWidget {
               SizedBox(
                 height: 5.h,
               ),
-              const Text(
-                "3/5 Washes",
+              Text(
+                "${userInfo?.freeWashUsed ?? 0}/${userInfo?.freeWashTotal ?? 5} Washes",
               ),
               SizedBox(
                 height: 5.h,
               ),
-              Container(
-                  decoration: BoxDecoration(
-                      color: AppColors.grey,
-                      borderRadius: BorderRadius.circular(50)),
-                  child: const LinearProgressIndicator(
-                    value: 0.60,
-                    minHeight: 12,
-                  ))
+              LinearPercentIndicator(
+                width: 280.w,
+                lineHeight: 10.0.h,
+                percent: (userInfo?.freeWashUsed ?? 0) /
+                    (userInfo?.freeWashTotal ?? 5),
+                backgroundColor: AppColors.greyBorder,
+                progressColor: AppColors.primaryColor,
+                barRadius: const Radius.circular(25),
+              ),
             ],
           ),
         ),

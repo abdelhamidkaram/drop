@@ -66,34 +66,39 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
 
   @override
   Future<Either<Failure, User>> registerWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-       if (googleUser == null) {
-       return const Left(ServerFailure(
-          code: AppErrorValues.serverErrorCode,
-          message: ""));
+    GoogleSignIn().signIn().then((googleUser) async {
+      if (googleUser == null) {
+        GoogleSignIn().disconnect().then((value) => null);
+        return const Left(
+            ServerFailure(code: AppErrorValues.serverErrorCode, message: ""));
+      } else {
+        GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+        var credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        var userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        uId = userCredential.user?.uid ?? "";
+
+        await appPreferences.loginAllCache(token, uId);
+        debugPrint(userCredential.user!.email);
+        if (userCredential.user == null) {
+          GoogleSignIn().disconnect().then((value) => null);
+        }
+        return Right(userCredential.user!);
       }
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      
-      var userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      uId = userCredential.user?.uid ?? "";
-      await appPreferences.loginAllCache(token, uId);
-      debugPrint(userCredential.user!.email);
-     
-      return Right(userCredential.user!);
-    } catch (err) {
+    }).catchError((err) {
+          GoogleSignIn().disconnect().then((value) => null);
       if (kDebugMode) {
         print(err.toString());
       }
       return Left(ServerFailure(
           code: AppErrorValues.serverErrorCode,
           message: err.toString().split("]").last.toString()));
-    }
+    });
+
+    return const Left(
+        ServerFailure(code: AppErrorValues.serverErrorCode, message: ""));
   }
 }

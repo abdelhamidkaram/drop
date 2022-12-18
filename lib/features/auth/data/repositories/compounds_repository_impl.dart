@@ -18,13 +18,13 @@ class CompoundRepositoryImpl implements CompoundRepository {
 
   @override
   Future<Either<Failure, bool>> deleteCompounds(String uid) {
-    // TODO: implement deleteCompounds
+    
     throw UnimplementedError();
   }
 
   @override
   Future<Either<Failure, bool>> editCompounds(String uid) {
-    // TODO: implement editCompounds
+    
     throw UnimplementedError();
   }
 

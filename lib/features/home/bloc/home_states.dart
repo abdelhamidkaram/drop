@@ -12,15 +12,16 @@ class GetMainLocationSuccess extends HomeStates {
   @override
   List<Object?> get props => [];
 }
+
 class GetMainLocationError extends HomeStates {
   @override
   List<Object?> get props => [];
 }
+
 class GetMainLocationloading extends HomeStates {
   @override
   List<Object?> get props => [];
 }
-
 
 class GetServicesSuccess extends HomeStates {
   final List<ServiceEntity> services;
@@ -28,15 +29,15 @@ class GetServicesSuccess extends HomeStates {
   @override
   List<Object?> get props => [services];
 }
+
 class GetServicesError extends HomeStates {
   final String msg;
   GetServicesError({required this.msg});
   @override
   List<Object?> get props => [msg];
 }
-class GetServicesloading extends HomeStates {
+
+class GetServicesLoading extends HomeStates {
   @override
   List<Object?> get props => [];
 }
-
-

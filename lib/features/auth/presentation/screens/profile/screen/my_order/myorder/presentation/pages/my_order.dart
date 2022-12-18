@@ -1,8 +1,9 @@
+import 'package:dropeg/config/route/app_route.dart';
+import 'package:dropeg/config/route/app_route_arguments.dart';
 import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/components/custom_appbar.dart';
-import 'package:dropeg/core/utils/extensions.dart';
-import 'package:dropeg/features/auth/domain/entities/orders.dart';
+import 'package:dropeg/features/Order/domain/entities/orders.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/screen/my_order/myorder/presentation/cubit/myorder_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,8 +22,8 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
     return BlocConsumer<MyorderCubit, MyorderStates>(
       listener: (context, state) => MyorderCubit(),
       builder: (context, state) {
-        List<Order>? orders = [];
-        Widget ordersListBuild(List<Order>? orders) {
+        List<OrderEntity>? orders = [];
+        Widget ordersListBuild(List<OrderEntity>? orders) {
           if (state is GetMyorderError) {
             return const Center(
               child: Text(AppStrings.errorInternal),
@@ -38,101 +39,142 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  height: context.height - 200,
-                  color: AppColors.white,
-                  child: orders.isEmpty
-                      ? const Center(child: Text(AppStrings.noOrders))
-                      : ListView.separated(
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) => Padding(
+                    color: AppColors.white,
+                    child: orders.isEmpty
+                        ? const Center(child: Text(AppStrings.noOrders))
+                        : Column(
+                            children: List.generate(
+                            orders.length,
+                            (index) => GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRouteStrings.confirmOrder,
+                                  arguments: ConfirmOrderArgs(
+                                    vat: orders![index].vat,
+                                    grandTotal:
+                                        orders[index].grandTotal.toString(),
+                                    order: orders[index],
+                                  ),
+                                );
+                              },
+                              child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16.0),
-                                child: Card(
-                                  child: SizedBox(
-                                      height: 98.h,
-                                      width: double.infinity,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        child: Row(children: [
-                                          Expanded(
-                                              child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                orders != null
-                                                    ? orders[index].time
-                                                    : "",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline5,
-                                              ),
+                                child: Column(
+                                  children: [
+                                    Card(
+                                      child: SizedBox(
+                                          height: 98.h,
+                                          width: double.infinity,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16.0),
+                                            child: Row(children: [
+                                              Expanded(
+                                                  child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    orders != null
+                                                        ? orders[index]
+                                                                    .time
+                                                                    .length >
+                                                                10
+                                                            ? orders[index]
+                                                                .time
+                                                                .substring(
+                                                                    0, 10)
+                                                            : orders[index].time
+                                                        : "",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline5,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5.h,
+                                                  ),
+                                                  Text(
+                                                    orders != null
+                                                        ? orders[index]
+                                                            .getInfo()
+                                                        : "",
+                                                    maxLines: 2,
+                                                    style: const TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis),
+                                                  )
+                                                ],
+                                              )),
                                               SizedBox(
-                                                height: 5.h,
+                                                width: 10.w,
                                               ),
-                                              Text(
-                                                orders != null
-                                                    ? orders[index].details
-                                                    : "",
-                                                style: const TextStyle(
-                                                    overflow:
-                                                        TextOverflow.ellipsis),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    AppStrings.egp,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline5!
+                                                        .copyWith(
+                                                            color: AppColors
+                                                                .primaryColor),
+                                                  ),
+                                                  Text(
+                                                    orders?[index]
+                                                            .grandTotal
+                                                            .toString() ??
+                                                        "",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline5!
+                                                        .copyWith(
+                                                            color: AppColors
+                                                                .primaryColor),
+                                                  ),
+                                                ],
                                               )
-                                            ],
+                                            ]),
                                           )),
-                                          SizedBox(
-                                            width: 10.w,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                AppStrings.egp,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline5!
-                                                    .copyWith(
-                                                        color: AppColors
-                                                            .primaryColor),
-                                              ),
-                                              Text(
-                                                orders?[index].price ?? "",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline5!
-                                                    .copyWith(
-                                                        color: AppColors
-                                                            .primaryColor),
-                                              ),
-                                            ],
-                                          )
-                                        ]),
-                                      )),
+                                    ),
+                                    SizedBox(
+                                      height: 16.h,
+                                    )
+                                  ],
                                 ),
                               ),
-                          separatorBuilder: (context, index) =>
-                              SizedBox(height: 16.h),
-                          itemCount: orders.length),
-                ),
+                            ),
+                          ))),
               ],
             );
           }
         }
 
         return Scaffold(
-          body: SafeArea(
-              child: Stack(
-            children: [
-              CustomAppbars.loginAppbar(
-                context: context,
-                title: AppStrings.myOrders,
-                isMyOrdersScreen: true,
-              ),
-              ordersListBuild(orders)
-            ],
-          )),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    CustomAppbars.loginAppbar(
+                        context: context,
+                        title: AppStrings.myOrders,
+                        isMyOrdersScreen: true,
+                        height: 233),
+                    Column(
+                      children: [
+                        const SizedBox(height: 180),
+                        ordersListBuild(orders),
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
         );
       },
     );

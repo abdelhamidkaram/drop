@@ -16,6 +16,31 @@ class ProfileInit extends ProfileStates {
   List<Object?> get props => [];
 }
 
+class ProfileLoading extends ProfileStates {
+  @override
+  List<Object?> get props => [];
+}
+
+
+
+class ShowNotificationEvent extends ProfileStates {
+  @override
+  List<Object?> get props => [];
+}
+
+class ShowNotificationOrder extends ProfileStates {
+  @override
+  List<Object?> get props => [];
+}
+
+class ShowNotificationAppointment extends ProfileStates {
+  @override
+  List<Object?> get props => [];
+}
+
+
+
+
 // profile  states  -------------------------------------------------------------|
 
 class GetProfileDetailsLoading extends ProfileStates {

@@ -7,6 +7,7 @@ import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_string.dart';
 import '../../../../../../core/utils/assets_manger.dart';
 import '../../../../../../core/utils/toasts.dart';
+import '../../../../../../main.dart';
 import '../../../../domain/entities/user.dart';
 import '../bloc/cubit.dart';
 import '../bloc/state.dart';
@@ -25,8 +26,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   @override
   void initState() {
     super.initState();
-    ProfileCubit.get(context).getProfileDetails().then((value) {
-    });
+    ProfileCubit.get(context)
+        .getProfileDetails(isRefresh: true)
+        .then((value) {});
   }
 
   @override
@@ -56,16 +58,16 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         child: CircularProgressIndicator(),
       );
     } else {
-      var profile = ProfileCubit.get(context).userDetails;
+      var profile = userInfo;
       var formKey = GlobalKey<FormState>();
       var emailController = TextEditingController(
-        text: profile?.email,
+        text: userInfo?.email,
       );
       var phoneController = TextEditingController(
-        text: profile?.phone,
+        text: userInfo?.phone,
       );
       var nameController = TextEditingController(
-        text: profile?.name,
+        text: userInfo?.name,
       );
       return Directionality(
         textDirection: TextDirection.ltr,
@@ -136,6 +138,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         text: AppStrings.editAccount,
                         onTap: () async {
                           var newUserDetails = UserDetails(
+                              freeWashTotal: 1,
+                              freeWashUsed: profile?.freeWashUsed ?? 0,
                               name: nameController.text,
                               photo: profile?.photo ?? "",
                               isVerify: profile?.isVerify ?? false,
@@ -152,13 +156,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           }
                         }),
                     SizedBox(
-                      height: 25.h,
+                      height: 16.h,
                     ),
-                    Row(
-                      children: [
-                        InkWell(
-                            onTap: () async {
-                              ProfileCubit.get(context)
+                    AppButtonRed(text: AppStrings.deleteAccount, onTap: (){
+                      ProfileCubit.get(context)
                                   .deleteAccount()
                                   .then((value) {
                                 AppToasts.successToast(AppStrings.deleted);
@@ -167,13 +168,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               }).catchError((err) {
                                 AppToasts.errorToast(AppStrings.errorInternal);
                               });
-                            },
-                            child: Text(
-                              AppStrings.deleteAccount,
-                              style: TextStyle(color: AppColors.red),
-                            )),
-                      ],
-                    )
+                    })
                   ],
                 ),
               ),

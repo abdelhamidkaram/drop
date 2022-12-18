@@ -1,4 +1,7 @@
 import 'package:bloc/bloc.dart';
+
+import 'package:dropeg/features/auth/domain/entities/user.dart';
+import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'app.dart';
@@ -9,17 +12,19 @@ import 'injection_container.dart' as di;
 
 String token = '';
 String uId = '';
+UserDetails? userInfo;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.initAppModule();
   await di.initLoginModule();
   await di.initHomeModule();
-  AppPreferences appPreferences = AppPreferences(di.sl());
-  token = await appPreferences.getToken();
-  uId = await appPreferences.getUid();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  AppPreferences appPreferences = AppPreferences(di.sl());
+  token = await appPreferences.getToken();
+  uId = await appPreferences.getUid();
+  userInfo = await di.sl<ProfileCubit>().getProfileDetails();
   Bloc.observer = AppBlocObserver();
   runApp(const DropApp());
 }

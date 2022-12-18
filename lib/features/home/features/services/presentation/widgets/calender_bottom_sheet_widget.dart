@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/config/route/app_route_arguments.dart';
 import 'package:dropeg/core/api/firestore_strings.dart';
+import 'package:dropeg/core/shared_prefs/app_prefs.dart';
 import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/components/app_buttons.dart';
@@ -16,6 +17,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../../../core/utils/toasts.dart';
 import '../../../../../../main.dart';
+import 'package:dropeg/injection_container.dart' as di;
 
 class CalenderBottomSheetWidget extends StatefulWidget {
   final ProviderServicesCubit cubit;
@@ -39,8 +41,6 @@ class _CalenderBottomSheetWidgetState extends State<CalenderBottomSheetWidget> {
   @override
   Widget build(BuildContext context) {
     List<ServiceProvider>? providers = widget.serviceEntity.serviceProviders;
-    ServiceProvideList? value = widget.serviceProvideList ??
-        widget.cubit.selectedProvider?.serverProvideList?[0];
     return BlocConsumer<ProviderServicesCubit, ProviderServicesState>(
       listener: (context, state) => ProviderServicesCubit(),
       builder: (context, state) {
@@ -48,7 +48,7 @@ class _CalenderBottomSheetWidgetState extends State<CalenderBottomSheetWidget> {
           enableDrag: false,
           onClosing: () {},
           builder: (context) => Container(
-            height: 360.h,
+            height: 300.h,
             decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
@@ -62,9 +62,9 @@ class _CalenderBottomSheetWidgetState extends State<CalenderBottomSheetWidget> {
                 physics: const BouncingScrollPhysics(),
                 children: [
                   SizedBox(
-                    height: 350.h,
+                    height: 250.h,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Row(
                           children: [
@@ -129,82 +129,23 @@ class _CalenderBottomSheetWidgetState extends State<CalenderBottomSheetWidget> {
                                 }),
                           ],
                         ),
-                        const CategoryTitle(title: AppStrings.selectedService),
-                        Card(
-                          child: SizedBox(
-                            height: 45.h,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Center(
-                                child: DropdownButtonFormField(
-                                  decoration: const InputDecoration(
+                        Column(
+                          children: [
+                            const CategoryTitle(title: AppStrings.addAComment),
+                            Card(
+                              child: TextFormField(
+                                controller: widget.cubit.commentController,
+                                keyboardType: TextInputType.multiline,
+                                maxLength: 250,
+                                maxLines: 4,
+                                decoration: const InputDecoration(
                                     border: InputBorder.none,
-                                  ),
-                                  dropdownColor: Colors.white,
-                                  value: value?.serviceName ?? "service",
-                                  hint: Text(value?.serviceName ?? "service"),
-                                  onChanged: (newValue) {
-                                    ServiceProvideList?
-                                        selectedProviderServices() {
-                                      for (var element in widget
-                                          .serviceEntity
-                                          .serviceProviders[widget.index]
-                                          .serverProvideList!) {
-                                        if (element.serviceName ==
-                                            newValue.toString()) {
-                                          return element;
-                                        }
-                                      }
-                                    }
-
-                                    ProviderServicesCubit.get(context)
-                                        .changeSelectedProviderServices(
-                                            selectedProviderServices());
-                                  },
-                                  items: widget.cubit.selectedProvider
-                                          ?.serverProvideList
-                                          ?.map<DropdownMenuItem<String>>(
-                                              (value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value.serviceName,
-                                          child: Text(
-                                            value.serviceName,
-                                            style:
-                                                const TextStyle(fontSize: 20),
-                                          ),
-                                        );
-                                      }).toList() ??
-                                      [
-                                        DropdownMenuItem<String>(
-                                          value:
-                                              value?.serviceName ?? "service",
-                                          child: Text(
-                                            value?.serviceName ?? "service",
-                                            style:
-                                                const TextStyle(fontSize: 20),
-                                          ),
-                                        )
-                                      ],
-                                ),
+                                    hintText: AppStrings.addACommentHit,
+                                    hintMaxLines: 6),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                        const CategoryTitle(title: AppStrings.addAComment),
-                        Card(
-                          child: TextFormField(
-                            controller: widget.cubit.commentController,
-                            keyboardType: TextInputType.multiline,
-                            maxLength: 250,
-                            maxLines: 4,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: AppStrings.addACommentHit,
-                                hintMaxLines: 6),
-                          ),
-                        ),
-                        ElevatedButton(onPressed: () {}, child: Text("gg")),
                         AppButtonBlue(
                             text: AppStrings.confirmAppointment,
                             onTap: () async {
@@ -232,7 +173,11 @@ class _CalenderBottomSheetWidgetState extends State<CalenderBottomSheetWidget> {
                                   .doc(serviceUuid)
                                   .set(data)
                                   .then((value) {
-                                Navigator.pushNamed(
+                                di
+                                    .sl<AppPreferences>()
+                                    .setShowAppointmentTopNotification(true).then((value){
+                                AppToasts.successToast(AppStrings.success);
+                                      Navigator.pushNamed(
                                   context,
                                   AppRouteStrings.singleProviderOrderConfirmed,
                                   arguments: SingleProviderOrderConfirmedArgs(
@@ -240,7 +185,7 @@ class _CalenderBottomSheetWidgetState extends State<CalenderBottomSheetWidget> {
                                         widget.serviceProvideList,
                                   ),
                                 );
-                                AppToasts.successToast(AppStrings.success);
+                                    });
                               }).catchError((e) {
                                 AppToasts.errorToast(AppStrings.errorInternal);
                                 debugPrint(e.toString());

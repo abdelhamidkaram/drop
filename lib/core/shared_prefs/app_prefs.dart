@@ -130,4 +130,40 @@ class AppPreferences {
     await _sharedPreferences.remove(AppPrefsKes.cachedProfileDetails);
     await _sharedPreferences.remove(AppPrefsKes.profileFristBuild);
   }
+
+// Top notifications
+
+  Future<void> setShowEvent(bool isShow) async {
+    await _sharedPreferences.setBool(AppPrefsKes.showEvent, isShow);
+    debugPrint(" preference : set show event => $isShow ");
+  }
+
+  bool isShowEvent()  {
+    return _sharedPreferences.getBool(AppPrefsKes.showEvent) ?? true;
+  }
+
+  Future<void> setShowOrderTopNotification(bool isShow) async {
+    await _sharedPreferences.setBool(
+        AppPrefsKes.showTopNotificationOrder, isShow);
+    debugPrint(" preference : set show order => $isShow ");
+  }
+
+  bool isShowOrderTopNotification()  {
+    return _sharedPreferences.getBool(AppPrefsKes.showTopNotificationOrder) ??
+        false;
+  }
+
+  Future<void> setShowAppointmentTopNotification(bool isShow) async {
+    await _sharedPreferences.setBool(
+        AppPrefsKes.showTopNotificationAppointment, isShow);
+    debugPrint(" preference : set show appointment => $isShow ");
+  }
+
+  bool isShowAppointmentTopNotification()  {
+    return _sharedPreferences
+            .getBool(AppPrefsKes.showTopNotificationAppointment) ??
+        false;
+  }
+
+  
 }

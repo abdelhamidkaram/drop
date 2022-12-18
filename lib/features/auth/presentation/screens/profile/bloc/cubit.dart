@@ -44,30 +44,38 @@ class ProfileCubit extends Cubit<ProfileStates> {
   List<Compound>? compounds = [];
 
   static ProfileCubit get(context) => BlocProvider.of(context);
+
   UserDetails? userDetails;
 
-  Future getProfileDetails({bool isRefresh = false}) async {
-    if(userDetails == null ){
-emit(const GetProfileDetailsLoading());
-    var response = await getProfileUseCase(
-        ProfileDetailsRequest(isRefresh: isRefresh, uid: uId));
-    response.fold((failure) {
-      debugPrint("profileDetails Error ");
-      emit(GetProfileDetailsError(msg: failure.message));
-    }, (userDetails) {
-      this.userDetails = userDetails;
-      emit(GetProfileDetailsSuccess(user: userDetails));
-    });
+
+
+  Future<UserDetails?> getProfileDetails({bool isRefresh = false}) async {
+    if (userInfo == null || isRefresh == true) {
+      emit(const GetProfileDetailsLoading());
+      var response = await getProfileUseCase(
+          ProfileDetailsRequest(isRefresh: isRefresh, uid: uId));
+      response.fold((failure) {
+        debugPrint("profileDetails Error ");
+        emit(GetProfileDetailsError(msg: failure.message));
+      }, (userDetails) {
+        this.userDetails = userDetails;
+        userInfo = userDetails;
+        emit(GetProfileDetailsSuccess(user: userDetails));
+      });
     }
+
+    return userDetails;
   }
 
   Future<bool> updateProfileDetails(UserDetails newUserDetails) async {
     bool isUpdate = false;
     await FirebaseFirestore.instance
         .collection(FirebaseStrings.usersCollection)
-        .doc(uId)
+        .doc(userInfo!.id)
         .update(newUserDetails.toJson())
         .then((value) {
+      userInfo = newUserDetails;
+      userDetails = newUserDetails;
       getProfileDetails(isRefresh: true).then((value) => null);
       AppToasts.successToast(AppStrings.success);
       emit(UpdateAccountSuccess());
@@ -82,7 +90,7 @@ emit(const GetProfileDetailsLoading());
 
   Future getLocations({bool isRefresh = false}) async {
     emit(const GetLocationsLoading());
-    (await locationUseCase(LocationsRequest(uid: uId, isRefresh: isRefresh)))
+    (await locationUseCase(LocationsRequest(uid: userInfo?.id ?? uId , isRefresh: isRefresh)))
         .fold((failure) => emit(GetLocationsError(msg: failure.message)),
             (locations) async {
       if (locations.isNotEmpty) {
@@ -150,8 +158,23 @@ emit(const GetProfileDetailsLoading());
     try {
       await FirebaseFirestore.instance
           .collection(FirebaseStrings.usersCollection)
-          .doc(uId)
+          .doc(userInfo!.id)
           .update({FirebaseStrings.phoneField: phone});
+      var newUser = UserDetails(
+        refarCode: userInfo!.refarCode,
+        email: userInfo!.email,
+        id: userInfo!.id,
+        isPhoneVerify: false,
+        isVerify: userInfo!.isVerify,
+        name: userInfo!.name,
+        phone: phone,
+        photo: userInfo!.photo,
+        freeWashTotal: userInfo!.freeWashTotal,
+        freeWashUsed: userInfo!.freeWashUsed,
+      );
+      userDetails = newUser;
+      userInfo = newUser;
+
       await getProfileDetails(isRefresh: true);
       emit(SendPhoneSuccess());
     } on Exception catch (e) {
@@ -168,6 +191,7 @@ emit(const GetProfileDetailsLoading());
           .delete()
           .then((value) {
         uId = "";
+        userInfo = null;
       });
       await appPreferences.deleteUserDetailsAndLogOut();
     }).catchError((err) {
@@ -225,27 +249,32 @@ emit(const GetProfileDetailsLoading());
             .ref()
             .child("users/$uId/${Uri.file(image.path).pathSegments.last}")
             .putFile(File(image.path))
-            .then((p0) async => {
-                  FirebaseFirestore.instance
-                      .collection(FirebaseStrings.usersCollection)
-                      .doc(uId)
-                      .update(UserDetails(
-                        id: userDetails!.id,
-                        email: userDetails!.email,
-                        phone: userDetails!.phone,
-                        isPhoneVerify: userDetails!.isPhoneVerify,
-                        isVerify: userDetails!.isVerify,
-                        photo: await p0.ref.getDownloadURL(),
-                        name: userDetails!.name,
-                        refarCode: userDetails?.refarCode ?? "",
-                      ).toJson())
-                      .then((value) {
-                    getProfileDetails(isRefresh: true).then((value) {
-                      AppToasts.successToast(AppStrings.success);
-                      emit(UploadImageSuccess());
-                    });
-                  })
-                });
+            .then((p0) async {
+          UserDetails user = UserDetails(
+            id: userDetails!.id,
+            email: userDetails!.email,
+            phone: userDetails!.phone,
+            isPhoneVerify: userDetails!.isPhoneVerify,
+            isVerify: userDetails!.isVerify,
+            photo: await p0.ref.getDownloadURL(),
+            name: userDetails!.name,
+            refarCode: userDetails?.refarCode ?? "",
+            freeWashTotal: userInfo!.freeWashTotal,
+            freeWashUsed: userInfo!.freeWashUsed,
+          );
+          FirebaseFirestore.instance
+              .collection(FirebaseStrings.usersCollection)
+              .doc(uId)
+              .update(user.toJson())
+              .then((value) async {
+            userInfo = user;
+            userDetails = user;
+            getProfileDetails(isRefresh: true).then((value) {
+              AppToasts.successToast(AppStrings.success);
+              emit(UploadImageSuccess());
+            });
+          });
+        });
       } else {
         return;
       }

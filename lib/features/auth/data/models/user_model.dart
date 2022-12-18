@@ -6,19 +6,23 @@ class UserDetailsModel {
   final String? id;
   final bool? isVerify;
   final bool? isPhoneVerify;
-  final String? refarCode; 
+  final int? freeWashTotal;
+  final int? freeWashUsed;
+  final String? refarCode;
 
-  const UserDetailsModel(
-      {
-      this.isPhoneVerify,
-      this.isVerify,
-      this.name,
-      this.phone,
-      this.email,
-      this.id,
-      this.photo,
-      required this.refarCode,
-      });
+  const UserDetailsModel({
+    this.isPhoneVerify,
+    this.isVerify,
+    this.name,
+    this.phone,
+    this.email,
+    this.id,
+    this.photo,
+    this.freeWashTotal,
+    this.freeWashUsed,
+    
+    required this.refarCode,
+  });
 
   factory UserDetailsModel.formJson(Map<String, dynamic> json) =>
       UserDetailsModel(
@@ -29,7 +33,9 @@ class UserDetailsModel {
         id: json["id"],
         photo: json["photo"],
         isPhoneVerify: json["isPhoneVerification"],
-        refarCode: json["refarCode"]
+        refarCode: json["refarCode"],
+        freeWashUsed: json['freeWashAvailable'],
+        freeWashTotal: json['freeWashTotal'],
       );
   Map<String, dynamic> toJson() => {
         "isPhoneVerify": isPhoneVerify,
@@ -39,6 +45,10 @@ class UserDetailsModel {
         "email": email,
         "id": id,
         "photo": photo,
-        "refarCode":refarCode
+        "refarCode": refarCode,
+        "freeWashTotal": freeWashTotal,
+        "freeWashAvailable": freeWashUsed,
       };
+
+      
 }

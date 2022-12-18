@@ -1,6 +1,7 @@
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../app_colors.dart';
 
@@ -28,7 +29,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 65,
+      height: 60.h,
       child: Card(
         elevation: 5,
         shape: const RoundedRectangleBorder(

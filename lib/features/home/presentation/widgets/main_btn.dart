@@ -31,64 +31,73 @@ class MainButton extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                height: 150.h,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: <Color>[
-                        AppColors.blueDark,
-                        AppColors.primaryColor
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(15)),
-                child: Row(
-                  children: [
-                    Stack(
-                      alignment: Alignment.centerRight,
-                      children: [
-                        Lottie.asset(
-                          JsonManger.washButton,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  AppStrings.wash,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1!
-                                      .copyWith(
-                                          color: AppColors.white,
-                                          fontWeight: FontWeight.w700),
-                                ),
-                                Text(
-                                  AppStrings.drop,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1!
-                                      .copyWith(
-                                          color: AppColors.white,
-                                          fontWeight: FontWeight.w300),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            Text(
-                              AppStrings.carWashAnyWhere,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5!
-                                  .copyWith(color: AppColors.white),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+              child: Card(
+                child: Container(
+                  height: 150.h,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: <Color>[
+                          AppColors.blueDark,
+                          AppColors.primaryColor
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Row(
+                    children: [
+                      Stack(
+                        alignment: Alignment.centerRight,
+                        children: [
+                          Lottie.asset(
+                            JsonManger.washButton,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        AppStrings.wash,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1!
+                                            .copyWith(
+                                                color: AppColors.white,
+                                                fontWeight: FontWeight.w700),
+                                      ),
+                                      Text(
+                                        AppStrings.drop,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1!
+                                            .copyWith(
+                                                color: AppColors.white,
+                                                fontWeight: FontWeight.w300),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 3.h,
+                                  ),
+                                  Text(
+                                    AppStrings.carWashAnyWhere,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5!
+                                        .copyWith(color: AppColors.white),
+                                  ),
+                                ],
+                              )
+                            
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

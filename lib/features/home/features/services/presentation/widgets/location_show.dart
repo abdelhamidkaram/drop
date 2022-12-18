@@ -24,6 +24,7 @@ class _LocationsShowState extends State<LocationsShow> {
       listener: (context, state) => di.sl<HomeCubit>(),
       listenWhen: (previous, current) => current is GetMainLocationSuccess,
       builder: (context, state) {
+        // ignore: unused_local_variable
         var location = widget.currentLocation;
         return SizedBox(
           height: 320.h,

@@ -15,8 +15,8 @@ dependencies:
   flutter_bloc: ^8.1.1
   bloc: ^8.1.0
   get_it: ^7.2.0
-  firebase_core: ^2.1.1
-  firebase_auth: ^4.1.0
+  firebase_core: ^2.4.0
+  firebase_auth: ^4.2.0
   cloud_firestore: ^4.0.3
   google_sign_in: ^5.4.2
   flutter_facebook_auth: ^5.0.1
@@ -35,6 +35,7 @@ dependencies:
   lottie: ^1.4.3
   extended_image: ^6.3.1
   table_calendar: ^3.0.8
+  percent_indicator: ^4.2.2
   
 
 dev_dependencies:
@@ -58,6 +59,7 @@ flutter:
     - assets/images/bacgroundappbar.png
     - assets/images/ticket.png
     - assets/images/refar.png
+    - assets/images/exotics_driver.png
 
   fonts:
     - family: ridley

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class UserDetails extends Equatable {
-  final String? refarCode;
+   final String? refarCode;
   final String? name;
   final String? email;
   final String? phone;
@@ -9,10 +9,11 @@ class UserDetails extends Equatable {
   final String? id;
   final bool? isVerify;
   final bool? isPhoneVerify;
+  final int freeWashTotal;
+  final int freeWashUsed;
+ 
 
-  const UserDetails(
-    
-    {
+  const UserDetails({
     this.isVerify,
     this.name,
     this.phone,
@@ -20,7 +21,10 @@ class UserDetails extends Equatable {
     this.id,
     this.photo,
     this.isPhoneVerify,
+    required this.freeWashUsed,
+    required this.freeWashTotal,
     required this.refarCode,
+
   });
 
   Map<String, dynamic> toJson() => {
@@ -31,9 +35,12 @@ class UserDetails extends Equatable {
         "isEmailVerification": isVerify,
         "isPhoneVerification": isPhoneVerify,
         "photo": photo,
-        "refarCode" : refarCode,
+        "refarCode": refarCode,
+        "freeWashTotal": freeWashTotal,
+        "freeWashUsed": freeWashUsed,
+   
       };
- 
+
   @override
   List<Object?> get props => [id, phone, name, email];
 }

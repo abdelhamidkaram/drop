@@ -1,4 +1,5 @@
 import 'package:dropeg/core/usecase/usecase.dart';
+import 'package:dropeg/core/utils/extensions.dart';
 import 'package:dropeg/features/auth/domain/entities/location.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:dropeg/features/home/features/services/domain/entity/service_entity.dart';
@@ -17,7 +18,19 @@ class HomeCubit extends Cubit<HomeStates> {
   getMainLocation({required BuildContext context, LocationEntity? location}) {
     emit(GetMainLocationloading());
     if (location == null) {
-      mainLocation = ProfileCubit.get(context).locations?.first;
+      if (ProfileCubit.get(context).locations?.isNotEmpty ?? false) {
+        mainLocation = ProfileCubit.get(context).locations?.first;
+      } else {
+        if (ProfileCubit.get(context).locations?.isNotEmpty ?? false) {
+          var compound = ProfileCubit.get(context).compounds?.first;
+          mainLocation = compound!.toLocationEntity();
+
+          HomeCubit.get(context).getMainLocation(
+            context: context,
+            location: compound.toLocationEntity(),
+          );
+        }
+      }
     } else {
       mainLocation = location;
     }
@@ -26,12 +39,11 @@ class HomeCubit extends Cubit<HomeStates> {
 
   List<ServiceEntity> services = [];
   Future getServices() async {
-    emit(GetServicesloading());
+    emit(GetServicesLoading());
     var response = await serviceUseCase(NoPrams());
     emit(response.fold((failure) => GetServicesError(msg: failure.message),
         (services) {
       this.services = services;
-      print(services.toString());
       return GetServicesSuccess(services: services);
     }));
   }

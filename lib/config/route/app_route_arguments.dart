@@ -1,3 +1,4 @@
+import 'package:dropeg/features/Order/domain/entities/orders.dart';
 import 'package:dropeg/features/home/features/services/domain/entity/service_entity.dart';
 
 import '../../features/auth/domain/entities/location.dart';
@@ -31,18 +32,28 @@ class ScheduleAppointmentArgs {
   final int index;
   final ServiceProvideList? serviceProvideList;
   ScheduleAppointmentArgs(
-      {required this.serviceEntity, required this.index, required this.serviceProvideList});
+      {required this.serviceEntity,
+      required this.index,
+      required this.serviceProvideList});
 }
+
 class SingleProviderOrderConfirmedArgs {
   final ServiceProvideList? serviceProvideList;
-  SingleProviderOrderConfirmedArgs(
-      {required this.serviceProvideList});
+  SingleProviderOrderConfirmedArgs({required this.serviceProvideList});
 }
 
-
-
-///////////////////
 class OrderMainArgs {
-  final LocationEntity locationEntity ;
+  final LocationEntity locationEntity;
   OrderMainArgs({required this.locationEntity});
+}
+
+class ConfirmOrderArgs {
+  final OrderEntity order;
+  final double vat;
+  final String grandTotal;
+  ConfirmOrderArgs({
+    required this.vat,
+    required this.grandTotal,
+    required this.order,
+  });
 }

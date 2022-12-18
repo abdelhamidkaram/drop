@@ -10,6 +10,7 @@ class AppColors {
   static Color blueLight = const Color(0xFFd1ddf8);
   static Color hit = const Color(0xFFcfcfcf);
   static Color grey = const Color(0xFF646262);
+  static Color greyBorder = const Color(0xFFd8d8d8);
   static Color greyLight = const Color(0xFFf7f7f7);
   static Color red = const Color(0xFFeb7070);
   static Color black = const Color(0xFF000000);

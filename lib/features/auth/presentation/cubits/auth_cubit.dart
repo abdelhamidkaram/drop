@@ -5,11 +5,13 @@ import 'package:dropeg/features/auth/domain/entities/user.dart';
 import 'package:dropeg/features/auth/domain/request_models.dart';
 import 'package:dropeg/features/auth/domain/usecase/login_usecase.dart';
 import 'package:dropeg/features/auth/presentation/cubits/auth_states.dart';
+import 'package:dropeg/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dropeg/features/auth/domain/usecase/register_usecase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../core/api/firestore_strings.dart';
 import '../../../../core/utils/toasts.dart';
@@ -43,6 +45,8 @@ class AuthCubit extends Cubit<AuthStates> {
       emit(RegisterWithEmailError(msg: failure.message));
     }, (user) async {
       userDetails = UserDetails(
+        freeWashUsed: 0,
+        freeWashTotal: 1,
         isVerify: user.emailVerified,
         name: registerRequest.name,
         phone: registerRequest.phone,
@@ -51,7 +55,8 @@ class AuthCubit extends Cubit<AuthStates> {
         photo: user.photoURL,
         refarCode: const Uuid().v4().substring(0, 8),
       );
-      _sendUserToCollection(user);
+      userInfo = userDetails;
+      sendUserToCollection(user);
       appPreferences.deleteUserDetailsAndNotLogOut().then((value) => null);
       AppToasts.successToast(user.email.toString());
       Navigator.pushReplacementNamed(context, AppRouteStrings.location);
@@ -61,30 +66,33 @@ class AuthCubit extends Cubit<AuthStates> {
   }
 
   Future<void> registerWithFacebook() async {
+    AppToasts.loadingToast();
     emit(RegisterWithFaceBookLoading());
     var response = await getRegisterWithFaceBook("");
     response.fold((failure) {
       AppToasts.errorToast(failure.message);
       emit(RegisterWithFaceBookError(msg: failure.message));
     }, (user) async {
-      AppToasts.loadingToast();
       userDetails = UserDetails(
-          isVerify: user.user!.emailVerified,
-          name: user.user!.displayName,
-          phone: user.user!.phoneNumber,
-          email: user.user!.email,
-          id: user.user!.uid,
-          photo: user.user!.photoURL,
-          refarCode: const Uuid().v4().substring(0, 8),
-          isPhoneVerify: false);
-
+        isVerify: user.user!.emailVerified,
+        name: user.user!.displayName,
+        phone: user.user!.phoneNumber,
+        email: user.user!.email,
+        id: user.user!.uid,
+        photo: user.user!.photoURL,
+        refarCode: const Uuid().v4().substring(0, 8),
+        isPhoneVerify: false,
+        freeWashUsed: 0,
+        freeWashTotal: 1,
+      );
+      userInfo = userDetails;
       await fireStore
           .collection(FirebaseStrings.usersCollection)
           .doc(user.user!.uid)
           .get()
           .then((value) async {
         if (!value.exists) {
-          await _sendUserToCollection(user.user!);
+          await sendUserToCollection(user.user!);
         }
         await appPreferences.deleteUserDetailsAndNotLogOut();
       });
@@ -95,36 +103,55 @@ class AuthCubit extends Cubit<AuthStates> {
     });
   }
 
-  Future<void> registerWithGoogle() async {
-   
-    var response = await getRegisterWithGoogle("");
-    response.fold((failure) {
-      AppToasts.errorToast(failure.message);
-      emit(RegisterWithGoogleError(msg: failure.message));
-    }, (user) async {
-       AppToasts.loadingToast();
-      userDetails = UserDetails(
-          isVerify: user.emailVerified,
-          name: user.displayName,
-          phone: user.phoneNumber,
-          email: user.email,
-          id: user.uid,
-          photo: user.photoURL,
-          refarCode: const Uuid().v4().substring(0, 8),
-          isPhoneVerify: false);
-      await fireStore
-          .collection(FirebaseStrings.usersCollection)
-          .doc(user.uid)
-          .get()
-          .then((value) async {
-        if (!value.exists) {
-          await _sendUserToCollection(user);
-        }
-      });
-      await appPreferences.deleteUserDetailsAndNotLogOut();
-      AppToasts.successToast("${AppStrings.welcome} ${user.email ?? ""}");
-      await loginSuccessCache();
-      emit(RegisterWithGoogleSuccess(user: user));
+  Future<void> registerWithGoogle(BuildContext context) async {
+    signInWithGoogle().then((user) async {
+      if (user.user != null) {
+        uId = user.user!.uid;
+        var userNew = UserDetails(
+          email: user.user!.email,
+          id: user.user!.uid,
+          isPhoneVerify: false,
+          refarCode: user.user!.uid.substring(0, 8),
+          name: user.user!.displayName,
+          phone: null,
+          photo: user.user!.photoURL,
+          isVerify: true,
+          freeWashUsed: 0,
+          freeWashTotal: 1,
+        );
+        userDetails = userNew;
+        userInfo = userNew;
+        await FirebaseFirestore.instance
+            .collection(FirebaseStrings.usersCollection)
+            .doc(user.user!.uid)
+            .get()
+            .then((value1) async {
+          if (!value1.exists) {
+            await sendUserToCollection(user.user!);
+             await loginSuccessCache();
+          }
+          await appPreferences.deleteUserDetailsAndNotLogOut();
+          await fireStore
+              .collection(FirebaseStrings.usersCollection)
+              .doc(user.user!.uid)
+              .collection(FirebaseStrings.locationsCollection)
+              .get()
+              .then((value) async {
+            AppToasts.successToast(
+                "${AppStrings.welcome} ${user.user!.displayName ?? user.user!.email!.split("@").first}");
+            await loginSuccessCache().whenComplete(() {
+
+            if (value.docs.isEmpty) {
+              Navigator.pushNamed(context, AppRouteStrings.location);
+            } else {
+              Navigator.pushNamed(context, AppRouteStrings.home);
+            }
+            });
+          });
+        });
+      }
+    }).catchError((err) {
+      debugPrint(err.toString());
     });
   }
 
@@ -148,17 +175,17 @@ class AuthCubit extends Cubit<AuthStates> {
     });
   }
 
-  loginSuccessCache() async {
+  Future loginSuccessCache() async {
     await appPreferences.setUserLoggedIn();
   }
 
-  Future _sendUserToCollection(User user) async {
+  Future sendUserToCollection(User user) async {
     FirebaseFirestore.instance
         .collection(FirebaseStrings.usersCollection)
         .doc(user.uid)
         .set(userDetails!.toJson())
-        .then((value) async {
-      await _sendReferralCode(user);
+        .then((value) {
+      _sendReferralCode(user).then((value) => null);
     }).catchError((error) {
       debugPrint(error.toString());
     });
@@ -169,9 +196,23 @@ class AuthCubit extends Cubit<AuthStates> {
         .collection(FirebaseStrings.referralCodes)
         .doc(userDetails!.refarCode)
         .set(Referral(
-            code: userDetails!.refarCode, numberOfUsed: 0, userId: user.uid)
-            .toJson()).then((value) => debugPrint("referral code is saved >>> "));
+                code: userDetails!.refarCode, numberOfUsed: 0, userId: user.uid)
+            .toJson())
+        .then((value) {
+          userInfo = userDetails;
+      debugPrint("referral code is saved >>> ");
+    });
   }
 
-
+  Future<UserCredential> signInWithGoogle() async {
+    AppToasts.loadingToast();
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
 }

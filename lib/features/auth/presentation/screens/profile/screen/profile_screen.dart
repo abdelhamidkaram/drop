@@ -5,6 +5,7 @@ import 'package:dropeg/features/auth/presentation/screens/profile/widgets/car_ca
 import 'package:dropeg/features/auth/presentation/screens/profile/widgets/compound_card_item.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/widgets/location_card_item.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/widgets/profile_taps_bar.dart';
+import 'package:dropeg/features/home/features/top_notifications/presentation/cubit/topnotifications_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:dropeg/core/utils/components/custom_appbar.dart';
 import 'package:dropeg/core/utils/app_string.dart';
@@ -64,149 +65,154 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Stack(
-                      children: [
-                        Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            CustomAppbars.homeAppBar(
-                                context: context,
-                                title: AppStrings.account,
-                                onTap: () {
-                                  profileScaffoldStateKey.currentState!
-                                      .openDrawer();
-                                }),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 16.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, AppRouteStrings.accountEdit);
-                                    },
-                                    child: BlocListener<ProfileCubit,
-                                        ProfileStates>(
-                                      listener: (context, state) =>
-                                          di.sl<ProfileCubit>(),
-                                      child: const ProfileHeader(
-                                        isProfileScreen: true,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
                     Expanded(
                       child: RefreshIndicator(
                         onRefresh: () => profileCubit.refreshData(),
                         child: SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              children: [
-                                const ProfileTapsBar(),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                const CategoryTitle(
-                                    title: AppStrings.myLocations),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                BlocListener<ProfileCubit, ProfileStates>(
-                                    listener: (context, state) =>
-                                        di.sl<ProfileCubit>(),
-                                    child: BlocBuilder<ProfileCubit,
-                                        ProfileStates>(
-                                      builder: (context, state) {
-                                        List<Widget>? compoundsView =
-                                            List.generate(
-                                          compounds.length,
-                                          (index) => CompoundCardItem(
-                                            index: index,
-                                            compounds: compounds,
-                                            setStateFun: () {
-                                              setState(() {});
-                                            },
-                                          ),
-                                        );
-                                        List<Widget>? locationsView =
-                                            List.generate(
-                                                locations.length,
-                                                (index) => LocationCardItem(
-                                                      index: index,
-                                                      locations: locations,
-                                                    ));
-                                        if (state is GetCompoundsSuccess) {
-                                          if (state.compounds != null) {
-                                            compoundsView = List.generate(
-                                              state.compounds!.length,
+                          child: Stack(
+                            children: [
+                              CustomAppbars.homeAppBar(
+                                  context: context,
+                                  title: AppStrings.account,
+                                  onTap: () {
+                                    profileScaffoldStateKey.currentState!
+                                        .openDrawer();
+                                  }),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 120,
+                                    ),
+                                    Stack(
+                                      children: [
+                                        Stack(
+                                          alignment: Alignment.bottomCenter,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0,
+                                                      horizontal: 16.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          AppRouteStrings
+                                                              .accountEdit);
+                                                    },
+                                                    child: BlocListener<
+                                                        ProfileCubit,
+                                                        ProfileStates>(
+                                                      listener: (context,
+                                                              state) =>
+                                                          di.sl<ProfileCubit>(),
+                                                      child:
+                                                          const ProfileHeader(
+                                                        isProfileScreen: true,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    const ProfileTapsBar(),
+                                    SizedBox(
+                                      height: 20.h,
+                                    ),
+                                    const CategoryTitle(
+                                        title: AppStrings.myLocations),
+                                    const SizedBox(
+                                      height: 16,
+                                    ),
+                                    BlocListener<ProfileCubit, ProfileStates>(
+                                        listener: (context, state) =>
+                                            di.sl<ProfileCubit>(),
+                                        child: BlocBuilder<ProfileCubit,
+                                            ProfileStates>(
+                                          builder: (context, state) {
+                                            List<Widget>? compoundsView =
+                                                List.generate(
+                                              compounds.length,
                                               (index) => CompoundCardItem(
                                                 index: index,
-                                                compounds:
-                                                    state.compounds ?? [],
+                                                compounds: compounds,
+                                                setStateFun: () {
+                                                  setState(() {});
+                                                },
                                               ),
                                             );
-                                          } else {
-                                            compoundsView = [];
-                                          }
-                                        }
-                                        if (state is GetLocationsSuccess) {
-                                          if (state.locations != null) {
-                                            locationsView = List.generate(
-                                                state.locations!.length,
-                                                (index) => LocationCardItem(
-                                                      index: index,
-                                                      locations:
-                                                          state.locations ?? [],
-                                                    ));
-                                          } else {
-                                            locationsView = [];
-                                          }
-                                        }
-                                        return Column(
-                                          children: [
-                                            Column(children: compoundsView),
-                                            Column(children: locationsView),
-                                          ],
-                                        );
-                                      },
-                                    )),
-                                AddLocationButton(profileCubit: profileCubit),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                const CategoryTitle(title: AppStrings.myCars),
-                                SizedBox(
-                                  height: 16.h,
-                                ),
-                                BlocListener<ProfileCubit, ProfileStates>(
-                                    listener: (context, state) =>
-                                        di.sl<ProfileCubit>(),
-                                    child: BlocBuilder<ProfileCubit,
-                                        ProfileStates>(
-                                      builder: (context, state) {
-                                        List<Widget>? carsView = List.generate(
-                                          cars.length,
-                                          (index) => CarCardItem(
-                                            scaffoldKey:
-                                                profileScaffoldStateKey,
-                                            profileCubit: profileCubit,
-                                            index: index,
-                                          ),
-                                        );
-                                        if (state is GetCarsSuccess) {
-                                          if (state.cars != null) {
-                                            carsView = List.generate(
-                                              state.cars?.length ?? 0,
+                                            List<Widget>? locationsView =
+                                                List.generate(
+                                                    locations.length,
+                                                    (index) => LocationCardItem(
+                                                          index: index,
+                                                          locations: locations,
+                                                        ));
+                                            if (state is GetCompoundsSuccess) {
+                                              if (state.compounds != null) {
+                                                compoundsView = List.generate(
+                                                  state.compounds!.length,
+                                                  (index) => CompoundCardItem(
+                                                    index: index,
+                                                    compounds:
+                                                        state.compounds ?? [],
+                                                  ),
+                                                );
+                                              } else {
+                                                compoundsView = [];
+                                              }
+                                            }
+                                            if (state is GetLocationsSuccess) {
+                                              if (state.locations != null) {
+                                                locationsView = List.generate(
+                                                    state.locations!.length,
+                                                    (index) => LocationCardItem(
+                                                          index: index,
+                                                          locations:
+                                                              state.locations ??
+                                                                  [],
+                                                        ));
+                                              } else {
+                                                locationsView = [];
+                                              }
+                                            }
+                                            return Column(
+                                              children: [
+                                                Column(children: compoundsView),
+                                                Column(children: locationsView),
+                                              ],
+                                            );
+                                          },
+                                        )),
+                                    AddLocationButton(
+                                        profileCubit: profileCubit),
+                                    SizedBox(
+                                      height: 20.h,
+                                    ),
+                                    const CategoryTitle(
+                                        title: AppStrings.myCars),
+                                    SizedBox(
+                                      height: 16.h,
+                                    ),
+                                    BlocListener<ProfileCubit, ProfileStates>(
+                                        listener: (context, state) =>
+                                            di.sl<ProfileCubit>(),
+                                        child: BlocBuilder<ProfileCubit,
+                                            ProfileStates>(
+                                          builder: (context, state) {
+                                            List<Widget>? carsView =
+                                                List.generate(
+                                              cars.length,
                                               (index) => CarCardItem(
                                                 scaffoldKey:
                                                     profileScaffoldStateKey,
@@ -214,18 +220,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 index: index,
                                               ),
                                             );
-                                          } else {
-                                            carsView = [];
-                                          }
-                                        }
-                                        return Column(
-                                          children: carsView,
-                                        );
-                                      },
-                                    )),
-                                const AddCarButton()
-                              ],
-                            ),
+                                            if (state is GetCarsSuccess) {
+                                              if (state.cars != null) {
+                                                carsView = List.generate(
+                                                  state.cars?.length ?? 0,
+                                                  (index) => CarCardItem(
+                                                    scaffoldKey:
+                                                        profileScaffoldStateKey,
+                                                    profileCubit: profileCubit,
+                                                    index: index,
+                                                  ),
+                                                );
+                                              } else {
+                                                carsView = [];
+                                              }
+                                            }
+                                            return Column(
+                                              children: carsView,
+                                            );
+                                          },
+                                        )),
+                                    const AddCarButton()
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -237,8 +256,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             return Scaffold(
               key: profileScaffoldStateKey,
-              drawer: drawer(
-                  drawerSelected: DrawerSelected.account, context: context),
+              drawer: BlocProvider(
+                create: (context) => TopNotificationsCubit(),
+                child: drawer(
+                  drawerSelected: DrawerSelected.account,
+                  context: context,
+                ),
+              ),
               body: profileBody(),
             );
           },

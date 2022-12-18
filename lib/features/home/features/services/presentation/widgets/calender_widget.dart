@@ -26,7 +26,6 @@ class CalenderWidget extends StatelessWidget {
         lastDay: DateTime.utc(2030, 3, 14),
         focusedDay: DateTime.parse(cubit.selectedTime),
         headerVisible: true,
-        weekendDays: [],
         calendarStyle: CalendarStyle(
           todayDecoration:
               BoxDecoration(color: AppColors.white, shape: BoxShape.circle),
@@ -61,5 +60,7 @@ class CalenderWidget extends StatelessWidget {
         ),
       ),
     );
+  
+  
   }
 }

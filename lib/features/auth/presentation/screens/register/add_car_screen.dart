@@ -29,7 +29,7 @@ class AddCarScreen extends StatefulWidget {
 class _AddCarScreenState extends State<AddCarScreen> {
   var modelController = TextEditingController();
   var colorController = TextEditingController();
-  var aController = TextEditingController();
+  var licenseNumberController = TextEditingController();
   var bController = TextEditingController();
   var cController = TextEditingController();
   var dController = TextEditingController();
@@ -73,9 +73,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                     if (addCarFormKey.currentState!.validate()) {
                       AppToasts.loadingToast();
                       Car carDetails = Car(
-                        a: aController.text,
-                        b: bController.text,
-                        c: cController.text,
+                        licenseNumber: licenseNumberController.text,
                         brand: value,
                         color: colorController.text,
                         licensePlate: licensePlateController.text,
@@ -134,62 +132,27 @@ class _AddCarScreenState extends State<AddCarScreen> {
   Row licensePlate() {
     return Row(
       children: [
-        SizedBox(
-          width: 50.w,
-          child: CustomTextFormField(
-            hint: AppStrings.carAHint,
-            controller: aController,
-            type: TextInputType.text,
-            validateEmptyMSG: AppStrings.carAHintEmptMSG,
+        Expanded(
+          child: SizedBox(
+            child: CustomTextFormField(
+              hint: AppStrings.carlicenseNumberHint,
+              controller: licenseNumberController,
+              type: TextInputType.number,
+              validateEmptyMSG: AppStrings.carAHintEmptMSG,
+            ),
           ),
         ),
-         SizedBox(
+        SizedBox(
           width: 5.w,
         ),
-        SizedBox(
-          width: 50.w,
-          child: CustomTextFormField(
-            hint: AppStrings.carBHint,
-            controller: bController,
-            type: TextInputType.text,
-            validateEmptyMSG: AppStrings.carBHintEmptMSG,
-          ),
-        ),
-         SizedBox(
-          width: 5.w,
-        ),
-        SizedBox(
-          width: 50.w,
-          child: CustomTextFormField(
-            hint: AppStrings.carCHint,
-            controller: cController,
-            type: TextInputType.text,
-            validateEmptyMSG: AppStrings.carCHintEmptMSG,
-          ),
-        ),
-         SizedBox(
-          width: 5.w,
-        ),
-        SizedBox(
-          width: 50.w,
-          child: CustomTextFormField(
-            hint: AppStrings.cardHint,
-            controller: dController,
-            type: TextInputType.text,
-            validateEmptyMSG: AppStrings.carCHintEmptMSG,
-             validation: false,
-          ),
-        ),
-        const SizedBox(
-          width: 5,
-        ),
-        SizedBox(
-          width: 110.w,
-          child: CustomTextFormField(
-            hint: AppStrings.carLicensePlateHint,
-            controller: licensePlateController,
-            type: TextInputType.text,
-            validateEmptyMSG: AppStrings.carLicensePlateHintEmptMSG,
+        Expanded(
+          child: SizedBox(
+            child: CustomTextFormField(
+              hint: AppStrings.carLicensePlateHint,
+              controller: licensePlateController,
+              type: TextInputType.text,
+              validateEmptyMSG: AppStrings.carLicensePlateHintEmptMSG,
+            ),
           ),
         ),
       ],
@@ -200,7 +163,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
     return Column(
       children: [
         SizedBox(
-          height: 70,
+          height: 65.h,
           child: Card(
             elevation: 5,
             shape: const RoundedRectangleBorder(

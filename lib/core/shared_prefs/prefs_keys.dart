@@ -12,5 +12,10 @@ class AppPrefsKes {
 
   static const String cachedServices = "cachedServices";
   static const String servicesCachedExpired = "ServicesCachedExpired";
+
+
+  static const String showEvent = "showEvent";
+  static const String showTopNotificationOrder = "showTopNotificationOrder";
+  static const String showTopNotificationAppointment = "showTopNotificationAppointment";
   
 }

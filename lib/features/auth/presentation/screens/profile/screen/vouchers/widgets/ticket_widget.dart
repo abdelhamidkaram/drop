@@ -1,5 +1,7 @@
 import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
+import 'package:dropeg/core/utils/toasts.dart';
+import 'package:dropeg/features/Order/presentation/cubit/order_cubit.dart';
 import 'package:dropeg/features/auth/domain/entities/vouchers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,7 +54,8 @@ class TicketWidgetBuildItem extends StatelessWidget {
                               child: SizedBox(
                             width: 200.w,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: List.generate(
@@ -82,8 +85,8 @@ class TicketWidgetBuildItem extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -124,7 +127,16 @@ class TicketWidgetBuildItem extends StatelessWidget {
                     AppButtonWhite(
                         text: AppStrings.redeem,
                         onTap: () {
-                          // Todo: REDEEM
+                          OrderCubit.get(context).promoCodeDiscount =
+                              int.tryParse(vouchers[index]
+                                      .discount!
+                                      .split("%")
+                                      .first
+                                      .toString()) ??
+                                  1;
+                          OrderCubit.get(context).promoCodeController.text =
+                              vouchers[index].code!.split("%").first;
+                          AppToasts.successToast(AppStrings.success);
                         }),
                     SizedBox(
                       height: 10.0.h,
@@ -135,7 +147,6 @@ class TicketWidgetBuildItem extends StatelessWidget {
             ],
           ),
         ),
-        
       ],
     );
   }

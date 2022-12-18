@@ -21,7 +21,7 @@ class ServicesListView extends StatelessWidget {
       listenWhen: (previous, current) =>
           (current is GetServicesSuccess || current is GetServicesError),
       builder: (context, state) {
-        if (state is GetServicesloading) {
+        if (state is GetServicesLoading) {
           return const Center(
             child: CircularProgressIndicator.adaptive(),
           );
@@ -53,9 +53,9 @@ class ServicesListView extends StatelessWidget {
                                   child: Row(
                                     children: [
                                       ImageNetworkWithCached(
-                                        imgUrl:  services[index].img ,
+                                        imgUrl: services[index].img,
                                         width: 65.w,
-                                        ),
+                                      ),
                                       SizedBox(
                                         width: 16.0.w,
                                       ),

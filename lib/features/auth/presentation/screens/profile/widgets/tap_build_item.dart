@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../../../core/utils/app_colors.dart';
@@ -22,9 +23,9 @@ class TapBuildItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTab,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(assetSvgIcon),
+          SvgPicture.asset(assetSvgIcon ,height: 26.h, ),
           Text(
             text,
             style: Theme.of(context)

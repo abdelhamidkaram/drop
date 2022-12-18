@@ -1,4 +1,8 @@
 import 'package:dropeg/core/utils/app_string.dart';
+import 'package:dropeg/core/utils/toasts.dart';
+import 'package:dropeg/features/Order/presentation/pages/checkoute/check_out_screen.dart';
+import 'package:dropeg/features/Order/presentation/pages/order_services/intror_screen.dart';
+import 'package:dropeg/features/Order/presentation/pages/order_services/order_main_screen.dart';
 import 'package:dropeg/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/login/login_screen.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/screen/Refer/refar_screen.dart';
@@ -10,13 +14,15 @@ import 'package:dropeg/features/auth/presentation/screens/register/add_car_scree
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/bloc/compound_register_cuibt.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/compounds_viwe.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_screen.dart';
+import 'package:dropeg/features/confirm%20order/presentation/pages/confirm_order_screen.dart';
 import 'package:dropeg/features/home/bloc/home_cubit.dart';
 import 'package:dropeg/features/home/features/services/presentation/cubit/provider_services_cubit.dart';
 import 'package:dropeg/features/home/features/services/presentation/screens/appointment_order_confirmed_sreen.dart';
 import 'package:dropeg/features/home/features/services/presentation/screens/schedule_appointment.dart';
 import 'package:dropeg/features/home/features/services/presentation/screens/sigle_provider_services_screen.dart';
 import 'package:dropeg/features/home/features/services/presentation/screens/single_provider_screen.dart';
-import 'package:dropeg/features/order/presentation/pages/order_main_screen.dart';
+import 'package:dropeg/features/home/features/top_notifications/presentation/cubit/topnotifications_cubit.dart';
+import 'package:dropeg/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/auth/presentation/screens/onboarding/onbording_screen.dart';
@@ -52,6 +58,9 @@ class AppRouteStrings {
       "/services/single/services/schedule/orderconfirmed";
 
   static const String order = "/Order";
+  static const String interior = "/Order/interior";
+  static const String checkOut = "/Order/CheckOut";
+  static const String confirmOrder = "/Order/confirmOrder";
 }
 
 class AppRoute {
@@ -73,8 +82,11 @@ class AppRoute {
       case AppRouteStrings.register:
         return MaterialPageRoute(
           builder: (context) {
-            return BlocProvider(
-              create: (context) => di.sl<AuthCubit>(),
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(create:  (context) => di.sl<AuthCubit>()) ,
+                BlocProvider(create:  (context) => TopNotificationsCubit()) ,
+                ] ,
               child: const RegisterScreen(),
             );
           },
@@ -82,8 +94,12 @@ class AppRoute {
       case AppRouteStrings.home:
         return MaterialPageRoute(
           builder: (context) {
-            return BlocProvider(
-              create: (context) => di.sl<HomeCubit>()..getServices(),
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                    create: (context) => di.sl<HomeCubit>()..getServices()),
+                
+              ],
               child: const HomeScreen(),
             );
           },
@@ -142,11 +158,7 @@ class AppRoute {
           },
         );
       case AppRouteStrings.account:
-        return MaterialPageRoute(
-          builder: (context) {
-            return const ProfileScreen();
-          },
-        );
+        return authRoute(screen: const ProfileScreen());
       case AppRouteStrings.accountEdit:
         return MaterialPageRoute(
           builder: (context) {
@@ -215,15 +227,48 @@ class AppRoute {
                 serviceProvideList: arg.serviceProvideList);
           },
         );
+      case AppRouteStrings.confirmOrder:
+        var arg = routeSettings.arguments as ConfirmOrderArgs;
+        return MaterialPageRoute(
+          builder: (context) {
+            return ConfirmOrderScreen(
+                order: arg.order, grandTotal: arg.grandTotal, vat: arg.vat);
+          },
+        );
 
       case AppRouteStrings.order:
         var arg = routeSettings.arguments as OrderMainArgs;
+        return authRoute(screen: OrderMainScreen(location: arg.locationEntity));
+      case AppRouteStrings.checkOut:
         return MaterialPageRoute(
-          builder: (context) => OrderMainScreen(location: arg.locationEntity),
+          builder: (context) => const CheckOutScreen(),
+        );
+      case AppRouteStrings.interior:
+        var arg = routeSettings.arguments as OrderMainArgs;
+        return MaterialPageRoute(
+          builder: (context) => InteriorScreen(location: arg.locationEntity),
         );
 
       default:
         return undefinedRoute();
+    }
+  }
+
+  static authRoute({required Widget screen}) {
+    if (userInfo != null ) {
+      return MaterialPageRoute(
+        builder: (context) => screen,
+      );
+    } else {
+      AppToasts.errorToast(AppStrings.requiredLogin);
+      return MaterialPageRoute(
+        builder: (context) {
+          return BlocProvider(
+            create: (context) => di.sl<AuthCubit>(),
+            child: const WelcomeScreen(),
+          );
+        },
+      );
     }
   }
 
