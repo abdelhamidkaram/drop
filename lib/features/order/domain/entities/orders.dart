@@ -1,7 +1,7 @@
 import 'package:dropeg/core/utils/enums.dart';
-import 'package:dropeg/features/Order/domain/entities/required_service.dart';
 import 'package:dropeg/features/auth/domain/entities/car.dart';
 import 'package:dropeg/features/auth/domain/entities/location.dart';
+import 'package:dropeg/features/order/domain/entities/required_service.dart';
 import 'package:equatable/equatable.dart';
 
 class OrderEntity extends Equatable {

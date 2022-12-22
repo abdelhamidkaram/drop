@@ -1,14 +1,13 @@
 import 'package:dropeg/core/utils/app_string.dart';
-import 'package:dropeg/features/Order/presentation/cubit/order_cubit.dart';
-import 'package:dropeg/features/Order/presentation/widgets/car_item.dart';
-import 'package:dropeg/features/Order/presentation/widgets/order_summary_widget.dart';
+import 'package:dropeg/features/order/presentation/widgets/car_item.dart';
+import 'package:dropeg/features/order/presentation/widgets/order_summary_widget.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/bloc/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../../core/utils/components/category_title.dart';
+import '../../cubit/order_cubit.dart';
 
 class SummaryAndCarInformationView extends StatelessWidget {
   final OrderCubit orderCubit;

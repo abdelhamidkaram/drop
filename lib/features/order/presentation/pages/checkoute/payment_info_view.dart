@@ -1,12 +1,11 @@
 
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/enums.dart';
-import 'package:dropeg/features/Order/presentation/cubit/order_cubit.dart';
-import 'package:dropeg/features/Order/presentation/widgets/payment_method_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../../core/utils/components/category_title.dart';
+import '../../cubit/order_cubit.dart';
+import '../../widgets/payment_method_item.dart';
 
 class PaymentMethodInfoView extends StatelessWidget {
   const PaymentMethodInfoView({

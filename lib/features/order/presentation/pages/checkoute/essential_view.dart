@@ -3,9 +3,9 @@ import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/components/category_title.dart';
 import 'package:dropeg/core/utils/components/img_network_with_cached.dart';
-import 'package:dropeg/features/Order/presentation/cubit/order_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../cubit/order_cubit.dart';
 
 class EssentialWidgetView extends StatelessWidget {
   const EssentialWidgetView({

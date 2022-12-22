@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/app_values.dart';
 import 'package:dropeg/features/auth/data/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../../core/api/firestore_strings.dart';
 import '../../../../../core/error/failure.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,7 +17,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     try {
       var response = await FirebaseFirestore.instance
           .collection(FirebaseStrings.usersCollection)
-          .doc(uid)
+          .doc(FirebaseAuth.instance.currentUser?.uid ?? "")
           .get();
       return Right(UserDetailsModel.formJson(response.data()!));
     } catch (err) {

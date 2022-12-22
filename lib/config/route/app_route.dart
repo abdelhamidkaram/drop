@@ -1,8 +1,6 @@
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/toasts.dart';
-import 'package:dropeg/features/Order/presentation/pages/checkoute/check_out_screen.dart';
-import 'package:dropeg/features/Order/presentation/pages/order_services/intror_screen.dart';
-import 'package:dropeg/features/Order/presentation/pages/order_services/order_main_screen.dart';
+
 import 'package:dropeg/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/login/login_screen.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/screen/Refer/refar_screen.dart';
@@ -30,6 +28,9 @@ import '../../features/auth/presentation/screens/profile/screen/edit_profile.dar
 import '../../features/auth/presentation/screens/register/location/location_screen.dart';
 import '../../features/auth/presentation/screens/welcome/welcome_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
+import '../../features/order/presentation/pages/checkoute/check_out_screen.dart';
+import '../../features/order/presentation/pages/order_services/intror_screen.dart';
+import '../../features/order/presentation/pages/order_services/order_main_screen.dart';
 import '../../features/splash/splash.dart';
 import 'package:dropeg/injection_container.dart' as di;
 

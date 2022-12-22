@@ -8,16 +8,18 @@ import 'package:dropeg/core/utils/components/app_buttons.dart';
 import 'package:dropeg/core/utils/components/category_title.dart';
 import 'package:dropeg/core/utils/enums.dart';
 import 'package:dropeg/core/utils/toasts.dart';
-import 'package:dropeg/features/Order/domain/entities/orders.dart';
-import 'package:dropeg/features/Order/presentation/cubit/order_cubit.dart';
-import 'package:dropeg/features/Order/presentation/widgets/price_box_widget_view.dart';
 import 'package:dropeg/features/confirm%20order/presentation/cubit/confirm_order_cubit.dart';
 import 'package:dropeg/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../../order/domain/entities/orders.dart';
+import '../../../order/presentation/cubit/order_cubit.dart';
+import '../../../order/presentation/widgets/price_box_widget_view.dart';
 
 class ConfirmOrderScreen extends StatefulWidget {
   final OrderEntity order;
@@ -53,7 +55,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         try {
           await FirebaseFirestore.instance
               .collection(FirebaseStrings.usersCollection)
-              .doc(userInfo!.id)
+              .doc(FirebaseAuth.instance.currentUser?.uid)
               .collection(FirebaseStrings.ordersCollection)
               .doc(order.id)
               .update({"status": status, "isFinish": isFinish});

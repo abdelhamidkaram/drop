@@ -1,7 +1,7 @@
-import 'package:dropeg/features/Order/domain/entities/orders.dart';
 import 'package:dropeg/features/home/features/services/domain/entity/service_entity.dart';
 
 import '../../features/auth/domain/entities/location.dart';
+import '../../features/order/domain/entities/orders.dart';
 
 class LocationsArgs {
   final bool formProfileScreen;

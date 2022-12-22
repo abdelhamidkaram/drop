@@ -4,13 +4,14 @@ import 'package:dropeg/core/utils/components/app_buttons.dart';
 import 'package:dropeg/core/utils/components/category_title.dart';
 import 'package:dropeg/core/utils/components/location_icon.dart';
 import 'package:dropeg/core/utils/enums.dart';
-import 'package:dropeg/features/Order/presentation/cubit/order_cubit.dart';
-import 'package:dropeg/features/Order/presentation/widgets/order_time_type_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import '../../cubit/order_cubit.dart';
+import '../../widgets/order_time_type_item_widget.dart';
 
 class LocationInformationView extends StatelessWidget {
   const LocationInformationView({

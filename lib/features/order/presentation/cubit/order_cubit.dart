@@ -3,17 +3,19 @@ import 'package:dropeg/core/api/firestore_strings.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/enums.dart';
 import 'package:dropeg/core/utils/toasts.dart';
-import 'package:dropeg/features/Order/domain/entities/orders.dart';
-import 'package:dropeg/features/Order/domain/entities/required_service.dart';
 import 'package:dropeg/features/auth/domain/entities/car.dart';
 import 'package:dropeg/features/auth/domain/entities/location.dart';
 import 'package:dropeg/features/auth/domain/entities/referral.dart';
 import 'package:dropeg/features/auth/domain/entities/vouchers.dart';
 import 'package:dropeg/main.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dropeg/core/utils/constant.dart';
+
+import '../../domain/entities/orders.dart';
+import '../../domain/entities/required_service.dart';
 
 part 'order_state.dart';
 
@@ -286,7 +288,7 @@ class OrderCubit extends Cubit<OrderState> {
     try {
       await fireStore
           .collection(FirebaseStrings.usersCollection)
-          .doc(userInfo!.id)
+          .doc(FirebaseAuth.instance.currentUser?.uid)
           .collection(FirebaseStrings.ordersCollection)
           .doc(order.id)
           .set(order.toJson())

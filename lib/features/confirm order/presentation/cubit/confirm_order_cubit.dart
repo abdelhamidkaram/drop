@@ -3,11 +3,12 @@ import 'package:dropeg/core/api/firestore_strings.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/assets_manger.dart';
 import 'package:dropeg/core/utils/enums.dart';
-import 'package:dropeg/features/Order/domain/entities/orders.dart';
 import 'package:dropeg/main.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../order/domain/entities/orders.dart';
 
 part 'confirm_order_state.dart';
 

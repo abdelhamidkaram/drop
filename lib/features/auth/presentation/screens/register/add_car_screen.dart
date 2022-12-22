@@ -14,7 +14,6 @@ import 'package:uuid/uuid.dart';
 import '../../../../../config/route/app_route.dart';
 import '../../../../../main.dart';
 import 'package:dropeg/injection_container.dart' as di;
-
 import '../profile/bloc/cubit.dart';
 
 class AddCarScreen extends StatefulWidget {
@@ -40,90 +39,101 @@ class _AddCarScreenState extends State<AddCarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbars.loginAppbar(
-          context: context, title: AppStrings.signUp, isAddScreen: true),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: addCarFormKey,
-            child: Column(
+        child: Stack(
+          children: [
+            CustomAppbars.loginAppbar(
+          context: context, title: AppStrings.signUp, isAddScreen: true),
+            Column(
               children: [
-                manufacturer(),
-                CustomTextFormField(
-                  hint: AppStrings.carModelHint,
-                  controller: modelController,
-                  type: TextInputType.text,
-                  validateEmptyMSG: AppStrings.carModelHintEmptMSG,
-                ),
-                const SizedBox(height: 25),
-                CustomTextFormField(
-                  hint: AppStrings.carColorlHint,
-                  controller: colorController,
-                  type: TextInputType.text,
-                  validateEmptyMSG: AppStrings.carColorHintEmptMSG,
-                ),
-                const SizedBox(height: 25),
-                licensePlate(),
-                const SizedBox(height: 25),
-                SignUpBTN(
-                  value: 0.0,
-                  onTap: () async {
-                    if (addCarFormKey.currentState!.validate()) {
-                      AppToasts.loadingToast();
-                      Car carDetails = Car(
-                        licenseNumber: licenseNumberController.text,
-                        brand: value,
-                        color: colorController.text,
-                        licensePlate: licensePlateController.text,
-                        model: modelController.text,
-                        id: const Uuid().v4(),
-                      );
+                const SizedBox(height: 210,),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    key: addCarFormKey,
+                    child: Column(
+                      children: [
+                        manufacturer(),
+                        CustomTextFormField(
+                          hint: AppStrings.carModelHint,
+                          controller: modelController,
+                          type: TextInputType.text,
+                          validateEmptyMSG: AppStrings.carModelHintEmptMSG,
+                        ),
+                        const SizedBox(height: 25),
+                        CustomTextFormField(
+                          hint: AppStrings.carColorlHint,
+                          controller: colorController,
+                          type: TextInputType.text,
+                          validateEmptyMSG: AppStrings.carColorHintEmptMSG,
+                        ),
+                        const SizedBox(height: 25),
+                        licensePlate(),
+                        const SizedBox(height: 25),
+                        SignUpBTN(
+                          value: 0.0,
+                          onTap: () async {
+                            if (addCarFormKey.currentState!.validate()) {
+                              AppToasts.loadingToast();
+                              Car carDetails = Car(
+                                licenseNumber: licenseNumberController.text,
+                                brand: value,
+                                color: colorController.text,
+                                licensePlate: licensePlateController.text,
+                                model: modelController.text,
+                                id: const Uuid().v4(),
+                              );
 
-                      await FirebaseFirestore.instance
-                          .collection(FirebaseStrings.usersCollection)
-                          .doc(uId)
-                          .collection(FirebaseStrings.carCollection)
-                          .doc(carDetails.id)
-                          .set(carDetails.toJson())
-                          .then((value) async {
-                        if (!(await di
-                            .sl<AppPreferences>()
-                            .isOnBoardingScreenViewed())) {
-                          await di
-                              .sl<ProfileCubit>()
-                              .getCars(isRefresh: true)
-                              .then((value) {
-                            Navigator.of(context).pushReplacementNamed(
-                                AppRouteStrings.onBoarding);
-                          });
-                          AppToasts.successToast(AppStrings.success);
-                          return;
-                        } else if (widget.formProfileScreen) {
-                          ProfileCubit.get(context)
-                              .getCars(isRefresh: true)
-                              .then((value) {});
-                          Navigator.of(context)
-                              .pushReplacementNamed(AppRouteStrings.account);
-                          AppToasts.successToast(AppStrings.success);
-                          return;
-                        } else {
-                          Navigator.of(context)
-                              .pushReplacementNamed(AppRouteStrings.home);
-                          AppToasts.successToast(AppStrings.success);
-                          return;
-                        }
-                      }).catchError((err) {
-                        AppToasts.errorToast(err.toString());
-                      });
-                    }
-                  },
-                  editOnPressed: () {},
+                              await FirebaseFirestore.instance
+                                  .collection(FirebaseStrings.usersCollection)
+                                  .doc(uId)
+                                  .collection(FirebaseStrings.carCollection)
+                                  .doc(carDetails.id)
+                                  .set(carDetails.toJson())
+                                  .then((value) async {
+                                if (!(await di
+                                    .sl<AppPreferences>()
+                                    .isOnBoardingScreenViewed())) {
+                                  await di
+                                      .sl<ProfileCubit>()
+                                      .getCars(isRefresh: true)
+                                      .then((value) {
+                                    Navigator.of(context).pushReplacementNamed(
+                                        AppRouteStrings.onBoarding);
+                                  });
+                                  AppToasts.successToast(AppStrings.success);
+                                  return;
+                                } else if (widget.formProfileScreen) {
+                                  ProfileCubit.get(context)
+                                      .getCars(isRefresh: true)
+                                      .then((value) {
+                                        Navigator.of(context)
+                                      .pushReplacementNamed(AppRouteStrings.account);
+                                      AppToasts.successToast(AppStrings.success);
+                                      });
+                                  
+                                  return;
+                                } else {
+                                  Navigator.of(context)
+                                      .pushReplacementNamed(AppRouteStrings.home);
+                                  AppToasts.successToast(AppStrings.success);
+                                  return;
+                                }
+                              }).catchError((err) {
+                                AppToasts.errorToast(err.toString());
+                              });
+                            }
+                          },
+                          editOnPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );

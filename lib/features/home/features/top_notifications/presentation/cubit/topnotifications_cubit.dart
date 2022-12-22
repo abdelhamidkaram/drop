@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/api/firestore_strings.dart';
-import '../../../../../Order/domain/entities/orders.dart';
+import '../../../../../order/domain/entities/orders.dart';
 import '../../domain/entities/event.dart';
 import 'package:dropeg/injection_container.dart' as di;
 part 'topnotifications_state.dart';

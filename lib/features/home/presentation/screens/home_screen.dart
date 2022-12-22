@@ -10,10 +10,12 @@ import 'package:dropeg/features/home/bloc/home_cubit.dart';
 import 'package:dropeg/features/home/bloc/home_states.dart';
 import 'package:dropeg/features/home/features/services/presentation/screens/services_view.dart';
 import 'package:dropeg/features/home/features/services/presentation/widgets/location_show.dart';
+import 'package:dropeg/features/home/features/top_notifications/presentation/cubit/topnotifications_cubit.dart';
 import 'package:dropeg/features/home/features/top_notifications/presentation/pages/top_notifications_view.dart';
 import 'package:dropeg/features/home/presentation/widgets/main_location.dart';
 import 'package:dropeg/features/home/presentation/widgets/main_btn.dart';
 import 'package:dropeg/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,12 +54,11 @@ class _HomeScreenState extends State<HomeScreen> {
         return Future.value(true);
       },
       child: Scaffold(
-        
         key: homeScaffoldStateKey,
         drawer: drawer(
           context: context,
           drawerSelected: DrawerSelected.home,
-          ),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -93,15 +94,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context, state) {
                   var location = HomeCubit.get(context).mainLocation;
                   return MainButton(
-                      location: location ?? 
-                      LocationEntity(
-                        address: "address",
-                        state: "state",
-                        city: "city",
-                        type: "Home",
-                        id: "id",
-                        )
-                           );
+                      location: location ??
+                          LocationEntity(
+                            address: "address",
+                            state: "state",
+                            city: "city",
+                            type: "Home",
+                            id: "id",
+                          ));
                 },
               ),
               SizedBox(

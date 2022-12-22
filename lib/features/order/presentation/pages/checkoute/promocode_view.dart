@@ -3,7 +3,7 @@ import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/components/app_buttons.dart';
 import 'package:dropeg/core/utils/components/category_title.dart';
-import 'package:dropeg/features/Order/presentation/cubit/order_cubit.dart';
+import 'package:dropeg/features/order/presentation/cubit/order_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -1,9 +1,8 @@
 import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/config/theme/app_theme.dart';
 import 'package:dropeg/core/utils/app_string.dart';
-import 'package:dropeg/features/Order/presentation/cubit/order_cubit.dart';
+import 'package:dropeg/features/order/presentation/cubit/order_cubit.dart';
 import 'package:dropeg/features/confirm%20order/presentation/cubit/confirm_order_cubit.dart';
-import 'package:dropeg/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -27,7 +26,7 @@ class DropApp extends StatelessWidget {
             providers: [
               BlocProvider(
                 create: (context) => di.sl<ProfileCubit>()
-                  ..getProfileDetails().then((value) => userInfo= value)
+                  ..getProfileDetails(firstbuild: true)
                   ..getLocations()
                   ..getCars()
                   ..getCompounds(),

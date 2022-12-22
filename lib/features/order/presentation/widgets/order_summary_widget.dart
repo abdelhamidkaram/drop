@@ -1,5 +1,5 @@
 import 'package:dropeg/core/utils/components/img_network_with_cached.dart';
-import 'package:dropeg/features/Order/domain/entities/required_service.dart';
+import 'package:dropeg/features/order/domain/entities/required_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

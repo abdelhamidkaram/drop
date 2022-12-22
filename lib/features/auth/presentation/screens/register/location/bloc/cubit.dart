@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/location/bloc/states.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../../config/route/app_route.dart';
@@ -25,7 +26,7 @@ class LocationCubit extends Cubit<LocationStates> {
       LocationEntity location) async {
     await FirebaseFirestore.instance
         .collection(FirebaseStrings.usersCollection)
-        .doc(userInfo!.id)
+        .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection(FirebaseStrings.locationsCollection)
         .doc(location.id)
         .set(location.toJson())

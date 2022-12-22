@@ -5,21 +5,22 @@ import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/components/app_buttons.dart';
 import 'package:dropeg/core/utils/components/custom_appbar.dart';
 import 'package:dropeg/core/utils/toasts.dart';
-import 'package:dropeg/features/Order/domain/entities/orders.dart';
-import 'package:dropeg/features/Order/presentation/cubit/order_cubit.dart';
-import 'package:dropeg/features/Order/presentation/pages/checkoute/essential_view.dart';
-import 'package:dropeg/features/Order/presentation/pages/checkoute/location_info_view.dart';
-import 'package:dropeg/features/Order/presentation/pages/checkoute/payment_info_view.dart';
-import 'package:dropeg/features/Order/presentation/pages/checkoute/promocode_view.dart';
-import 'package:dropeg/features/Order/presentation/pages/checkoute/summary_and_car_info_view.dart';
-import 'package:dropeg/features/Order/presentation/widgets/price_box_widget_view.dart';
+import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
+import 'package:dropeg/features/order/presentation/cubit/order_cubit.dart';
+import 'package:dropeg/features/order/presentation/pages/checkoute/payment_info_view.dart';
+import 'package:dropeg/features/order/presentation/pages/checkoute/promocode_view.dart';
+import 'package:dropeg/features/order/presentation/pages/checkoute/summary_and_car_info_view.dart';
 import 'package:dropeg/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:dropeg/injection_container.dart' as di;
+
+import '../../../domain/entities/orders.dart';
+import '../../widgets/price_box_widget_view.dart';
+import 'essential_view.dart';
+import 'location_info_view.dart';
 
 class CheckOutScreen extends StatefulWidget {
   const CheckOutScreen({super.key});
@@ -30,6 +31,12 @@ class CheckOutScreen extends StatefulWidget {
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
   var formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    ProfileCubit.get(context).getCars();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OrderCubit, OrderState>(

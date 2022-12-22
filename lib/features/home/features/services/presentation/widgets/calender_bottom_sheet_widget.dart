@@ -10,11 +10,12 @@ import 'package:dropeg/core/utils/components/category_title.dart';
 import 'package:dropeg/core/utils/components/img_network_with_cached.dart';
 import 'package:dropeg/features/home/features/services/domain/entity/service_entity.dart';
 import 'package:dropeg/features/home/features/services/presentation/cubit/provider_services_cubit.dart';
+import 'package:dropeg/features/home/features/top_notifications/presentation/cubit/topnotifications_cubit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uuid/uuid.dart';
-
 import '../../../../../../core/utils/toasts.dart';
 import '../../../../../../main.dart';
 import 'package:dropeg/injection_container.dart' as di;
@@ -158,7 +159,7 @@ class _CalenderBottomSheetWidgetState extends State<CalenderBottomSheetWidget> {
                                     .toJson(),
                                 "services": widget.serviceProvideList?.toJson(),
                                 "price": widget.serviceProvideList?.price,
-                                "userId": uId,
+                                "userId": FirebaseAuth.instance.currentUser!.uid,
                                 "appointment":
                                     ProviderServicesCubit.get(context)
                                         .selectedTime,
@@ -172,20 +173,24 @@ class _CalenderBottomSheetWidgetState extends State<CalenderBottomSheetWidget> {
                                   .collection(FirebaseStrings.appointmentsList)
                                   .doc(serviceUuid)
                                   .set(data)
-                                  .then((value) {
+                                  .then((void value) {
                                 di
                                     .sl<AppPreferences>()
-                                    .setShowAppointmentTopNotification(true).then((value){
-                                AppToasts.successToast(AppStrings.success);
-                                      Navigator.pushNamed(
-                                  context,
-                                  AppRouteStrings.singleProviderOrderConfirmed,
-                                  arguments: SingleProviderOrderConfirmedArgs(
-                                    serviceProvideList:
-                                        widget.serviceProvideList,
-                                  ),
-                                );
-                                    });
+                                    .setShowAppointmentTopNotification(true)
+                                    .then((value) {
+                                  TopNotificationsCubit.get(context)
+                                      .appointment = data;
+                                  AppToasts.successToast(AppStrings.success);
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRouteStrings
+                                        .singleProviderOrderConfirmed,
+                                    arguments: SingleProviderOrderConfirmedArgs(
+                                      serviceProvideList:
+                                          widget.serviceProvideList,
+                                    ),
+                                  );
+                                });
                               }).catchError((e) {
                                 AppToasts.errorToast(AppStrings.errorInternal);
                                 debugPrint(e.toString());

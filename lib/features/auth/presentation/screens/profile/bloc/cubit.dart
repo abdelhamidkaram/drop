@@ -47,13 +47,13 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   UserDetails? userDetails;
 
-
-
-  Future<UserDetails?> getProfileDetails({bool isRefresh = false}) async {
-    if (userInfo == null || isRefresh == true) {
+  Future<UserDetails?> getProfileDetails(
+      {bool isRefresh = false, bool? firstbuild}) async {
+    if (userInfo == null || isRefresh == true || firstbuild == true) {
       emit(const GetProfileDetailsLoading());
-      var response = await getProfileUseCase(
-          ProfileDetailsRequest(isRefresh: isRefresh, uid: uId));
+      var response = await getProfileUseCase(ProfileDetailsRequest(
+          isRefresh: firstbuild ?? false,
+          uid: FirebaseAuth.instance.currentUser?.uid ?? ""));
       response.fold((failure) {
         debugPrint("profileDetails Error ");
         emit(GetProfileDetailsError(msg: failure.message));
@@ -71,12 +71,12 @@ class ProfileCubit extends Cubit<ProfileStates> {
     bool isUpdate = false;
     await FirebaseFirestore.instance
         .collection(FirebaseStrings.usersCollection)
-        .doc(userInfo!.id)
+        .doc(FirebaseAuth.instance.currentUser?.uid)
         .update(newUserDetails.toJson())
         .then((value) {
       userInfo = newUserDetails;
       userDetails = newUserDetails;
-      getProfileDetails(isRefresh: true).then((value) => null);
+      getProfileDetails(isRefresh: true , firstbuild: true ).then((value) => null);
       AppToasts.successToast(AppStrings.success);
       emit(UpdateAccountSuccess());
       isUpdate = true;
@@ -90,7 +90,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   Future getLocations({bool isRefresh = false}) async {
     emit(const GetLocationsLoading());
-    (await locationUseCase(LocationsRequest(uid: userInfo?.id ?? uId , isRefresh: isRefresh)))
+    (await locationUseCase(LocationsRequest(
+            uid: FirebaseAuth.instance.currentUser?.uid ?? uId,
+            isRefresh: isRefresh)))
         .fold((failure) => emit(GetLocationsError(msg: failure.message)),
             (locations) async {
       if (locations.isNotEmpty) {
@@ -133,7 +135,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   Future getCars({bool isRefresh = false}) async {
     emit(const GetCarsLoading());
-    (await carsUseCase(CarsRequest(uid: uId, isRefresh: isRefresh)))
+    (await carsUseCase(CarsRequest(
+            uid: FirebaseAuth.instance.currentUser?.uid ?? uId,
+            isRefresh: isRefresh)))
         .fold((failure) => emit(GetCarsError(msg: failure.message)), (cars) {
       if (cars.isNotEmpty) {
         this.cars = cars;
@@ -154,12 +158,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
   }
 
   Future sendPhone(String phone) async {
-    emit(SendPhoneLoading());
     try {
-      await FirebaseFirestore.instance
-          .collection(FirebaseStrings.usersCollection)
-          .doc(userInfo!.id)
-          .update({FirebaseStrings.phoneField: phone});
       var newUser = UserDetails(
         refarCode: userInfo!.refarCode,
         email: userInfo!.email,
@@ -174,9 +173,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
       );
       userDetails = newUser;
       userInfo = newUser;
-
-      await getProfileDetails(isRefresh: true);
-      emit(SendPhoneSuccess());
+      await updateProfileDetails(newUser).then((value) {
+        
+      });
     } on Exception catch (e) {
       debugPrint(e.toString());
       emit(SendPhoneError());

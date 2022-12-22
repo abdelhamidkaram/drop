@@ -74,16 +74,16 @@ flutter:
           weight: 400
         - asset: assets/fonts/RidleyGroteskSemiBold.ttf
           weight: 600
-        - asset: assets/fonts/RidleyGroteskBlack.ttf
-        - asset: assets/fonts/RidleyGroteskExtraBold.ttf
-        - asset: assets/fonts/RidleyGroteskThin.ttf
-        - asset: assets/fonts/RidleyGroteskultraLight.ttf
-        - asset: assets/fonts/RidleyGroteskBlackItalic.ttf
-        - asset: assets/fonts/RidleyGroteskThinItalic.ttf
-        - asset: assets/fonts/RidleyGroteskBoldItalic.ttf
-        - asset: assets/fonts/RidleyGroteskExtraBoldItalic.ttf
-        - asset: assets/fonts/RidleyGroteskItalic.ttf
-        - asset: assets/fonts/RidleyGroteskLightItalic.ttf
-        - asset: assets/fonts/RidleyGroteskmediumItalic.ttf
-        - asset: assets/fonts/RidleyGroteskSemiBoldItalic.ttf
+#        - asset: assets/fonts/RidleyGroteskBlack.ttf
+ #       - asset: assets/fonts/RidleyGroteskExtraBold.ttf
+ #       - asset: assets/fonts/RidleyGroteskThin.ttf
+ #       - asset: assets/fonts/RidleyGroteskultraLight.ttf
+ #       - asset: assets/fonts/RidleyGroteskBlackItalic.ttf
+ #       - asset: assets/fonts/RidleyGroteskThinItalic.ttf
+ #       - asset: assets/fonts/RidleyGroteskBoldItalic.ttf
+ #       - asset: assets/fonts/RidleyGroteskExtraBoldItalic.ttf
+  #      - asset: assets/fonts/RidleyGroteskItalic.ttf
+  #      - asset: assets/fonts/RidleyGroteskLightItalic.ttf
+  #      - asset: assets/fonts/RidleyGroteskmediumItalic.ttf
+  #      - asset: assets/fonts/RidleyGroteskSemiBoldItalic.ttf
 
