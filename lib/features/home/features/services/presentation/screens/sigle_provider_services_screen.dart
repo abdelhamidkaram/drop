@@ -44,7 +44,7 @@ class _SingleProviderServicesScreenState
                       img:
                           widget.serviceEntity.serviceProviders[widget.index].img),
                 ),
-
+            
                 (widget.serviceEntity.serviceProviders[widget.index]
                                 .serverProvideList !=
                             null &&
@@ -70,9 +70,16 @@ class _SingleProviderServicesScreenState
                               )),
                         )
                       )
-                    : const Center(
-                        child: Text(AppStrings.noServices),
-                      ),
+                    :  Column(
+                       children:  [
+                        SizedBox(
+                          height: 400.h,
+                          child:const Center(
+                            child: Text(AppStrings.noServices),
+                          ),
+                        )
+                       ],
+                    ),
               ],
             ),
           ),
@@ -82,7 +89,7 @@ class _SingleProviderServicesScreenState
             AppButtonBlue(
                 text: AppStrings.scheduleAppointment,
                 onTap: () {
-                  if (userInfo!.id!.isNotEmpty ) {
+                  if (userInfo!.id!.isNotEmpty) {
                    ProviderServicesCubit.get(context).selectedProvider == null  ? 
                    AppToasts.errorToast(AppStrings.noServices)
                    : Navigator.pushNamed(

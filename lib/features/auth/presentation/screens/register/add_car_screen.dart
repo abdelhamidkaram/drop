@@ -40,7 +40,6 @@ class _AddCarScreenState extends State<AddCarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
         child: Stack(
           children: [
             CustomAppbars.loginAppbar(

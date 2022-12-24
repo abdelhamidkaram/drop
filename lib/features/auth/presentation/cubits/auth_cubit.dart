@@ -1,5 +1,6 @@
 import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/core/utils/app_string.dart';
+import 'package:dropeg/core/utils/constant.dart';
 import 'package:dropeg/features/auth/domain/entities/referral.dart';
 import 'package:dropeg/features/auth/domain/entities/user.dart';
 import 'package:dropeg/features/auth/domain/request_models.dart';
@@ -46,7 +47,7 @@ class AuthCubit extends Cubit<AuthStates> {
     }, (user) async {
       userDetails = UserDetails(
         freeWashUsed: 0,
-        freeWashTotal: 1,
+        freeWashTotal: AppConstants.freeWashTotal,
         isVerify: user.emailVerified,
         name: registerRequest.name,
         phone: registerRequest.phone,
@@ -83,7 +84,7 @@ class AuthCubit extends Cubit<AuthStates> {
         refarCode: const Uuid().v4().substring(0, 8),
         isPhoneVerify: false,
         freeWashUsed: 0,
-        freeWashTotal: 1,
+        freeWashTotal: AppConstants.freeWashTotal,
       );
       userInfo = userDetails;
       await fireStore
@@ -117,7 +118,7 @@ class AuthCubit extends Cubit<AuthStates> {
           photo: user.user!.photoURL,
           isVerify: true,
           freeWashUsed: 0,
-          freeWashTotal: 1,
+          freeWashTotal: AppConstants.freeWashTotal,
         );
         userDetails = userNew;
         userInfo = userNew;

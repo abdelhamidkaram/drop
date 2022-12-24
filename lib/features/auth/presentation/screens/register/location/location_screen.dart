@@ -45,16 +45,20 @@ class _LocationScreenState extends State<LocationScreen> {
   initState() {
     super.initState();
     getMyCurrentLocation().whenComplete(() {
-      getAddressFromLatLng(context, myPosition?.latitude ?? 30.005493,
+      if(mounted){
+        getAddressFromLatLng(context, myPosition?.latitude ?? 30.005493,
               myPosition?.longitude ?? 31.477898)
           .whenComplete(() {
-        setState(() {
+        if (mounted) {
+          setState(() {
           if (widget.locationEntity != null) {
             addresstext = widget.locationEntity!.address!;
             addressController.text = widget.locationEntity!.address!;
           }
         });
+        }
       });
+      }
     });
   }
 
