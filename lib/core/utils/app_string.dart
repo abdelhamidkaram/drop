@@ -16,8 +16,7 @@ class AppStrings {
   static const String pleaseCreateAccount = "Please create an account";
   static const String pleaseEnterYourCarDetails =
       "Please enter your car details";
-static const String pleaseChooseCar =
-      " You must choose a car ";
+  static const String pleaseChooseCar = " You must choose a car ";
   static const String carDetails = "Car Details";
   static const String continueWithFacebook = "Continue with Facebook";
   static const String continueWithApple = "Continue with Apple";
@@ -32,24 +31,24 @@ static const String pleaseChooseCar =
   static const String registeredCompounds = "Registered Compounds";
   static const String registeredCompoundsSubtitle = "Registered Compounds:";
   static const String locationTypeHIT = "Location Type";
-  static const String locationTypeEmptMSG = "choese $locationTypeHIT";
+  static const String locationTypeEmptyMSG = "choose $locationTypeHIT";
   static const String stateLocationHIT = "Egypt";
-  static const String stateEmptuMSG = "choese $stateLocationHIT";
+  static const String stateEmptyMSG = "choose $stateLocationHIT";
   static const String cityLocationHIT = "City / Zone";
-  static const String cityEmptuMSG = "choese $cityLocationHIT";
+  static const String cityEmptyMSG = "choose $cityLocationHIT";
   static const String addressHIT = "Address";
-  static const String addressEmptuMSG = "choese $addressHIT";
+  static const String addressEmptyMSG = "choose $addressHIT";
   static const String manufacturerHint = "Manufacturer";
-  static const String manufacturerEmptMSG = "choese $manufacturerHint";
+  static const String manufacturerEmptyMSG = "choose $manufacturerHint";
   static const String carModelHint = "model";
-  static const String carModelHintEmptMSG = "Enter $carModelHint";
-  static const String carColorlHint = "Color";
-  static const String carColorHintEmptMSG = "Enter $carColorlHint";
-  static const String carlicenseNumberHint = "licenseNumber ";
-  static const String carAHintEmptMSG = "Enter $carlicenseNumberHint";
+  static const String carModelHintEmptyMSG = "Enter $carModelHint";
+  static const String carColorHint = "Color";
+  static const String carColorHintEmptyMSG = "Enter $carColorHint";
+  static const String carLicenseNumberHint = "licenseNumber ";
+  static const String carAHintEmptyMSG = "Enter $carLicenseNumberHint";
 
   static const String carLicensePlateHint = "License Plate";
-  static const String carLicensePlateHintEmptMSG =
+  static const String carLicensePlateHintEmptyMSG =
       " Enter $carLicensePlateHint ";
   static const String welcome = "welcome";
   static const String firstNameHINT = "First Name";
@@ -100,7 +99,7 @@ static const String pleaseChooseCar =
   static const String help = "Help";
   static const String logOut = "Logout";
   static const String myOrders = "My Orders";
-  static const String myRefar = "Refer a friend";
+  static const String myRefer = "Refer a friend";
   static const String referrals = "Referrals";
   static const String vouchers = "Vouchers";
   static const String myLocations = "My Locations";
@@ -117,7 +116,7 @@ static const String pleaseChooseCar =
   static const String noVoucher = "No Voucher now";
   static const String noServices = "No Services now";
   static const String get1FreeWash = "Get 1 Free Wash";
-  static const String foreveryfriendyourefer = "For every friend you refer";
+  static const String forEveryFriendYouRefer = "For every friend you refer";
   static const String share = "Share";
   static const String copied = "Copied";
   static const String hereAreYourEarnedVouchers =
@@ -195,6 +194,13 @@ static const String pleaseChooseCar =
   static const String appointmentNotification = "Appointments Notification";
   static const String eventNotification = "Events Notification";
 
+  static const String readTerms = "I’ve Read and Agree to ";
+  static const String gotoTerms = "Terms and Conditions";
+  static const String readPrivacy = "I’ve Read and Agree to ";
+  static const String gotoPriv = "Privacy Policy";
+  static const String letsGo = "Let’s Go!";
+  static const String mustAgreeTerms = "you must agree to terms & privacy";
+  static const String forgetPassword = "Forgot Password?";
 }
 
 class FirebaseErrorMessage {

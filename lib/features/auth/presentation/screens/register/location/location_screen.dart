@@ -45,19 +45,19 @@ class _LocationScreenState extends State<LocationScreen> {
   initState() {
     super.initState();
     getMyCurrentLocation().whenComplete(() {
-      if(mounted){
+      if (mounted) {
         getAddressFromLatLng(context, myPosition?.latitude ?? 30.005493,
-              myPosition?.longitude ?? 31.477898)
-          .whenComplete(() {
-        if (mounted) {
-          setState(() {
-          if (widget.locationEntity != null) {
-            addresstext = widget.locationEntity!.address!;
-            addressController.text = widget.locationEntity!.address!;
+                myPosition?.longitude ?? 31.477898)
+            .whenComplete(() {
+          if (mounted) {
+            setState(() {
+              if (widget.locationEntity != null) {
+                addresstext = widget.locationEntity!.address!;
+                addressController.text = widget.locationEntity!.address!;
+              }
+            });
           }
         });
-        }
-      });
       }
     });
   }
@@ -224,20 +224,20 @@ class _LocationScreenState extends State<LocationScreen> {
                                 locationFieldType: LocationFieldType.type,
                                 list: locationTypes,
                                 hint: AppStrings.locationTypeHIT,
-                                validateMSG: AppStrings.locationTypeEmptMSG,
+                                validateMSG: AppStrings.locationTypeEmptyMSG,
                                 value: widget.locationEntity?.type,
                               ),
                               CustomDropDownField(
                                   locationFieldType: LocationFieldType.state,
                                   list: states,
                                   hint: AppStrings.stateLocationHIT,
-                                  validateMSG: AppStrings.stateEmptuMSG,
+                                  validateMSG: AppStrings.stateEmptyMSG,
                                   value: widget.locationEntity?.state),
                               CustomDropDownField(
                                 locationFieldType: LocationFieldType.city,
                                 list: cities,
                                 hint: AppStrings.cityLocationHIT,
-                                validateMSG: AppStrings.cityEmptuMSG,
+                                validateMSG: AppStrings.cityEmptyMSG,
                                 value: widget.locationEntity?.city,
                               ),
                               CustomTextFormField(

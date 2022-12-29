@@ -46,10 +46,10 @@ class _CarCardItemState extends State<CarCardItem> {
           SizedBox(
             width: 50,
             child: CustomTextFormField(
-              hint: AppStrings.carlicenseNumberHint,
+              hint: AppStrings.carLicenseNumberHint,
               controller: licenseNumberController,
               type: TextInputType.text,
-              validateEmptyMSG: AppStrings.carAHintEmptMSG,
+              validateEmptyMSG: AppStrings.carAHintEmptyMSG,
             ),
           ),
           const SizedBox(
@@ -61,7 +61,7 @@ class _CarCardItemState extends State<CarCardItem> {
               hint: AppStrings.carLicensePlateHint,
               controller: licensePlateController,
               type: TextInputType.text,
-              validateEmptyMSG: AppStrings.carLicensePlateHintEmptMSG,
+              validateEmptyMSG: AppStrings.carLicensePlateHintEmptyMSG,
             ),
           ),
           const SizedBox(
@@ -89,7 +89,7 @@ class _CarCardItemState extends State<CarCardItem> {
                   child: DropdownButtonFormField(
                     validator: (value) {
                       if (value == null) {
-                        return AppStrings.manufacturerEmptMSG;
+                        return AppStrings.manufacturerEmptyMSG;
                       }
                       return null;
                     },
@@ -184,14 +184,14 @@ class _CarCardItemState extends State<CarCardItem> {
                             hint: AppStrings.carModelHint,
                             controller: modelController,
                             type: TextInputType.text,
-                            validateEmptyMSG: AppStrings.carModelHintEmptMSG,
+                            validateEmptyMSG: AppStrings.carModelHintEmptyMSG,
                           ),
                           const SizedBox(height: 25),
                           CustomTextFormField(
-                            hint: AppStrings.carColorlHint,
+                            hint: AppStrings.carColorHint,
                             controller: colorController,
                             type: TextInputType.text,
-                            validateEmptyMSG: AppStrings.carColorHintEmptMSG,
+                            validateEmptyMSG: AppStrings.carColorHintEmptyMSG,
                           ),
                           const SizedBox(height: 25),
                           licensePlate(),

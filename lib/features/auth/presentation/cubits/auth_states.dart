@@ -9,7 +9,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthInitialState extends AuthStates{}
 
+class ChangeTermsAgreeSuccess extends AuthStates{}
+class ChangeTermsAgreeLoading extends AuthStates{}
+
+
 // register states -------------------------------------------------------------|
+
 
 class RegisterWithGoogleLoading extends AuthStates{}
 class RegisterWithGoogleSuccess extends AuthStates{

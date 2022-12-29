@@ -12,6 +12,7 @@ class ImagesManger {
   static const String ticket = "$imagePath/ticket.png";
   static const String refar = "$imagePath/friend2.png";
   static const String eventScreen = "$imagePath/exotics_driver.png";
+  static const String pirvacy = "$imagePath/pirvacy.png";
 }
 
 const iconsPath = "assets/icons";
