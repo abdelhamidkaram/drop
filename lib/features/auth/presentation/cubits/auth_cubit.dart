@@ -34,6 +34,20 @@ class AuthCubit extends Cubit<AuthStates> {
   }) : super(AuthInitialState());
 
   static AuthCubit get(context) => BlocProvider.of(context);
+
+  int termsAgree = 0;
+
+  getChangeTerms(bool isSelected) {
+    emit(ChangeTermsAgreeLoading());
+    if (isSelected) {
+      termsAgree += 1;
+    } else {
+      termsAgree -= 1;
+
+    }
+    emit(ChangeTermsAgreeSuccess());
+  }
+
   UserDetails? userDetails;
   var fireStore = FirebaseFirestore.instance;
   //----------- Register
@@ -129,7 +143,7 @@ class AuthCubit extends Cubit<AuthStates> {
             .then((value1) async {
           if (!value1.exists) {
             await sendUserToCollection(user.user!);
-             await loginSuccessCache();
+            await loginSuccessCache();
           }
           await appPreferences.deleteUserDetailsAndNotLogOut();
           await fireStore
@@ -141,12 +155,11 @@ class AuthCubit extends Cubit<AuthStates> {
             AppToasts.successToast(
                 "${AppStrings.welcome} ${user.user!.displayName ?? user.user!.email!.split("@").first}");
             await loginSuccessCache().whenComplete(() {
-
-            if (value.docs.isEmpty) {
-              Navigator.pushNamed(context, AppRouteStrings.location);
-            } else {
-              Navigator.pushNamed(context, AppRouteStrings.home);
-            }
+              if (value.docs.isEmpty) {
+                Navigator.pushNamed(context, AppRouteStrings.location);
+              } else {
+                Navigator.pushNamed(context, AppRouteStrings.home);
+              }
             });
           });
         });
@@ -200,7 +213,7 @@ class AuthCubit extends Cubit<AuthStates> {
                 code: userDetails!.refarCode, numberOfUsed: 0, userId: user.uid)
             .toJson())
         .then((value) {
-          userInfo = userDetails;
+      userInfo = userDetails;
       debugPrint("referral code is saved >>> ");
     });
   }

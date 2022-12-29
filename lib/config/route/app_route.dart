@@ -1,6 +1,5 @@
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/toasts.dart';
-
 import 'package:dropeg/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/login/login_screen.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/screen/Refer/refar_screen.dart';
@@ -74,10 +73,7 @@ class AppRoute {
       case AppRouteStrings.login:
         return MaterialPageRoute(
           builder: (context) {
-            return BlocProvider(
-              create: (context) => di.sl<AuthCubit>(),
-              child: const LoginScreen(),
-            );
+            return const LoginScreen();
           },
         );
       case AppRouteStrings.register:
@@ -85,7 +81,6 @@ class AppRoute {
           builder: (context) {
             return MultiBlocProvider(
               providers: [
-                BlocProvider(create:  (context) => di.sl<AuthCubit>()) ,
                 BlocProvider(create:  (context) => TopNotificationsCubit()) ,
                 ] ,
               child: const RegisterScreen(),
@@ -108,10 +103,7 @@ class AppRoute {
       case AppRouteStrings.welcome:
         return MaterialPageRoute(
           builder: (context) {
-            return BlocProvider(
-              create: (context) => di.sl<AuthCubit>(),
-              child: const WelcomeScreen(),
-            );
+            return const WelcomeScreen();
           },
         );
       case AppRouteStrings.location:
@@ -264,10 +256,7 @@ class AppRoute {
       AppToasts.errorToast(AppStrings.requiredLogin);
       return MaterialPageRoute(
         builder: (context) {
-          return BlocProvider(
-            create: (context) => di.sl<AuthCubit>(),
-            child: const WelcomeScreen(),
-          );
+          return const WelcomeScreen();
         },
       );
     }

@@ -7,7 +7,6 @@ import 'package:dropeg/features/auth/domain/entities/car.dart';
 import 'package:dropeg/features/auth/domain/entities/location.dart';
 import 'package:dropeg/features/auth/domain/entities/referral.dart';
 import 'package:dropeg/features/auth/domain/entities/vouchers.dart';
-import 'package:dropeg/main.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

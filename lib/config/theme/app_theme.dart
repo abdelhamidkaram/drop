@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/utils/app_colors.dart';
 
 ThemeData appTheme() => ThemeData(
+  visualDensity: VisualDensity.adaptivePlatformDensity,
   popupMenuTheme: const  PopupMenuThemeData(
     shape:  RoundedRectangleBorder(
           borderRadius: BorderRadius.all(

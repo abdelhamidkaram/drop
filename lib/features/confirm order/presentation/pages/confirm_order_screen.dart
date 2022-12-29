@@ -9,7 +9,6 @@ import 'package:dropeg/core/utils/components/category_title.dart';
 import 'package:dropeg/core/utils/enums.dart';
 import 'package:dropeg/core/utils/toasts.dart';
 import 'package:dropeg/features/confirm%20order/presentation/cubit/confirm_order_cubit.dart';
-import 'package:dropeg/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

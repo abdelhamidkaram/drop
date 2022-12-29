@@ -17,7 +17,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../../../core/utils/toasts.dart';
-import '../../../../../../main.dart';
 import 'package:dropeg/injection_container.dart' as di;
 
 class CalenderBottomSheetWidget extends StatefulWidget {
