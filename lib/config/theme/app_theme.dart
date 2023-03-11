@@ -17,7 +17,6 @@ ThemeData appTheme() => ThemeData(
       primaryColor: AppColors.primaryColor,
       hintColor: AppColors.hit,
       brightness: Brightness.light,
-      bottomAppBarColor: AppColors.backGround,
       bottomSheetTheme:
           const BottomSheetThemeData(backgroundColor: Colors.transparent),
       progressIndicatorTheme: ProgressIndicatorThemeData(
@@ -43,34 +42,34 @@ ThemeData appTheme() => ThemeData(
         ),
       ),
       textTheme: TextTheme(
-        headline1: TextStyle(
+        displayLarge: TextStyle(
             fontFamily: AppStrings.fontFamily,
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
             color: AppColors.black,
             overflow: TextOverflow.ellipsis),
-        headline2: TextStyle(
+        displayMedium: TextStyle(
             fontFamily: AppStrings.fontFamily,
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
             color: AppColors.black,
             overflow: TextOverflow.ellipsis),
-        headline3: TextStyle(
+        displaySmall: TextStyle(
             fontFamily: AppStrings.fontFamily,
             fontSize: 16.sp,
             fontWeight: FontWeight.bold,
             color: AppColors.black,
             overflow: TextOverflow.ellipsis),
-        headline5: TextStyle(
+        headlineSmall: TextStyle(
             fontFamily: AppStrings.fontFamily,
             fontSize: 14.sp,
             fontWeight: FontWeight.w700,
             overflow: TextOverflow.ellipsis),
-        headline6: TextStyle(
+        titleLarge: TextStyle(
             fontFamily: AppStrings.fontFamily,
             fontSize: 12.sp,
             fontWeight: FontWeight.w700,
             color: AppColors.grey,
             overflow: TextOverflow.ellipsis),
-      ),
+      ), bottomAppBarTheme: BottomAppBarTheme(color: AppColors.backGround),
     );

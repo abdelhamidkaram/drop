@@ -11,10 +11,10 @@ class LocationEntity extends Equatable {
       {required this.address,
       required this.state,
       required this.city,
-      required this.type ,
-      required this.id
-      });
-  LocationEntity.formJson(Map<String , dynamic> json){
+      required this.type,
+      required this.id});
+
+  LocationEntity.formJson(Map<String, dynamic> json) {
     address = json["address"];
     state = json["state"];
     city = json["city"];
@@ -22,15 +22,18 @@ class LocationEntity extends Equatable {
     id = json["id"];
   }
 
-  Map<String , dynamic > toJson()=>{
-    "address":address,
-    "state":state,
-    "city":city,
-    "type":type,
-    "id":id,
-  };
+  String get addressForView {
+    return (this.city ?? "") + '-' + (this.state ?? "");
+  }
 
+  Map<String, dynamic> toJson() => {
+        "address": address,
+        "state": state,
+        "city": city,
+        "type": type,
+        "id": id,
+      };
 
   @override
-  List<Object?> get props =>[address , state , city , id];
+  List<Object?> get props => [address, state, city, id];
 }

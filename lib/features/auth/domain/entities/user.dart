@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class UserDetails extends Equatable {
    final String? refarCode;
   final String? name;
-  final String? email;
+   final String? email;
   final String? phone;
   final String? photo;
   final String? id;
@@ -27,6 +27,15 @@ class UserDetails extends Equatable {
 
   });
 
+  String get nameForView{
+    String fullName="";
+ this.name?.split(" ").forEach((e){
+          String nameWithUpper =e[0].toUpperCase()+e.substring(1);
+          fullName +=" $nameWithUpper";
+    });
+
+    return fullName.trim();
+  }
   Map<String, dynamic> toJson() => {
         "name": name,
         "phone": phone,

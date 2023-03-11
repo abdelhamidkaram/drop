@@ -49,10 +49,10 @@ class MainLocation extends StatelessWidget {
                           children: [
                             Text(
                               AppStrings.deliveringTo,
-                              style: Theme.of(context).textTheme.headline3,
+                              style: Theme.of(context).textTheme.displaySmall,
                             ),
                             Text(
-                              "${location?.type ?? ""}:${location?.address ?? ""}",
+                              "${location?.type ?? ""}:${location?.addressForView ?? ""}",
                               maxLines: 2,
                               style: const TextStyle(
                                  height: 0.99,

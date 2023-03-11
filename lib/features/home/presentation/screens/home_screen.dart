@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               CustomAppbars.homeAppBar(
                   context: context,
-                  helloTitle: "${AppStrings.hello} ${userInfo?.name ?? ''},",
+                  helloTitle: "${AppStrings.hello} ${userInfo?.nameForView ?? ''},",
                   hellosubTitle: AppStrings.welcomeBack,
                   onTap: () {
                     homeScaffoldStateKey.currentState?.openDrawer();
@@ -187,7 +187,7 @@ class Notifications extends StatelessWidget {
             children: [
               Text(
                 "Free Wash",
-                style: Theme.of(context).textTheme.headline3,
+                style: Theme.of(context).textTheme.displaySmall,
               ),
               SizedBox(
                 height: 5.h,

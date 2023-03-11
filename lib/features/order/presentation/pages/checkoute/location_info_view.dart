@@ -57,7 +57,7 @@ class LocationInformationView extends StatelessWidget {
                       children: [
                         Text(
                           OrderCubit.get(context).orderLocation?.type ?? "Home",
-                          style: Theme.of(context).textTheme.headline3,
+                          style: Theme.of(context).textTheme.displaySmall,
                         ),
                         Text(
                           OrderCubit.get(context).orderLocation!.address ?? "",
@@ -137,66 +137,68 @@ class CalenderWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 240.h,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TableCalendar(
-                    shouldFillViewport: true,
-                    currentDay: DateTime.parse(
-                        orderCubit.orderDateTime ?? DateTime.now().toString()),
-                    onDaySelected: (selectedDay, focusedDay) {
-                      orderCubit.changeOrderDateTime(
-                          dateTime: selectedDay,
-                          orderTimeType: OrderTimeType.schedule);
-                    },
-                    weekendDays: const [],
-                    firstDay: DateTime.utc(2020, 1, 14),
-                    lastDay: DateTime.utc(2030, 3, 14),
-                    focusedDay: DateTime.parse(
-                        orderCubit.orderDateTime ?? DateTime.now().toString()),
-                    headerVisible: true,
-                    calendarStyle: CalendarStyle(
-                      todayDecoration: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          shape: BoxShape.circle),
-                      todayTextStyle: Theme.of(context)
-                          .textTheme
-                          .headline3!
-                          .copyWith(color: AppColors.white),
-                      defaultTextStyle: Theme.of(context)
-                          .textTheme
-                          .headline3!
-                          .copyWith(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w500),
-                      disabledTextStyle: Theme.of(context)
-                          .textTheme
-                          .headline3!
-                          .copyWith(
-                              color: AppColors.grey,
-                              fontWeight: FontWeight.w500),
-                    ),
-                    daysOfWeekStyle: DaysOfWeekStyle(
-                        weekdayStyle: Theme.of(context)
-                            .textTheme
-                            .headline5!
-                            .copyWith(
-                                color: AppColors.primaryColor,
-                                fontWeight: FontWeight.w500)),
-                    headerStyle: HeaderStyle(
-                      formatButtonVisible: false,
-                      titleCentered: true,
-                      titleTextStyle: Theme.of(context)
-                          .textTheme
-                          .headline5!
-                          .copyWith(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w500),
-                      leftChevronVisible: false,
-                      rightChevronVisible: false,
-                      headerMargin: const EdgeInsets.symmetric(vertical: 16.0),
-                    ),
+                height: 250.h,
+                child: TableCalendar(
+                  shouldFillViewport: true,
+                  currentDay: DateTime.parse(
+                      orderCubit.orderDateTime ?? DateTime.now().toString()),
+                  onDaySelected: (selectedDay, focusedDay) {
+                    orderCubit.changeOrderDateTime(
+                        dateTime: selectedDay,
+                        orderTimeType: OrderTimeType.schedule);
+                  },
+                  weekendDays: const [],
+                  firstDay: DateTime.utc(2020, 1, 14),
+                  lastDay: DateTime.utc(2030, 3, 14),
+                  focusedDay: DateTime.parse(
+                      orderCubit.orderDateTime ?? DateTime.now().toString()),
+                  headerVisible: true,
+                  calendarStyle: CalendarStyle(
+                     selectedDecoration: BoxDecoration(
+                       color: AppColors.greyBorder,
+                     ),
+                    todayDecoration: BoxDecoration(
+
+                        color: AppColors.primaryColor,
+                        shape: BoxShape.circle),
+                    todayTextStyle: Theme.of(context)
+                        .textTheme
+                        .displaySmall!
+                        .copyWith(color: AppColors.white , fontSize: 12),
+                    defaultTextStyle: Theme.of(context)
+                        .textTheme
+                        .displaySmall!
+                        .copyWith(
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w500),
+                    disabledTextStyle: Theme.of(context)
+                        .textTheme
+                        .displaySmall!
+                        .copyWith(
+                            color: AppColors.grey,
+                            fontWeight: FontWeight.w500),
                   ),
+                  daysOfWeekStyle: DaysOfWeekStyle(
+                      weekdayStyle: Theme.of(context)
+                          .textTheme
+                          .headlineSmall!
+                          .copyWith(
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.w500)),
+                  headerStyle: HeaderStyle(
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                    titleTextStyle: Theme.of(context)
+                        .textTheme
+                        .headlineSmall!
+                        .copyWith(
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w500),
+                    leftChevronVisible: false,
+                    rightChevronVisible: false,
+                    headerMargin: const EdgeInsets.symmetric(vertical: 16.0),
+                  ),
+
                 ),
               ),
               Padding(
@@ -213,17 +215,20 @@ class CalenderWidget extends StatelessWidget {
                             AppStrings.time,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline3!
+                                .displaySmall!
                                 .copyWith(color: AppColors.primaryColor),
                           ),
                           Expanded(
-                            child: Card(
-                              child: SizedBox(
-                                height: 30.h,
-                                width: 100.w,
-                                child: Center(
-                                  child: Text(
-                                      '${DateTime.parse(orderCubit.orderDateTime!).hour > 10 ? DateTime.parse(orderCubit.orderDateTime!).hour : '0${DateTime.parse(orderCubit.orderDateTime!).hour}'} : ${DateTime.parse(orderCubit.orderDateTime!).minute > 10 ? DateTime.parse(orderCubit.orderDateTime!).minute : '0${DateTime.parse(orderCubit.orderDateTime!).minute}'}'),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                              child: Card(
+                                child: SizedBox(
+                                  height: 30.h,
+                                  width: 100.w,
+                                  child: Center(
+                                    child: Text(
+                                        '${DateTime.parse(orderCubit.orderDateTime!).hour > 10 ? DateTime.parse(orderCubit.orderDateTime!).hour : '0${DateTime.parse(orderCubit.orderDateTime!).hour}'} : ${DateTime.parse(orderCubit.orderDateTime!).minute > 10 ? DateTime.parse(orderCubit.orderDateTime!).minute : '0${DateTime.parse(orderCubit.orderDateTime!).minute}'}'),
+                                  ),
                                 ),
                               ),
                             ),
