@@ -27,7 +27,7 @@ class AppButtonLight extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 43,
+        height: 43.h,
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(12),
@@ -36,7 +36,7 @@ class AppButtonLight extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: Theme.of(context).textTheme.headline5!.copyWith(
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: AppColors.primaryColor,
                 ),
           ),
@@ -72,7 +72,7 @@ class AppButtonBlue extends StatelessWidget {
         child: Center(
             child: Text(
           text,
-          style: Theme.of(context).textTheme.headline5!.copyWith(
+          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 color: AppColors.white,
               ),
         )),
@@ -105,7 +105,7 @@ class AppButtonRed extends StatelessWidget {
         child: Center(
             child: Text(
           text,
-          style: Theme.of(context).textTheme.headline5!.copyWith(
+          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 color: AppColors.white,
               ),
         )),
@@ -139,7 +139,7 @@ class AppButtonWhite extends StatelessWidget {
         child: Center(
             child: Text(
           text,
-          style: Theme.of(context).textTheme.headline5!.copyWith(
+          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 color: AppColors.primaryColor,
               ),
         )),
@@ -208,7 +208,7 @@ class OrderButton extends StatelessWidget {
                 AppStrings.washNow,
                 style: Theme.of(context)
                     .textTheme
-                    .headline3!
+                    .displaySmall!
                     .copyWith(color: AppColors.white),
               )
             ],
@@ -233,7 +233,7 @@ class OrderButton extends StatelessWidget {
                 AppStrings.interior,
                 style: Theme.of(context)
                     .textTheme
-                    .headline3!
+                    .displaySmall!
                     .copyWith(color: AppColors.white),
               ),
               SizedBox(
@@ -251,7 +251,7 @@ class OrderButton extends StatelessWidget {
           "${AppStrings.total} ${AppStrings.egp} ${OrderCubit.get(context).total}",
           style: Theme.of(context)
               .textTheme
-              .headline3!
+              .displaySmall!
               .copyWith(color: AppColors.white),
         );
         return Container(
