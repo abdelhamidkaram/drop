@@ -217,6 +217,6 @@ class _RequiredServiceItemState extends State<RequiredServiceItem> {
                     ),
                   ));
         },
-        icon: Icon(Icons.info_outline_rounded, size: 14.h));
+        icon: Icon(Icons.info_outline_rounded, size: 20.h));
   }
 }
