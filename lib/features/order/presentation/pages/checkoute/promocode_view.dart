@@ -37,7 +37,7 @@ class _PromoCodeWidgetViewState extends State<PromoCodeWidgetView> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 60.h,
+                      height: 50.h,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -49,7 +49,6 @@ class _PromoCodeWidgetViewState extends State<PromoCodeWidgetView> {
                           ),
                           child: TextFormField(
                             controller: widget.orderCubit.promoCodeController,
-                            
                             decoration: InputDecoration(
                               suffixIcon: SizedBox(
                                   width: 70.w,

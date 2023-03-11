@@ -52,15 +52,17 @@ class EssentialWidgetView extends StatelessWidget {
                             ImageNetworkWithCached(
                                 imgUrl: orderCubit.essentials[index].photo),
                             Text(
+                              textAlign: TextAlign.center,
                               orderCubit.essentials[index].name,
-                              style: Theme.of(context).textTheme.headline3,
+                              style: Theme.of(context).textTheme.displaySmall,
                               maxLines: 2,
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
                                   "${AppStrings.egp} ${orderCubit.essentials[index].price}",
-                                  style: Theme.of(context).textTheme.headline6!,
+                                  style: Theme.of(context).textTheme.titleLarge!,
                                 )
                               ],
                             )

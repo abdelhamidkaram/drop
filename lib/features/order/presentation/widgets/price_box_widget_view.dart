@@ -73,7 +73,7 @@ class PriceBoxWidgetView extends StatelessWidget {
                   const Text(AppStrings.grandTotal),
                   const Spacer(),
                   Text(
-                    grandTotal,
+                    '${AppStrings.egp} $grandTotal',
                   ),
                 ],
               ),

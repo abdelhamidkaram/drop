@@ -11,11 +11,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 
-class SingleProviderOrderConfirmedScreen extends StatelessWidget {
+class SingleProviderOrderConfirmedScreen extends StatefulWidget {
   final ServiceProvideList? serviceProvideList;
   const SingleProviderOrderConfirmedScreen(
       {super.key, required this.serviceProvideList});
 
+  @override
+  State<SingleProviderOrderConfirmedScreen> createState() => _SingleProviderOrderConfirmedScreenState();
+}
+
+class _SingleProviderOrderConfirmedScreenState extends State<SingleProviderOrderConfirmedScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +35,7 @@ class SingleProviderOrderConfirmedScreen extends StatelessWidget {
                   AppStrings.orderConfirmed,
                   style: Theme.of(context)
                       .textTheme
-                      .headline2!
+                      .displayMedium!
                       .copyWith(color: AppColors.primaryColor),
                 ),
               ),
@@ -44,12 +49,20 @@ class SingleProviderOrderConfirmedScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Center(child: LottieBuilder.asset(JsonManger.workShopAppointment)),
+              Center(
+                child: Container(
+                  height: 250.h,
+                  child: Lottie.asset(
+                    JsonManger.workShopAppointment ,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
                   children: [
-                    serviceProvideList != null
+                    widget.serviceProvideList != null
                     ? Card(
                         child: SizedBox(
                           height: 97.h,
@@ -63,20 +76,20 @@ class SingleProviderOrderConfirmedScreen extends StatelessWidget {
                                 Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                     Text(AppStrings.orderedServices , style: Theme.of(context).textTheme.headline3),
+                                     Text(AppStrings.orderedServices , style: Theme.of(context).textTheme.displaySmall),
                                     Row(
                                       children: [
                                         ImageNetworkWithCached(
-                                            imgUrl: serviceProvideList!.img , 
+                                            imgUrl: widget.serviceProvideList!.img , 
                                             width: 20,
                                             ),
                                         SizedBox(
                                           width: 16.h,
                                         ),
                                         Text(
-                                          serviceProvideList!.serviceName,
+                                          widget.serviceProvideList!.serviceName,
                                           style:
-                                              Theme.of(context).textTheme.headline5,
+                                              Theme.of(context).textTheme.headlineSmall,
                                         ),
                                       ],
                                     ),
@@ -87,11 +100,11 @@ class SingleProviderOrderConfirmedScreen extends StatelessWidget {
                                   children: [
                                     Text(
                                       AppStrings.egp,
-                                      style: Theme.of(context).textTheme.headline5,
+                                      style: Theme.of(context).textTheme.headlineSmall,
                                     ),
                                     Text(
-                                      serviceProvideList!.price,
-                                      style: Theme.of(context).textTheme.headline5,
+                                      widget.serviceProvideList!.price,
+                                      style: Theme.of(context).textTheme.headlineSmall,
                                     ),
                                   ],
                                 )

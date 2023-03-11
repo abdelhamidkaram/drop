@@ -125,7 +125,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                                 AppStrings.orderConfirmed,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline1!
+                                    .displayLarge!
                                     .copyWith(color: AppColors.primaryColor),
                               ),
                             ),
@@ -193,13 +193,13 @@ class OrderStatusTextView extends StatelessWidget {
             AppStrings.yourWashDropIs,
             style: Theme.of(context)
                 .textTheme
-                .headline2!
+                .displayMedium!
                 .copyWith(fontWeight: FontWeight.w500),
           ),
           Text(
             cubit.title(),
             style:
-                Theme.of(context).textTheme.headline2!.copyWith(fontSize: 24),
+                Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 24),
           ),
         ],
       ),
@@ -219,6 +219,7 @@ class OrderedServicesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             height: 10.h,
@@ -230,21 +231,14 @@ class OrderedServicesView extends StatelessWidget {
           SizedBox(
             height: 10.h,
           ),
-          SizedBox(
-            width: double.infinity,
-            height: 200.h,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.separated(
-                itemCount: order.requiredServices.length,
-                separatorBuilder: (context, index) => SizedBox(
-                  height: 10.h,
-                ),
-                itemBuilder: (context, index) =>
-                    Text(order.requiredServices[index].name),
-                physics: const BouncingScrollPhysics(),
-              ),
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(
+                order.requiredServices.length,
+                    (index) =>  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(order.requiredServices[index].name),
+                    )),
           ),
         ],
       ),
@@ -306,16 +300,17 @@ class OrderConfirmIconsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric( vertical: 20),
       child: SizedBox(
           height: 60.h,
           width: double.infinity,
           child: Row(
+
             children: [
               Card(
                   child: Container(
-                height: 40.h,
-                width: 40.h,
+                height: 59.h,
+                width: 59.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
@@ -341,8 +336,8 @@ class OrderConfirmIconsView extends StatelessWidget {
                   Center(
                     child: Card(
                         child: Container(
-                      height: 40.h,
-                      width: 40.h,
+                          height: 59.h,
+                          width: 59.h,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
@@ -351,12 +346,14 @@ class OrderConfirmIconsView extends StatelessWidget {
                                 : AppColors.cardBackGround),
                       ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          SizedBox(width: 10.h,),
                           SvgPicture.asset(
                             IconsManger.orderProgress,
-                            height: 25.h,
-                            width: 25.h,
+                            height: 38.h,
+                            width: 38.h,
                           ),
                         ],
                       ),
@@ -366,8 +363,8 @@ class OrderConfirmIconsView extends StatelessWidget {
               ),
               Card(
                   child: Container(
-                height: 40.h,
-                width: 40.h,
+                height: 59.h,
+                width: 59.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
