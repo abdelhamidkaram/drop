@@ -65,50 +65,56 @@ class _SingleProviderOrderConfirmedScreenState extends State<SingleProviderOrder
                     widget.serviceProvideList != null
                     ? Card(
                         child: SizedBox(
-                          height: 97.h,
+                          height: 95.h,
                           width: double.infinity,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric( horizontal: 16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                     Text(AppStrings.orderedServices , style: Theme.of(context).textTheme.displaySmall),
-                                    Row(
-                                      children: [
-                                        ImageNetworkWithCached(
-                                            imgUrl: widget.serviceProvideList!.img , 
-                                            width: 20,
-                                            ),
-                                        SizedBox(
-                                          width: 16.h,
-                                        ),
-                                        Text(
-                                          widget.serviceProvideList!.serviceName,
-                                          style:
-                                              Theme.of(context).textTheme.headlineSmall,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                 Text(AppStrings.orderedServices , style: Theme.of(context).textTheme.displaySmall),
+                                SizedBox(
+                                  height: 50.h,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          ImageNetworkWithCached(
+                                              imgUrl: widget.serviceProvideList!.img ,
+                                              width: 20.h,
+                                              height: 20.h,
+                                              ),
+                                          SizedBox(
+                                            width: 16.h,
+                                          ),
+                                          Text(
+                                            widget.serviceProvideList!.serviceName,
+                                            style:Theme.of(context).textTheme.headlineSmall,
+                                          ),
+                                          const Spacer(),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                AppStrings.egp,
+                                                style: Theme.of(context).textTheme.headlineSmall,
+                                              ),
+                                              const SizedBox(width: 5),
+                                              Text(
+                                                widget.serviceProvideList!.price,
+                                                style: Theme.of(context).textTheme.headlineSmall,
+                                              ),
+                                            ],
+                                          ),
+
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                               const Spacer(),
-                                Row(
-                                  children: [
-                                    Text(
-                                      AppStrings.egp,
-                                      style: Theme.of(context).textTheme.headlineSmall,
-                                    ),
-                                    Text(
-                                      widget.serviceProvideList!.price,
-                                      style: Theme.of(context).textTheme.headlineSmall,
-                                    ),
-                                  ],
-                                )
-                                ,SizedBox(width: 5.w,)
                               ],
                             ),
                           ),

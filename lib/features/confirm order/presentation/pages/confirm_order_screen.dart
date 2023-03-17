@@ -15,7 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../order/domain/entities/orders.dart';
 import '../../../order/presentation/cubit/order_cubit.dart';
 import '../../../order/presentation/widgets/price_box_widget_view.dart';
