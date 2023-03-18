@@ -45,7 +45,7 @@ Drawer drawer(
                         : Colors.grey.shade300)),
             title: Text(
               AppStrings.home,
-              style: Theme.of(context).textTheme.headline3!.copyWith(
+              style: Theme.of(context).textTheme.displaySmall!.copyWith(
                   color: drawerSelected == DrawerSelected.home
                       ? AppColors.primaryColor
                       : null),
@@ -67,7 +67,7 @@ Drawer drawer(
             style: ListTileStyle.list,
             title: Text(
               AppStrings.account,
-              style: Theme.of(context).textTheme.headline3!.copyWith(
+              style: Theme.of(context).textTheme.displaySmall!.copyWith(
                   color: drawerSelected == DrawerSelected.account
                       ? AppColors.primaryColor
                       : null),
@@ -89,7 +89,7 @@ Drawer drawer(
             style: ListTileStyle.list,
             title: Text(
               AppStrings.help,
-              style: Theme.of(context).textTheme.headline3!.copyWith(
+              style: Theme.of(context).textTheme.displaySmall!.copyWith(
                   color: drawerSelected == DrawerSelected.help
                       ? AppColors.primaryColor
                       : null),
@@ -113,7 +113,7 @@ Drawer drawer(
                     style: ListTileStyle.list,
                     title: Text(AppStrings.eventNotification,
                         maxLines: 2,
-                        style: Theme.of(context).textTheme.headline6!),
+                        style: Theme.of(context).textTheme.titleLarge!),
                     onTap: () {},
                     leading: SvgPicture.asset(
                       IconsManger.locationOther,
@@ -135,7 +135,7 @@ Drawer drawer(
                     style: ListTileStyle.list,
                     title: Text(AppStrings.orderNotification,
                         maxLines: 2,
-                        style: Theme.of(context).textTheme.headline6!),
+                        style: Theme.of(context).textTheme.titleLarge!),
                     onTap: () {},
                     leading: SvgPicture.asset(
                       IconsManger.orders,
@@ -155,7 +155,7 @@ Drawer drawer(
                     style: ListTileStyle.list,
                     title: Text(AppStrings.appointmentNotification,
                         maxLines: 2,
-                        style: Theme.of(context).textTheme.headline6!),
+                        style: Theme.of(context).textTheme.titleLarge!),
                     onTap: () {},
                     leading: Icon(Icons.calendar_month_rounded , color: AppColors.grey,),
                     trailing: Switch.adaptive(
@@ -168,6 +168,21 @@ Drawer drawer(
                 ],
               );
             },
+          ),
+          ListTile(
+            shape: UnderlineInputBorder(
+                borderSide: BorderSide(
+                    color: Colors.grey.shade300)),
+            style: ListTileStyle.list,
+            title: Text(
+              AppStrings.logOut,
+              style: Theme.of(context).textTheme.titleLarge!,
+            ),
+            onTap: ()   {
+              ProfileCubit.get(context).logOut(context);
+            },
+            leading: Icon(Icons.logout),
+
           ),
         ],
       ),

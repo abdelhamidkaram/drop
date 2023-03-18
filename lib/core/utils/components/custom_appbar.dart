@@ -57,7 +57,7 @@ class CustomAppbars {
                         : Text(isLocationScreen ? "" : title!,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline1!
+                                .displayLarge!
                                 .copyWith(color: AppColors.white)),
                     const Spacer(),
                     const SizedBox(
@@ -142,7 +142,7 @@ class CustomAppbars {
                         : Text(title,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline1!
+                                .displayLarge!
                                 .copyWith(color: AppColors.white)),
                     const Spacer(),
                      const SizedBox(
@@ -248,7 +248,7 @@ class CustomAppbars {
                                   Text(
                                     title ?? "",
                                     style:
-                                        Theme.of(context).textTheme.headline2,
+                                        Theme.of(context).textTheme.displayMedium,
                                   ),
                                   SizedBox(
                                     height: 5.0.h,

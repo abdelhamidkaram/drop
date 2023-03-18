@@ -4,6 +4,7 @@ import 'package:dropeg/core/api/firestore_strings.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/toasts.dart';
 import 'package:dropeg/features/auth/domain/entities/compound.dart';
+import 'package:dropeg/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/bloc/state.dart';
 import 'package:dropeg/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -182,17 +183,19 @@ class ProfileCubit extends Cubit<ProfileStates> {
     }
   }
 
-  Future deleteAccount() async {
-    await FirebaseAuth.instance.currentUser?.delete().then((value) async {
+  Future deleteAccount(BuildContext context) async {
+    await FirebaseAuth.instance.currentUser!.delete().then((value) async {
       await FirebaseFirestore.instance
           .collection(FirebaseStrings.usersCollection)
-          .doc(uId)
+          .doc(userInfo!.id)
           .delete()
           .then((value) {
+        appPreferences.deleteUserDetailsAndLogOut().then((value) => null);
         uId = "";
         userInfo = null;
+        AuthCubit.get(context).userDetails = null;
       });
-      await appPreferences.deleteUserDetailsAndLogOut();
+
     }).catchError((err) {
       debugPrint(err.toString());
     });
@@ -282,5 +285,17 @@ class ProfileCubit extends Cubit<ProfileStates> {
       AppToasts.errorToast(AppStrings.errorInternal);
       emit(UploadImageError());
     }
+  }
+
+  Future  logOut(BuildContext context)async{
+    AppToasts.loadingToast();
+    await FirebaseAuth.instance.signOut();
+    appPreferences.logout().then((value) => AppToasts.successToast("Success"));
+    uId = "";
+    userInfo = null;
+    AuthCubit.get(context).userDetails = null;
+
+    Navigator.pushNamed(context, AppRouteStrings.home);
+
   }
 }

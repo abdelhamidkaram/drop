@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, AppRouteStrings.welcome);
+             Navigator.pushNamed(context, AppRouteStrings.welcome);
           },
         ),
         key: homeScaffoldStateKey,

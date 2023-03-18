@@ -160,7 +160,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     ),
                     AppButtonRed(text: AppStrings.deleteAccount, onTap: (){
                       ProfileCubit.get(context)
-                                  .deleteAccount()
+                                  .deleteAccount(context)
                                   .then((value) {
                                 AppToasts.successToast(AppStrings.deleted);
                                 Navigator.pushReplacementNamed(

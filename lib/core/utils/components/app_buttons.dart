@@ -2,6 +2,8 @@ import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/core/utils/assets_manger.dart';
 import 'package:dropeg/core/utils/toasts.dart';
 import 'package:dropeg/features/auth/domain/entities/location.dart';
+import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
+import 'package:dropeg/features/auth/presentation/screens/profile/bloc/state.dart';
 import 'package:dropeg/features/order/presentation/cubit/order_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -186,34 +188,83 @@ class OrderButton extends StatelessWidget {
     return BlocConsumer<OrderCubit, OrderState>(
       listener: (context, state) => OrderCubit(),
       builder: (context, state) {
-        var washNowButton = GestureDetector(
-          onTap: () {
-            if (OrderCubit.get(context).requiredSelected.isNotEmpty) {
-              Navigator.pushNamed(context, AppRouteStrings.checkOut);
-            } else {
-              AppToasts.errorToast(AppStrings.chooseAtLeastOneServices);
-            }
-          },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                IconsManger.washNowIcon,
-                height: 25.h,
+        var washNowButton = BlocConsumer<ProfileCubit , ProfileStates>(
+    listener: (context, state) =>ProfileCubit.get(context),
+    builder: (context, state) {
+      return GestureDetector(
+        onTap: () {
+          if(ProfileCubit.get(context).cars?.length == 0 ){
+            showDialog(context: context, builder: (context) => Dialog(
+                child: BlocConsumer<ProfileCubit , ProfileStates>(
+                  listener: (context, state) =>ProfileCubit.get(context),
+                  builder: (context, state) {
+                    return Padding(
+
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(AppStrings.pleaseAddCar),
+                          SizedBox(height: 20.h,),
+                          AppButtonBlue(text: AppStrings.addCar, onTap: (){
+                            Navigator.pushNamed(context, AppRouteStrings.addCar , arguments: true);
+                          })
+                        ],
+                      ),
+                    );
+                  },
+                )
+            )).then((value) => null);
+            return;
+          }
+          if(ProfileCubit.get(context).locations?.length == 0 ){
+            showDialog(context: context, builder: (context) => Dialog(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(AppStrings.pleaseAddLocation),
+                    SizedBox(height: 20.h,),
+                    AppButtonBlue(text: AppStrings.addLocation, onTap: (){
+                      Navigator.pushNamed(context, AppRouteStrings.location , arguments: LocationsArgs(formProfileScreen: true));
+                    })
+                  ],
+                ),
               ),
-              SizedBox(
-                width: 10.w,
-              ),
-              Text(
-                AppStrings.washNow,
-                style: Theme.of(context)
-                    .textTheme
-                    .displaySmall!
-                    .copyWith(color: AppColors.white),
-              )
-            ],
-          ),
-        );
+
+            )).then((value) => null);
+            return;
+          }
+          if (OrderCubit.get(context).requiredSelected.isNotEmpty) {
+            Navigator.pushNamed(context, AppRouteStrings.checkOut);
+          } else {
+            AppToasts.errorToast(AppStrings.chooseAtLeastOneServices);
+          }
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              IconsManger.washNowIcon,
+              height: 25.h,
+            ),
+            SizedBox(
+              width: 10.w,
+            ),
+            Text(
+              AppStrings.washNow,
+              style: Theme.of(context)
+                  .textTheme
+                  .displaySmall!
+                  .copyWith(color: AppColors.white),
+            )
+          ],
+        ),
+      );
+    });
+
+
         var interiorButton = GestureDetector(
           onTap: () {
             Navigator.pushNamed(

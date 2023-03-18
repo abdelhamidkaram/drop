@@ -16,6 +16,10 @@ class AppStrings {
   static const String pleaseCreateAccount = "Please create an account";
   static const String pleaseEnterYourCarDetails =
       "Please enter your car details";
+  static const String pleaseAddCar =
+      "Please Add at least one car to complete the order";
+  static const String pleaseAddLocation =
+      "Please add at least one location to complete the order";
   static const String pleaseChooseCar = " You must choose a car ";
   static const String carDetails = "Car Details";
   static const String continueWithFacebook = "Continue with Facebook";

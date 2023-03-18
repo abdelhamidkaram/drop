@@ -272,7 +272,7 @@ class _SelectedItemState extends State<SelectedItem> {
             widget.text,
             style: Theme.of(context)
                 .textTheme
-                .headline6!
+                .titleLarge!
                 .copyWith(color: AppColors.black),
           ),
           GestureDetector(
@@ -285,7 +285,7 @@ class _SelectedItemState extends State<SelectedItem> {
             },
             child: Text(
               widget.textGoTo,
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: AppColors.primaryColor,
                     textBaseline: TextBaseline.ideographic,
                     decoration: TextDecoration.underline,
