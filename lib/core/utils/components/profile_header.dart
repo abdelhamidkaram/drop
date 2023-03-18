@@ -35,7 +35,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
         return Row(
           children: [
             ImageNetworkWithCached(
-              imgUrl: userInfo?.photo ?? "",
+              imgUrl: imgUrl ?? "",
               height: 50.h,
               width: 50.h,
               isCircular: true,
@@ -49,7 +49,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 children: [
                   Text(
                     userInfo?.name ?? "",
-                    style: Theme.of(context).textTheme.headline3,
+                    style: Theme.of(context).textTheme.displaySmall,
                   ),
                   const SizedBox(
                     height: 10,
@@ -79,7 +79,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                                               AppStrings.phoneNumberEmptyMSG,
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .headline3,
+                                                  .displaySmall,
                                             ),
                                             SizedBox(
                                               height: 16.h,

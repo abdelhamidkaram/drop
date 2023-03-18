@@ -87,7 +87,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           image: DecorationImage(
                               image: (profile == null || profile.photo!.isEmpty)
                                   ? Image.asset(ImagesManger.avatar).image
-                                  : Image.network(profile.photo!).image,
+                                  : Image.network(imgUrl!).image,
                               fit: BoxFit.cover),
                           shape: BoxShape.circle,
                           border: Border.all(color: AppColors.greyLight)),
@@ -95,6 +95,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         onTap: () async {
                           await ProfileCubit.get(context)
                               .uploadProfileImg(context);
+                          setState(() {
+
+                          });
                         },
                         child: Container(
                             decoration: BoxDecoration(

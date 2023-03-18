@@ -12,6 +12,7 @@ import 'injection_container.dart' as di;
 String token = '';
 String uId = '';
 UserDetails? userInfo;
+String? imgUrl = userInfo?.photo;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.initAppModule();

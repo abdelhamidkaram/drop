@@ -245,6 +245,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
+
         AppToasts.loadingToast();
         emit(UploadImageLoading());
         await firebase_storage.FirebaseStorage.instance
@@ -266,7 +267,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
           );
           FirebaseFirestore.instance
               .collection(FirebaseStrings.usersCollection)
-              .doc(uId)
+              .doc(FirebaseAuth.instance.currentUser!.uid)
               .update(user.toJson())
               .then((value) async {
             userInfo = user;
@@ -276,7 +277,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
               emit(UploadImageSuccess());
             });
           });
+         imgUrl= await p0.ref.getDownloadURL();
         });
+
       } else {
         return;
       }
