@@ -1,4 +1,5 @@
-import 'package:dropeg/config/route/app_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropeg/core/api/firestore_strings.dart';
 import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/components/category_title.dart';
@@ -15,6 +16,7 @@ import 'package:dropeg/features/home/features/top_notifications/presentation/pag
 import 'package:dropeg/features/home/presentation/widgets/main_location.dart';
 import 'package:dropeg/features/home/presentation/widgets/main_btn.dart';
 import 'package:dropeg/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,11 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
         return Future.value(true);
       },
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-             Navigator.pushNamed(context, AppRouteStrings.welcome);
-          },
-        ),
         key: homeScaffoldStateKey,
         drawer: drawer(
           context: context,
@@ -175,42 +172,51 @@ class Notifications extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: SizedBox(
-        height: 97.h,
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Free Wash",
-                style: Theme.of(context).textTheme.displaySmall,
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-              Text(
-                "${userInfo?.freeWashUsed ?? 0}/${userInfo?.freeWashTotal ?? 5} Washes",
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-              LinearPercentIndicator(
-                width: 280.w,
-                lineHeight: 10.0.h,
-                percent: (userInfo?.freeWashUsed ?? 0) /
-                    (userInfo?.freeWashTotal ?? 5),
-                backgroundColor: AppColors.greyBorder,
-                progressColor: AppColors.primaryColor,
-                barRadius: const Radius.circular(25),
-              ),
-            ],
+
+    return FutureBuilder(
+        future: FirebaseFirestore.instance
+        .collection(FirebaseStrings.usersCollection)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((value) {
+          return value.get("freeWashUsed");
+        }),
+        builder: (context, snapshot) => Card(
+        child: SizedBox(
+          height: 97.h,
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Free Wash",
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Text(
+                  "${snapshot.data ?? 0}/${userInfo?.freeWashTotal ?? 5} Washes",
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                LinearPercentIndicator(
+                  width: 280.w,
+                  lineHeight: 10.0.h,
+                  percent: (snapshot.data as int? ?? 0 ) /
+                      (userInfo?.freeWashTotal ?? 5),
+                  backgroundColor: AppColors.greyBorder,
+                  progressColor: AppColors.primaryColor,
+                  barRadius: const Radius.circular(25),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        ),)
     );
   }
 }

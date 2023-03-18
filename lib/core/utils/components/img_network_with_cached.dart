@@ -19,7 +19,7 @@ class ImageNetworkWithCached extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: isCircular ? height : width?? 100,
-      height: height ?? 100 ,
+      height: height ?? 60.h ,
       decoration: BoxDecoration(
         shape: isCircular ? BoxShape.circle : BoxShape.rectangle,
         image: DecorationImage(

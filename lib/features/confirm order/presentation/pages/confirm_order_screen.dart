@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/core/api/firestore_strings.dart';
@@ -36,6 +38,7 @@ class ConfirmOrderScreen extends StatefulWidget {
 }
 
 class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
+  late StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>  stream ;
   @override
   void initState() {
     super.initState();
@@ -65,12 +68,13 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
 
     return WillPopScope(
       onWillPop: () {
+        stream.cancel();
         Navigator.pushReplacementNamed(context, AppRouteStrings.home);
         return Future.value(true);
       },
       child: Builder(
         builder: (context) {
-          FirebaseFirestore.instance
+           stream = FirebaseFirestore.instance
               .collection(FirebaseStrings.ordersCollection)
               .doc(widget.order.id)
               .snapshots()
@@ -81,7 +85,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                     OrderStatus.onTheWay;
                 changeOrderStatusInUserCollections(
                         isFinish: false, order: widget.order, status: 1)
-                    .then((value) => null);
+                    .then((value) => stream.pause());
               });
             } else if (event.data()?["status"] == 2) {
               setState(() {
@@ -89,22 +93,24 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                     OrderStatus.onProgress;
                 changeOrderStatusInUserCollections(
                         isFinish: false, order: widget.order, status: 2)
-                    .then((value) => null);
+                    .then((value) => stream.pause());
               });
             } else if (event.data()?["status"] == 3) {
               setState(() {
                 ConfirmOrderCubit.get(context).orderStatus = OrderStatus.done;
                 changeOrderStatusInUserCollections(
                         isFinish: true, order: widget.order, status: 3)
-                    .then((value) => null);
+                    .then((value) => stream.pause());
               });
             } else if (event.data()?["status"] == 4) {
                ConfirmOrderCubit.get(context).orderStatus = OrderStatus.cancel;
                 changeOrderStatusInUserCollections(
                         isFinish: false, order: widget.order, status: 4)
-                    .then((value) => null);
+                    .then((value) => stream.pause());
             }
+
           });
+
           return BlocBuilder<ConfirmOrderCubit, ConfirmOrderState>(
             builder: (context, state) {
               var cubit = ConfirmOrderCubit.get(context);
@@ -170,6 +176,11 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         },
       ),
     );
+  }
+  @override
+  void dispose() {
+    stream.cancel();
+    super.dispose();
   }
 }
 

@@ -7,7 +7,6 @@ import 'package:dropeg/features/auth/presentation/screens/profile/screen/my_orde
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../../../../../../order/domain/entities/orders.dart';
 
 class MyOrderScreen extends StatefulWidget {
@@ -83,6 +82,24 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                                                       child: Column(
                                                         children: [
                                                           Card(
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12),
+                                                                side: BorderSide(
+                                                                    color: (orders![index].status ==
+                                                                                2 ||
+                                                                            orders![index].status ==
+                                                                                1)
+                                                                        ? AppColors
+                                                                            .primaryColor
+                                                                        : (orders![index].status == 4)
+                                                                          ? AppColors.red
+                                                                          :(orders![index].status == 3)
+                                                                          ? Colors.green
+                                                                          : AppColors
+                                                                            .greyBorder)),
                                                             child: SizedBox(
                                                                 height: 98.h,
                                                                 width: double
@@ -108,7 +125,7 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                                                                                       ? orders![index].time.substring(0, 10)
                                                                                       : orders![index].time
                                                                                   : "",
-                                                                              style: Theme.of(context).textTheme.headline5,
+                                                                              style: Theme.of(context).textTheme.headlineSmall,
                                                                             ),
                                                                             SizedBox(
                                                                               height: 5.h,
@@ -128,11 +145,11 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                                                                           children: [
                                                                             Text(
                                                                               AppStrings.egp,
-                                                                              style: Theme.of(context).textTheme.headline5!.copyWith(color: AppColors.primaryColor),
+                                                                              style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColors.primaryColor),
                                                                             ),
                                                                             Text(
                                                                               orders?[index].grandTotal.toString() ?? "",
-                                                                              style: Theme.of(context).textTheme.headline5!.copyWith(color: AppColors.primaryColor),
+                                                                              style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColors.primaryColor),
                                                                             ),
                                                                           ],
                                                                         )
@@ -161,12 +178,11 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
               } else if (snapshot.hasError) {
                 return const Center(child: Text(AppStrings.errorInternal));
               } else {
-                 return const SafeArea(
-                      child: Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  ));
+                return const SafeArea(
+                    child: Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ));
               }
-
             });
       },
     );

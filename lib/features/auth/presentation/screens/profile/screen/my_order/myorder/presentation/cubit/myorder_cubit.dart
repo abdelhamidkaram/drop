@@ -20,11 +20,13 @@ class MyorderCubit extends Cubit<MyorderStates> {
         .collection(FirebaseStrings.usersCollection)
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection(FirebaseStrings.ordersCollection)
+        .orderBy("time", descending: true)
         .get()
         .then((value) {
       if (value.docs.isEmpty) {
         noOrder = true;
       } else {
+        orders=[];
         orders = value.docs.map((e) => OrderEntity.fromJson(e.data())).toList();
         noOrder = false;
       }
