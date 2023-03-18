@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           "Send a password reset link",
                                           style: Theme.of(context)
                                               .textTheme
-                                              .headline3,
+                                              .displaySmall,
                                         ),
                                         CustomTextFormField(
                                           hint: AppStrings.emailAddressHINT,

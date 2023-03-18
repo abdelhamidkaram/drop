@@ -30,8 +30,10 @@ class UserDetails extends Equatable {
   String get nameForView{
     String fullName="";
  this.name?.split(" ").forEach((e){
-          String nameWithUpper =e[0].toUpperCase()+e.substring(1);
-          fullName +=" $nameWithUpper";
+          if(e.isNotEmpty) {
+        String nameWithUpper = e[0].toUpperCase() + e.substring(1);
+        fullName += " $nameWithUpper";
+      }
     });
 
     return fullName.trim();

@@ -1,11 +1,13 @@
 import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/core/utils/constant.dart';
+import 'package:dropeg/features/auth/data/mapper.dart';
 import 'package:dropeg/features/auth/domain/entities/referral.dart';
 import 'package:dropeg/features/auth/domain/entities/user.dart';
 import 'package:dropeg/features/auth/domain/request_models.dart';
 import 'package:dropeg/features/auth/domain/usecase/login_usecase.dart';
 import 'package:dropeg/features/auth/presentation/cubits/auth_states.dart';
+import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:dropeg/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +19,8 @@ import 'package:uuid/uuid.dart';
 import '../../../../core/api/firestore_strings.dart';
 import '../../../../core/utils/toasts.dart';
 import 'package:dropeg/core/shared_prefs/app_prefs.dart';
+
+import '../../data/models/user_model.dart';
 
 class AuthCubit extends Cubit<AuthStates> {
   final GetRegisterWithEmail getRegisterWithEmail;
@@ -179,13 +183,35 @@ class AuthCubit extends Cubit<AuthStates> {
       AppToasts.errorToast(failure.message);
       emit(LoginWithEmailError(msg: failure.message));
     }, (user) async {
-      AppToasts.successToast(
-          "${AppStrings.welcome} ${user?.email!.split("@").first}");
-      Navigator.pushReplacementNamed(context, AppRouteStrings.home);
-      await loginSuccessCache();
-      await appPreferences.deleteUserDetailsAndNotLogOut();
 
-      emit(LoginWithAppleSuccess(user: user!));
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection(FirebaseStrings.usersCollection)
+            .doc(user.uid)
+            .get()
+            .then((value1) async {
+          if (!value1.exists) {
+            await sendUserToCollection(user);
+          }
+          await appPreferences.deleteUserDetailsAndNotLogOut();
+
+          var userNew = UserDetailsModel.formJson(value1.data()!).toDomain();
+          userDetails = userNew;
+          userInfo = userNew;
+          uId=userNew.id!;
+          ProfileCubit.get(context).getProfileDetails(firstbuild: true , isRefresh: true).then((value) async {
+            AppToasts.successToast(
+                "${AppStrings.welcome} ${user.displayName ?? user.email!.split("@").first}");
+            await loginSuccessCache().whenComplete(() {
+              Navigator.pushReplacementNamed(context, AppRouteStrings.home);
+              emit(LoginWithEmailSuccess(user: user));
+          });
+
+          });
+
+        });
+      }
+
     });
   }
 

@@ -19,7 +19,7 @@ extension JsonResponseToString on Response {
 
 extension CompoundToLocation on Compound {
   LocationEntity toLocationEntity() => LocationEntity(
-      address: address!, state: "Egypt", city: "", type: AppStrings.locationTypeOther, id: name);
+      address: address!, state: "Egypt", city: name, type: AppStrings.locationTypeOther, id: name);
 }
 
 

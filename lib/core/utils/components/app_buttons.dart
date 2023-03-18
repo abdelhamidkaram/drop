@@ -199,7 +199,6 @@ class OrderButton extends StatelessWidget {
                   listener: (context, state) =>ProfileCubit.get(context),
                   builder: (context, state) {
                     return Padding(
-
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -217,7 +216,7 @@ class OrderButton extends StatelessWidget {
             )).then((value) => null);
             return;
           }
-          if(ProfileCubit.get(context).locations?.length == 0 ){
+          if(ProfileCubit.get(context).locations?.length == 0 && ProfileCubit.get(context).compounds?.length == 0 ){
             showDialog(context: context, builder: (context) => Dialog(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),

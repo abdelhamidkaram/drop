@@ -21,10 +21,9 @@ class HomeCubit extends Cubit<HomeStates> {
       if (ProfileCubit.get(context).locations?.isNotEmpty ?? false) {
         mainLocation = ProfileCubit.get(context).locations?.first;
       } else {
-        if (ProfileCubit.get(context).locations?.isNotEmpty ?? false) {
+        if (ProfileCubit.get(context).compounds?.isNotEmpty ?? false) {
           var compound = ProfileCubit.get(context).compounds?.first;
           mainLocation = compound!.toLocationEntity();
-
           HomeCubit.get(context).getMainLocation(
             context: context,
             location: compound.toLocationEntity(),
