@@ -19,6 +19,7 @@ import 'package:dropeg/features/home/features/services/data/repository/services_
 import 'package:dropeg/features/home/features/services/domain/repository/service_repository.dart';
 import 'package:dropeg/features/home/features/services/data/data_source/local_data/services_local_datasource.dart';
 import 'package:dropeg/features/home/features/services/domain/usecase/serviec_usecase.dart';
+import 'package:dropeg/features/payment/presentation/bloc/payment_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -95,6 +96,8 @@ Future initLoginModule() async {
         appPreferences: sl(),
         getProfileUseCase: sl(),
       ));
+
+  sl.registerFactory(() => PaymentCubit(dioConsumer: sl<DioConsumer>()));
 
   // use cases
 

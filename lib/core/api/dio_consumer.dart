@@ -8,7 +8,6 @@ import 'package:dropeg/core/api/status_code.dart';
 import 'package:dropeg/core/utils/extensions.dart';
 import 'package:dropeg/injection_container.dart' as di;
 import 'package:flutter/foundation.dart';
-
 import '../error/exception.dart';
 
 class DioConsumer implements ApiConsumer {
