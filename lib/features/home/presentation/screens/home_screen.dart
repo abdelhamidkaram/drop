@@ -15,6 +15,7 @@ import 'package:dropeg/features/home/features/services/presentation/widgets/loca
 import 'package:dropeg/features/home/features/top_notifications/presentation/pages/top_notifications_view.dart';
 import 'package:dropeg/features/home/presentation/widgets/main_location.dart';
 import 'package:dropeg/features/home/presentation/widgets/main_btn.dart';
+import 'package:dropeg/features/payment/presentation/bloc/payment_cubit.dart';
 import 'package:dropeg/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,17 @@ class _HomeScreenState extends State<HomeScreen> {
         SystemNavigator.pop();
         return Future.value(true);
       },
-      child: Scaffold(
+      child: BlocProvider<PaymentCubit>(
+  create: (context) => PaymentCubit(),
+  child: BlocBuilder<PaymentCubit, PaymentState>(
+  builder: (context, state) {
+    return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: ()async{
+           await PaymentCubit.get(context).getFinalToken(price: "100", firstName: "firstName", lastName: "lastName", email: "email@email.com", phone: "00201033232803 ");
+
+          },
+        ),
         key: homeScaffoldStateKey,
         drawer: drawer(
           context: context,
@@ -128,7 +139,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-      ),
+      );
+  },
+),
+),
     );
   }
 

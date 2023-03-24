@@ -154,7 +154,7 @@ class PaymentUser {
   bool? isStaff;
   bool? isSuperuser;
   String? lastLogin;
-  List<Null>? groups;
+  List<dynamic>? groups;
   List<int>? userPermissions;
 
   PaymentUser(

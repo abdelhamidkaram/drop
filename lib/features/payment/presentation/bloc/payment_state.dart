@@ -26,3 +26,39 @@ class PaymentAuthTokenError extends PaymentState {
   @override
   List<Object> get props => [error];
 }
+
+
+class PaymentGetOrderIdLoading extends PaymentState {
+  @override
+  List<Object> get props => [];
+}
+
+class PaymentGetOrderIdSuccess extends PaymentState {
+  @override
+  List<Object> get props => [];
+}
+
+class PaymentGetOrderIdError extends PaymentState {
+  final error ;
+  PaymentGetOrderIdError({required this.error});
+  @override
+  List<Object> get props => [error];
+}
+
+
+class PaymentGetFinalTokenCardLoading extends PaymentState {
+  @override
+  List<Object> get props => [];
+}
+
+class PaymentGetFinalTokenCardSuccess extends PaymentState {
+  @override
+  List<Object> get props => [];
+}
+
+class PaymentGetFinalTokenCardError extends PaymentState {
+  final error ;
+  PaymentGetFinalTokenCardError({required this.error});
+  @override
+  List<Object> get props => [error];
+}

@@ -54,7 +54,7 @@ Future<void> initAppModule() async {
 
   sl.registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImp(connectionChecker: sl()));
-  sl.registerLazySingleton<ApiConsumer>(() => DioConsumer(client: sl()));
+  sl.registerLazySingleton<ApiConsumer>(() => DioConsumer(client: sl<Dio>()));
   sl.registerLazySingleton<AppPreferences>(() => AppPreferences(sl()));
 
   /// ---------------external
@@ -97,7 +97,7 @@ Future initLoginModule() async {
         getProfileUseCase: sl(),
       ));
 
-  sl.registerFactory(() => PaymentCubit(dioConsumer: sl<DioConsumer>()));
+  sl.registerFactory(() => PaymentCubit());
 
   // use cases
 
