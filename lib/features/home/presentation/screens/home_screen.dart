@@ -174,7 +174,7 @@ class Notifications extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return FutureBuilder(
-        future: FirebaseFirestore.instance
+        future: FirebaseAuth.instance.currentUser?.uid == null ? Future(() => 0) : FirebaseFirestore.instance
         .collection(FirebaseStrings.usersCollection)
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get()
