@@ -53,12 +53,15 @@ class AppButtonBlue extends StatelessWidget {
 
   final VoidCallback onTap;
   final double? height;
+  final bool isLoad;
 
   const AppButtonBlue({
     Key? key,
     required this.text,
     required this.onTap,
     this.height,
+    this.isLoad = false
+
   }) : super(key: key);
 
   @override
@@ -72,7 +75,7 @@ class AppButtonBlue extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Center(
-            child: Text(
+            child: isLoad ? CircularProgressIndicator() :Text(
           text,
           style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 color: AppColors.white,

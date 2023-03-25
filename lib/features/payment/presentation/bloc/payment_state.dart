@@ -62,3 +62,19 @@ class PaymentGetFinalTokenCardError extends PaymentState {
   @override
   List<Object> get props => [error];
 }
+
+
+class PaymentCallBackLoading extends PaymentState {
+  @override
+  List<Object> get props => [];
+}
+
+class PaymentCallBackSuccess extends PaymentState {
+  @override
+  List<Object> get props => [];
+}
+
+class PaymentCallBackError extends PaymentState {
+  @override
+  List<Object> get props => [];
+}

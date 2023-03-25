@@ -12,6 +12,7 @@ import 'features/auth/presentation/cubits/auth_cubit.dart';
 import 'features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'features/auth/presentation/screens/profile/bloc/state.dart';
 import 'features/home/features/top_notifications/presentation/cubit/topnotifications_cubit.dart';
+import 'features/payment/presentation/bloc/payment_cubit.dart';
 
 class DropApp extends StatelessWidget {
   const DropApp({Key? key}) : super(key: key);
@@ -44,7 +45,8 @@ class DropApp extends StatelessWidget {
               BlocProvider(
                 create: (context) => TopNotificationsCubit()
                     ..getLastEvent()
-                    ..getLastAppomintment(),)
+                    ..getLastAppomintment(),),
+              BlocProvider(create: (context) => PaymentCubit(),),
             ],
             child: BlocConsumer<ProfileCubit, ProfileStates>(
               listener: (context, state) =>

@@ -38,18 +38,17 @@ class PaymentMethodInfoView extends StatelessWidget {
                     },
                     orderCubit: orderCubit),
                     SizedBox(height: 5.0.h,),
-                    /// Disable the payment method button
-                    // PaymentMethodItem(
-                    // paymentMethodType:
-                    //     PaymentMethodType.visaCard,
-                    // onTap: () {
-                    //   OrderCubit.get(context)
-                    //       .changePaymentMethod(
-                    //           paymentMethodType:
-                    //               PaymentMethodType
-                    //                   .visaCard);
-                    // },
-                    // orderCubit: orderCubit),
+                    PaymentMethodItem(
+                    paymentMethodType:
+                        PaymentMethodType.visaCard,
+                    onTap: () {
+                      OrderCubit.get(context)
+                          .changePaymentMethod(
+                              paymentMethodType:
+                                  PaymentMethodType
+                                      .visaCard);
+                    },
+                    orderCubit: orderCubit),
               ],
             ),
           ),
