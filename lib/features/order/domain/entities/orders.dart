@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 class OrderEntity extends Equatable {
   const OrderEntity({
     required this.car,
+    this.isFree = false,
     required this.essentials,
     required this.promoCode,
     required this.location,
@@ -36,10 +37,12 @@ class OrderEntity extends Equatable {
   final double grandTotal;
   final String price;
   final bool isFinish;
+  final bool isFree;
   factory OrderEntity.fromJson(Map<String, dynamic> json) {
     List essentialsList = json["essentials"];
     List requiredServicesList = json["requiredServices"];
     return OrderEntity(
+        isFree: json["isFree"] ?? false,
         status: json["status"],
         requiredServices: List<RequiredService>.from(
             requiredServicesList.map((e) => RequiredService.fromJson(e))),
@@ -59,6 +62,7 @@ class OrderEntity extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
+        "isFree":isFree,
         "car": car.toJson(),
         "essentials": List<dynamic>.from(essentials.map((x) => x.toJson())),
         "requiredServices":
@@ -73,7 +77,7 @@ class OrderEntity extends Equatable {
         "uid": uid,
         "status": status,
         "vat": vat,
-        "grandTotal": grandTotal,
+        "grandTotal": grandTotal
       };
 
   String getInfo() =>

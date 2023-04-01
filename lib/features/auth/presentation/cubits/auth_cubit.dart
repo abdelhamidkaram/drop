@@ -122,7 +122,7 @@ class AuthCubit extends Cubit<AuthStates> {
     });
   }
 
-  Future<void> registerWithGoogle(BuildContext context) async {
+  Future registerWithGoogle(BuildContext context) async {
     signInWithGoogle().then((user) async {
       if (user.user != null) {
         uId = user.user!.uid;
@@ -158,17 +158,17 @@ class AuthCubit extends Cubit<AuthStates> {
               .then((value) async {
             AppToasts.successToast(
                 "${AppStrings.welcome} ${user.user!.displayName ?? user.user!.email!.split("@").first}");
-            await loginSuccessCache().whenComplete(() {
-              if (value.docs.isEmpty) {
-                Navigator.pushNamed(context, AppRouteStrings.location);
-              } else {
-                Navigator.pushNamed(context, AppRouteStrings.home);
-              }
-            });
+            await loginSuccessCache();
+            if (value.docs.isEmpty) {
+              Navigator.pushNamed(context, AppRouteStrings.location);
+            } else {
+              Navigator.pushNamed(context, AppRouteStrings.home);
+            }
           });
         });
       }
     }).catchError((err) {
+      AppToasts.errorToast(AppStrings.errorInternal);
       debugPrint(err.toString());
     });
   }
@@ -219,6 +219,7 @@ class AuthCubit extends Cubit<AuthStates> {
     await appPreferences.setUserLoggedIn();
   }
 
+//-----------
   Future sendUserToCollection(User user) async {
     FirebaseFirestore.instance
         .collection(FirebaseStrings.usersCollection)

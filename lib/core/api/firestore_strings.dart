@@ -17,5 +17,6 @@ class FirebaseStrings{
   static const  String  orderIsFinishField = "isFinish";
   static const  String  isPhoneVerificationField = "isPhoneVerification";
   static const  String  numberOfUsedFieldVoucher = "numberOfUsed";
+  static const  String  freeWashUsedField = "freeWashUsed";
   static const  String  numberOfUsedFieldReferral = "numberOfUsed";
 }

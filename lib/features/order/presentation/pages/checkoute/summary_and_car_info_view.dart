@@ -11,7 +11,8 @@ import '../../cubit/order_cubit.dart';
 
 class SummaryAndCarInformationView extends StatelessWidget {
   final OrderCubit orderCubit;
-  const SummaryAndCarInformationView({super.key, required this.orderCubit});
+  final bool isFreeOrder;
+  const SummaryAndCarInformationView({super.key, required this.orderCubit , this.isFreeOrder = false});
   @override
   Widget build(BuildContext context) {
     
@@ -22,7 +23,20 @@ class SummaryAndCarInformationView extends StatelessWidget {
          SizedBox(
           height: 5.h,
         ),
-        OrderSummaryWidget(requiredSelected: orderCubit.requiredSelected),
+        OrderSummaryWidget(requiredSelected: isFreeOrder ? [
+          orderCubit.exteriorServices.firstWhere((element){
+            if(element.name == 'Standard Exterior'){
+              return true;
+            }
+            return false;
+          }),
+          orderCubit.interiorServices.firstWhere((element){
+            if( element.name == 'Standard Interior' ){
+              return true;
+            }
+            return false;
+          }),
+        ] :   orderCubit.requiredSelected),
          SizedBox(
           height: 10.h,
         ),

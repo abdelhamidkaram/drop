@@ -19,6 +19,7 @@ import 'package:dropeg/features/home/features/services/presentation/screens/sche
 import 'package:dropeg/features/home/features/services/presentation/screens/sigle_provider_services_screen.dart';
 import 'package:dropeg/features/home/features/services/presentation/screens/single_provider_screen.dart';
 import 'package:dropeg/features/home/features/top_notifications/presentation/cubit/topnotifications_cubit.dart';
+import 'package:dropeg/features/order/presentation/pages/checkoute/free_order_screen.dart';
 import 'package:dropeg/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,6 +61,7 @@ class AppRouteStrings {
   static const String order = "/Order";
   static const String interior = "/Order/interior";
   static const String checkOut = "/Order/CheckOut";
+  static const String freeOrder = "/Order/freeOrder";
   static const String confirmOrder = "/Order/confirmOrder";
 }
 
@@ -81,8 +83,8 @@ class AppRoute {
           builder: (context) {
             return MultiBlocProvider(
               providers: [
-                BlocProvider(create:  (context) => TopNotificationsCubit()) ,
-                ] ,
+                BlocProvider(create: (context) => TopNotificationsCubit()),
+              ],
               child: const RegisterScreen(),
             );
           },
@@ -94,7 +96,6 @@ class AppRoute {
               providers: [
                 BlocProvider(
                     create: (context) => di.sl<HomeCubit>()..getServices()),
-                
               ],
               child: const HomeScreen(),
             );
@@ -225,7 +226,10 @@ class AppRoute {
         return MaterialPageRoute(
           builder: (context) {
             return ConfirmOrderScreen(
-                order: arg.order, grandTotal: arg.grandTotal, vat: arg.vat);
+              order: arg.order,
+              grandTotal: arg.grandTotal,
+              vat: arg.vat,
+            );
           },
         );
 
@@ -235,6 +239,14 @@ class AppRoute {
       case AppRouteStrings.checkOut:
         return MaterialPageRoute(
           builder: (context) => const CheckOutScreen(),
+        );
+      case AppRouteStrings.freeOrder:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider<HomeCubit>(
+            create: (context) =>
+                di.sl<HomeCubit>()..getMainLocation(context: context),
+            child: FreeOrderScreen(),
+          ),
         );
       case AppRouteStrings.interior:
         var arg = routeSettings.arguments as OrderMainArgs;
@@ -248,7 +260,7 @@ class AppRoute {
   }
 
   static authRoute({required Widget screen}) {
-    if (userInfo != null ) {
+    if (userInfo != null) {
       return MaterialPageRoute(
         builder: (context) => screen,
       );

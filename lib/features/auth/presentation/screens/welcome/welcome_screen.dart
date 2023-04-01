@@ -114,7 +114,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                     child: Text(
                                       "Or",
                                       style:
-                                          Theme.of(context).textTheme.headline2,
+                                          Theme.of(context).textTheme.displayMedium,
                                     ),
                                   ),
                                   Expanded(
@@ -223,10 +223,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                           icon: Icons.apple_outlined)
                                       : AppSocialButton(
                                           onTap: () async {
-                                            authCubit
+                                            await authCubit
                                                 .registerWithGoogle(context)
                                                 .then((value) async {
-                                              
+                                              if (value.docs.isEmpty) {
+                                                Navigator.pushNamed(context, AppRouteStrings.location);
+                                              } else {
+                                                Navigator.pushNamed(context, AppRouteStrings.home);
+                                              }
                                             });
                                           },
                                           text: AppStrings.continueWithGmail,
@@ -250,7 +254,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                         AppStrings.continueWithoutRegistration,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline5,
+                                            .headlineSmall,
                                       )))
                             ],
                           ),

@@ -153,7 +153,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                                   SizedBox(
                                     height: 10.h,
                                   ),
-                                  OrderedServicesView(order: widget.order),
+                                  OrderedServicesView(isFree: widget.order.isFree,order: widget.order),
                                   SizedBox(
                                     height: 30.h,
                                   ),
@@ -218,12 +218,15 @@ class OrderStatusTextView extends StatelessWidget {
 }
 
 class OrderedServicesView extends StatelessWidget {
+  final  bool isFree;
+  final OrderEntity order;
+
   const OrderedServicesView({
     Key? key,
     required this.order,
+    required this.isFree,
   }) : super(key: key);
 
-  final OrderEntity order;
 
   @override
   Widget build(BuildContext context) {
@@ -243,7 +246,15 @@ class OrderedServicesView extends StatelessWidget {
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: List.generate(
+            children: isFree ? [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text('Standard Exterior') , Text('Standard Interior'),
+                  ],
+                ),
+              )] : List.generate(
                 order.requiredServices.length,
                     (index) =>  Padding(
                       padding: const EdgeInsets.all(8.0),

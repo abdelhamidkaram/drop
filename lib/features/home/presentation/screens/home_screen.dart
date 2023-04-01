@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/core/api/firestore_strings.dart';
 import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
@@ -179,44 +180,62 @@ class Notifications extends StatelessWidget {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get()
         .then((value) {
-          return value.get("freeWashUsed");
+          return value.get("freeWashUsed") ;
+        }).catchError((err){
+          debugPrint(err.toString());
+          return 0;
         }),
-        builder: (context, snapshot) => Card(
-        child: SizedBox(
-          height: 97.h,
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Free Wash",
-                  style: Theme.of(context).textTheme.displaySmall,
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  "${snapshot.data ?? 0}/${userInfo?.freeWashTotal ?? 5} Washes",
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                LinearPercentIndicator(
-                  width: 280.w,
-                  lineHeight: 10.0.h,
-                  percent: (snapshot.data as int? ?? 0 ) /
-                      (userInfo?.freeWashTotal ?? 5),
-                  backgroundColor: AppColors.greyBorder,
-                  progressColor: AppColors.primaryColor,
-                  barRadius: const Radius.circular(25),
-                ),
-              ],
+        builder: (context, snapshot) => InkWell(
+          onTap: (){
+
+            if(snapshot.data == 5 ){
+              Navigator.pushNamed(context, AppRouteStrings.freeOrder);
+            }
+          },
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(22),
+              side: BorderSide(
+                color: snapshot.data == 5 ? AppColors.primaryColor : AppColors.greyBorder,
+
+              )
             ),
-          ),
-        ),)
+          child: SizedBox(
+            height: 97.h,
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Free Wash",
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    "${snapshot.data ?? 0}/${userInfo?.freeWashTotal ?? 5} Washes",
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  LinearPercentIndicator(
+                    width: 280.w,
+                    lineHeight: 10.0.h,
+                    percent: (snapshot.data as int? ?? 0 ) /
+                        (userInfo?.freeWashTotal ?? 5),
+                    backgroundColor: AppColors.greyBorder,
+                    progressColor: AppColors.primaryColor,
+                    barRadius: const Radius.circular(25),
+                  ),
+                ],
+              ),
+            ),
+          ),),
+        )
     );
   }
 }
