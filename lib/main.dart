@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/features/auth/domain/entities/user.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +16,11 @@ UserDetails? userInfo;
 String? imgUrl = userInfo?.photo;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  ErrorWidget.builder = (FlutterErrorDetails details) => Center(
+    child:Container(
+        color: AppColors.greyLight,
+        child: Icon(Icons.error , color: AppColors.red,)),
+  );
   await di.initAppModule();
   await di.initLoginModule();
   await di.initHomeModule();
@@ -27,4 +33,5 @@ void main() async {
   uId = await appPreferences.getUid();
   Bloc.observer = AppBlocObserver();
   runApp(const DropApp());
+
 }

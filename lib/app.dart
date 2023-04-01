@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:dropeg/injection_container.dart' as di;
 import 'features/auth/presentation/cubits/auth_cubit.dart';
 import 'features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'features/auth/presentation/screens/profile/bloc/state.dart';
 import 'features/home/features/top_notifications/presentation/cubit/topnotifications_cubit.dart';
 import 'features/payment/presentation/bloc/payment_cubit.dart';
+import 'package:dropeg/injection_container.dart' as di;
 
 class DropApp extends StatelessWidget {
   const DropApp({Key? key}) : super(key: key);
