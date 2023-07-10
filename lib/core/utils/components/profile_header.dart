@@ -1,6 +1,7 @@
 import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
+import 'package:dropeg/core/utils/assets_manger.dart';
 import 'package:dropeg/core/utils/components/app_buttons.dart';
 import 'package:dropeg/core/utils/components/custom_text_field.dart';
 import 'package:dropeg/core/utils/components/img_network_with_cached.dart';
@@ -34,12 +35,14 @@ class _ProfileHeaderState extends State<ProfileHeader> {
         var formKey = GlobalKey<FormState>();
         return Row(
           children: [
-            ImageNetworkWithCached(
+            (userInfo != null && userInfo!.photo!.isNotEmpty )? ImageNetworkWithCached(
               imgUrl: imgUrl ?? "",
               height: 50.h,
               width: 50.h,
               isCircular: true,
-            ),
+            )
+                : Image.asset(ImagesManger.user , width: 40.h, height: 40.h,)
+            ,
             const SizedBox(
               width: 24,
             ),
@@ -48,7 +51,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    userInfo?.name ?? "",
+                    userInfo?.nameForView ?? "",
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
                   const SizedBox(

@@ -4,6 +4,7 @@ import 'package:dropeg/core/utils/components/custom_appbar.dart';
 import 'package:dropeg/features/home/features/services/domain/entity/service_entity.dart';
 import 'package:dropeg/features/home/features/services/presentation/widgets/provider_build_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SingleProviderScreen extends StatelessWidget {
   final ServiceEntity serviceEntity;
@@ -17,7 +18,7 @@ class SingleProviderScreen extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: 250,
+              height: 190.h,
               child: CustomAppbars.appBarWithCard(
                   context: context,
                   title: serviceEntity.title,
@@ -26,16 +27,16 @@ class SingleProviderScreen extends StatelessWidget {
                   ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 
                 children: [
-                  const SizedBox(
-                    height: 20,
+                   SizedBox(
+                    height: 13.h,
                   ),
                   const CategoryTitle(title: AppStrings.availableProviders),
-                  const SizedBox(
-                    height: 20,
+                   SizedBox(
+                    height: 13.h,
                   ),
                   Column(
                     children: List.generate(

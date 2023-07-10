@@ -301,7 +301,7 @@ class OrderButton extends StatelessWidget {
           ),
         );
         var totalPrice = Text(
-          "${AppStrings.total} ${AppStrings.egp} ${OrderCubit.get(context).total}",
+          "${AppStrings.egp} ${OrderCubit.get(context).total}",
           style: Theme.of(context)
               .textTheme
               .displaySmall!

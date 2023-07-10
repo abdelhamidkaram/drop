@@ -63,7 +63,7 @@ class _ProviderServicesItemState extends State<ProviderServicesItem> {
                                     .serverProvideList?[widget.index]
                                     .serviceName ??
                                 "",
-                            style: Theme.of(context).textTheme.headline3),
+                            style: Theme.of(context).textTheme.displaySmall),
                       ),
                       !isSelected
                           ? Container(

@@ -37,10 +37,11 @@ class OrderTapBar extends StatelessWidget {
                     child: Center(
                       child: Text(
                         AppStrings.exterior,
-                        style: Theme.of(context).textTheme.headline5!.copyWith(
+                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                               color: !isExterior
                                   ? AppColors.primaryColor
                                   : AppColors.white,
+                          fontWeight: FontWeight.w600
                             ),
                       ),
                     ),
@@ -64,6 +65,7 @@ class OrderTapBar extends StatelessWidget {
                               color: isExterior
                                   ? AppColors.primaryColor
                                   : AppColors.white,
+                            fontWeight: FontWeight.w600
                             ),
                       ),
                     ),

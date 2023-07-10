@@ -44,19 +44,26 @@ class _InteriorScreenState extends State<InteriorScreen> {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                CustomAppbars.homeAppBar(
-                  context: context,
-                  onTap: null,
-                  helloTitle: AppStrings.pleaseSelectedService,
-                  hellosubTitle: AppStrings.startingByYourCars,
-                  height: 233,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      OrderTapBar(
+                Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    SizedBox(
+                      height: 225.h,
+                      child: Column(
+                        children: [
+                          CustomAppbars.homeAppBar(
+                            context: context,
+                            onTap: null,
+                            helloTitle: AppStrings.pleaseSelectedService,
+                            hellosubTitle: AppStrings.startingByYourCars,
+                            height: 233,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: OrderTapBar(
                         exteriorTap: () {
                           if (Navigator.canPop(context)) {
                             Navigator.pop(context);
@@ -64,8 +71,17 @@ class _InteriorScreenState extends State<InteriorScreen> {
                         },
                         isExterior: isExterior,
                       ),
+                    ),
+                  ],
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                       SizedBox(
-                        height: 12.h,
+                        height: 20.h,
                       ),
                       Column(
                         children: [
@@ -79,7 +95,7 @@ class _InteriorScreenState extends State<InteriorScreen> {
                           )
                         ],
                       ),
-                      
+
                     ],
                   ),
                 ),

@@ -15,7 +15,9 @@ class AppPrefsKes {
 
 
   static const String showEvent = "showEvent";
+  static const String notShowEventAgain = "notShowEventAgain";
   static const String showTopNotificationOrder = "showTopNotificationOrder";
   static const String showTopNotificationAppointment = "showTopNotificationAppointment";
-  
+  static const String eventRegister = "eventRegister";
+
 }

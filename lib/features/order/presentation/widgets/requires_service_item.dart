@@ -67,12 +67,14 @@ class _RequiredServiceItemState extends State<RequiredServiceItem> {
                             maxLines: 2,
                           ),
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Text(AppStrings.egp),
                               SizedBox(
                                 width: 4.w,
                               ),
                               SizedBox(
+                                height: 20,
                                   width: 35.w,
                                   child: Text(widget.requiredService.price)),
                               SizedBox(
@@ -100,7 +102,7 @@ class _RequiredServiceItemState extends State<RequiredServiceItem> {
             ),
           ),
           SizedBox(
-            height: 8.h,
+            height: 20.h,
           )
         ],
       ),
@@ -109,6 +111,7 @@ class _RequiredServiceItemState extends State<RequiredServiceItem> {
 
   Widget _offsetPopup() {
     return IconButton(
+      padding: EdgeInsets.zero,
         onPressed: () {
           showDialog(
               context: context,

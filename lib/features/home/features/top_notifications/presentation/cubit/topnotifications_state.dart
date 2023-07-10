@@ -23,3 +23,8 @@ class GetAppointmentEventNotificationSuccess extends TopNotificationsState {}
 class GetAppointmentEventNotificationLoading extends TopNotificationsState {}
 class GetAppointmentEventNotificationError extends TopNotificationsState {}
 
+
+class successRegisterSuccess extends TopNotificationsState {}
+class successRegisterLoading extends TopNotificationsState {}
+class successRegisterError extends TopNotificationsState {}
+

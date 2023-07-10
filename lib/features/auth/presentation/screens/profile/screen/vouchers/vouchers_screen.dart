@@ -4,12 +4,14 @@ import 'package:dropeg/core/utils/components/custom_appbar.dart';
 import 'package:dropeg/features/auth/domain/entities/vouchers.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/screen/vouchers/cubit/voucher_cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/screen/vouchers/widgets/ticket_widget.dart';
+import 'package:dropeg/features/home/bloc/home_cubit.dart';
 import 'package:dropeg/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../widgets/hello_there.dart';
+import 'package:dropeg/injection_container.dart' as di ; 
 
 class VouchersScreen extends StatefulWidget {
   const VouchersScreen({super.key});
@@ -48,6 +50,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
                             colors: colors,
                             vouchers: vouchers,
                             index: index,
+                            location: di.sl<HomeCubit>().mainLocation,
                           ),
                           SizedBox(
                             width: 250.w,

@@ -17,7 +17,7 @@ class RefarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String refarCode = userInfo?.refarCode ?? AppStrings.appName;
     onShare() async {
-      await Share.share(refarCode);
+      await Share.share("Hey friend, Here’s a FREE Carwash just for you! Use my referral code ${refarCode} while you’re checking out. Download Drop here: https://drop-eg.com/GetDrop");
     }
 
     return Scaffold(
@@ -36,16 +36,17 @@ class RefarScreen extends StatelessWidget {
                 Column(
                   children: [
                     const SizedBox(
-                      height: 120,
+                      height: 180,
                     ),
                     Center(
                         child: Image.asset(
                       ImagesManger.refar,
-                      height: 320.h,
+                      height: 300,
                     )),
+                    SizedBox(height: 25.h,),
                     Text(
                       AppStrings.get1FreeWash,
-                      style: Theme.of(context).textTheme.headline2!.copyWith(
+                      style: Theme.of(context).textTheme.displayMedium!.copyWith(
                           color: AppColors.primaryColor, fontSize: 28.sp),
                     ),
                     const SizedBox(
@@ -53,7 +54,7 @@ class RefarScreen extends StatelessWidget {
                     ),
                     Text(
                       AppStrings.forEveryFriendYouRefer,
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
                     SizedBox(
                       height: 27.h,
@@ -63,33 +64,34 @@ class RefarScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Card(
+
                           child: Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                InkWell(
-                                    onTap: () async {
-                                      await Clipboard.setData(
-                                          ClipboardData(text: refarCode));
-                                      EasyLoading.showToast(AppStrings.copied,
-                                          toastPosition:
-                                              EasyLoadingToastPosition.bottom);
-                                    },
-                                    child: const Icon(Icons.copy, size: 37)),
-                                SizedBox(
-                                  width: 25.w,
-                                ),
+                             SizedBox(width: 15.w,),
+                                Spacer(),
                                 Text(
                                   refarCode,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline1!
+                                      .displayMedium!
                                       .copyWith(
-                                          color: AppColors.grey,
+                                          color: AppColors.grey.withOpacity(0.50),
                                           overflow: TextOverflow.ellipsis),
                                 ),
+                                Spacer(),
+                                InkWell(
+                                    hoverColor: AppColors.primaryColor,
+                                    radius: 60,
+                                    onTap: () async {
+                                      await Clipboard.setData(
+                                          ClipboardData(text: refarCode));
+                                          EasyLoading.showSuccess("Copied" , );
+                                    },
+                                    child:  Icon(Icons.copy_outlined, size: 30 , color: AppColors.grey.withOpacity(0.50),)),
                               ],
                             ),
                           ),

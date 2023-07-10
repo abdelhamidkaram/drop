@@ -21,135 +21,127 @@ class EventsTopNotificationsButton extends StatefulWidget {
 
 class _EventsTopNotificationsButtonState
     extends State<EventsTopNotificationsButton> {
-  bool isFristCall = true;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TopNotificationsCubit, TopNotificationsState>(
       builder: (context, state) {
         var cubit = TopNotificationsCubit.get(context);
         if (cubit.eventEntity != null && cubit.showEvents()) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        EventScreen(event: cubit.eventEntity!),
-                  ));
-            },
-            child: Column(
-              children: [
-                Card(
+          return Stack(
+            alignment: Alignment.topRight,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EventScreen(event: cubit.eventEntity!),
+                      ));
+                },
+                child: Card(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: SizedBox(
                       height: 110.h,
-                      width: double.infinity,
-                      child: Stack(
+                      child: Row(
                         children: [
-                          Stack(
-                            children: [
-                              Center(
-                                child: Row(
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 16.0),
+                              child: SizedBox(
+
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                   children: [
-                                    const Spacer(),
-                                    ImageNetworkWithCached(
-                                      height: 100.h,
-                                      width: 120.h,
-                                      imgUrl: (cubit.eventEntity!).imgUrl!,
+                                    Text(
+                                      (cubit.eventEntity!).title!,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall!.copyWith(
+                                        fontSize: 16.sp
+
+                                      ),
+                                      maxLines: 2,
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      (cubit.eventEntity!).details!,
+                                      maxLines: 2,
+                                      style: Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Container(
+                                      height: 28.h,
+                                      width: 110.w,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(50),
+                                        border: Border.all(
+                                            color: AppColors.red, width: 2),
+                                      ),
+                                      child: Center(
+                                        child: Text(AppStrings.reserveNow,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineSmall!
+                                                .copyWith(
+                                                    color: AppColors.red,
+                                                    fontSize: 13.sp
+                                            )),
+                                      ),
                                     )
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                child: SizedBox(
-                                  width: 250.w,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        (cubit.eventEntity!).title!,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline3,
-                                        maxLines: 2,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      Text(
-                                        (cubit.eventEntity!).details!,
-                                        maxLines: 2,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      Container(
-                                        height: 28.h,
-                                        width: 130.w,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          border: Border.all(
-                                              color: AppColors.red, width: 2),
-                                        ),
-                                        child: Center(
-                                          child: Text(AppStrings.reserveNow,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline5!
-                                                  .copyWith(
-                                                      color: AppColors.red)),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                          Row(
-                            children: [
-                              const Spacer(),
-                              IconButton(
-                                  onPressed: () {
-                                    di
-                                        .sl<AppPreferences>()
-                                        .setShowEvent(false)
-                                        .then((value) => null);
-                                    setState(() {
-                                      cubit.changeEvent(false);
-                                    });
-                                  },
-                                  icon: Icon(
-                                    Icons.close,
-                                    color: AppColors.black,
-                                  )),
-                            ],
+                          Center(
+                            child: ImageNetworkWithCached(
+                              height: 100.h,
+                              width: 120.w,
+                              imgUrl: (cubit.eventEntity!).imgUrl!,
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 10.h,
-                ),
-              ],
-            ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    di
+                        .sl<AppPreferences>()
+                        .setShowEvent(false )
+                        .then((value) => null);
+
+                    di
+                        .sl<AppPreferences>()
+                        .notShowEventAgain()
+                        .then((value) => null);
+                    setState(() {
+                      cubit.changeEvent(false);
+                    });
+                  },
+                  icon: Icon(
+                    Icons.close,
+                    color: AppColors.black,
+                  )),
+            ],
           );
-        } else if (cubit.eventEntity == null &&
-            cubit.showEvents() &&
-            isFristCall) {
-         
         } else {
           return const SizedBox();
         }
-        return const SizedBox();
+
       },
     );
   }

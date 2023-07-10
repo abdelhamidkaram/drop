@@ -43,25 +43,27 @@ class _CarCardItemState extends State<CarCardItem> {
     Row licensePlate() {
       return Row(
         children: [
-          SizedBox(
-            width: 50,
-            child: CustomTextFormField(
-              hint: AppStrings.carLicenseNumberHint,
-              controller: licenseNumberController,
-              type: TextInputType.text,
-              validateEmptyMSG: AppStrings.carAHintEmptyMSG,
+          Expanded(
+            child: SizedBox(
+              child: CustomTextFormField(
+                hint: AppStrings.carLicenseNumberHint,
+                controller: licenseNumberController,
+                type: TextInputType.text,
+                validateEmptyMSG: AppStrings.carAHintEmptyMSG,
+              ),
             ),
           ),
           const SizedBox(
             width: 14,
           ),
-          SizedBox(
-            width: 150,
-            child: CustomTextFormField(
-              hint: AppStrings.carLicensePlateHint,
-              controller: licensePlateController,
-              type: TextInputType.text,
-              validateEmptyMSG: AppStrings.carLicensePlateHintEmptyMSG,
+          Expanded(
+            child: SizedBox(
+              child: CustomTextFormField(
+                hint: AppStrings.carLicensePlateHint,
+                controller: licensePlateController,
+                type: TextInputType.text,
+                validateEmptyMSG: AppStrings.carLicensePlateHintEmptyMSG,
+              ),
             ),
           ),
           const SizedBox(
@@ -110,7 +112,6 @@ class _CarCardItemState extends State<CarCardItem> {
                         value: value,
                         child: Text(
                           value,
-                          style: const TextStyle(fontSize: 20),
                         ),
                       );
                     }).toList(),
@@ -157,10 +158,10 @@ class _CarCardItemState extends State<CarCardItem> {
                                     AppStrings.delete,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headline5!
+                                        .headlineSmall!
                                         .copyWith(
-                                          color: AppColors.red,
-                                        ),
+                                      color: AppColors.red,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -169,7 +170,7 @@ class _CarCardItemState extends State<CarCardItem> {
                                   child: Text(
                                     AppStrings.editCar,
                                     style:
-                                        Theme.of(context).textTheme.headline3,
+                                    Theme.of(context).textTheme.displaySmall,
                                   ),
                                 ),
                               ),
@@ -199,47 +200,49 @@ class _CarCardItemState extends State<CarCardItem> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Expanded(
-                                child: AppButtonBlue(
-                                  text: AppStrings.editCar,
-                                  onTap: () async {
-                                    if (formKey.currentState!.validate()) {
-                                      Car newCar = Car(
-                                        licenseNumber:
-                                            licenseNumberController.text,
-                                        brand: value,
-                                        color: colorController.text,
-                                        licensePlate:
-                                            licensePlateController.text,
-                                        model: modelController.text,
-                                        id: widget.profileCubit
-                                            .cars![widget.index].id,
-                                      );
-                                      if (widget.profileCubit
-                                              .cars![widget.index] ==
-                                          newCar) {
-                                        Navigator.pop(context);
-                                      } else {
-                                        await ProfileCubit.get(context)
-                                            .getEditCar(
-                                                context: context,
-                                                index: widget.index,
-                                                newCar: newCar);
-                                      }
-                                    }
-                                  },
-                                ),
-                              ),
-                              SizedBox(
-                                width: 5.w,
-                              ),
+
                               Expanded(
                                 child: AppButtonRed(
                                     text: AppStrings.cancel,
                                     onTap: () {
                                       Navigator.of(context).pop();
                                     }),
-                              )
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Expanded(
+                                child: AppButtonBlue(
+                                  text: AppStrings.done,
+                                  onTap: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      Car newCar = Car(
+                                        licenseNumber:
+                                        licenseNumberController.text,
+                                        brand: value,
+                                        color: colorController.text,
+                                        licensePlate:
+                                        licensePlateController.text,
+                                        model: modelController.text,
+                                        id: widget.profileCubit
+                                            .cars![widget.index].id,
+                                      );
+                                      if (widget.profileCubit
+                                          .cars![widget.index] ==
+                                          newCar) {
+                                        Navigator.pop(context);
+                                      } else {
+                                        await ProfileCubit.get(context)
+                                            .getEditCar(
+                                            context: context,
+                                            index: widget.index,
+                                            newCar: newCar);
+                                      }
+                                    }
+                                  },
+                                ),
+                              ),
+
                             ],
                           )
                         ],
@@ -268,11 +271,11 @@ class _CarCardItemState extends State<CarCardItem> {
                         children: [
                           Text(
                             "${widget.profileCubit.cars?[widget.index].brand ?? "."} ${widget.profileCubit.cars?[widget.index].model ?? "."}",
-                            style: Theme.of(context).textTheme.headline5,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           Text(
                             "${widget.profileCubit.cars?[widget.index].licensePlate ?? "."}-${widget.profileCubit.cars?[widget.index].licenseNumber ?? "."}",
-                            style: Theme.of(context).textTheme.headline6,
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ],
                       ),

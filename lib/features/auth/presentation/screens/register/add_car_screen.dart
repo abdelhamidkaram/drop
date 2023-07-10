@@ -12,6 +12,7 @@ import 'package:dropeg/core/utils/constant.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../../config/route/app_route.dart';
+import '../../../../../core/api/api_cosumer.dart';
 import '../../../../../main.dart';
 import 'package:dropeg/injection_container.dart' as di;
 import '../profile/bloc/cubit.dart';
@@ -46,8 +47,8 @@ class _AddCarScreenState extends State<AddCarScreen> {
                 context: context, title: AppStrings.signUp, isAddScreen: true),
             Column(
               children: [
-                const SizedBox(
-                  height: 210,
+                 SizedBox(
+                  height: 145.h,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -93,6 +94,17 @@ class _AddCarScreenState extends State<AddCarScreen> {
                                   .doc(carDetails.id)
                                   .set(carDetails.toJson())
                                   .then((value) async {
+
+                                    // send email to new user
+                                     di.sl<ApiConsumer>().postData(
+                                      'https://api.retool.com/v1/workflows/135e6d48-27f2-41c0-b0ab-66376554341e/startTrigger?workflowApiKey=retool_wk_e7cee0c216d04a1fb5a40fd3633c4fa9',
+                                      body: {
+                                        'name':userInfo?.name ?? 'UNKNOWN',
+                                        'phone':userInfo?.phone ?? 'UNKNOWN',
+                                        'email':userInfo?.email ?? 'UNKNOWN',
+                                        'car':carDetails.toJson(),
+                                      }
+                                    ).then((value) => debugPrint(value.toString()));
                                 if (!(await di
                                     .sl<AppPreferences>()
                                     .isOnBoardingScreenViewed())) {
@@ -148,7 +160,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
             child: CustomTextFormField(
               hint: AppStrings.carLicenseNumberHint,
               controller: licenseNumberController,
-              type: TextInputType.number,
+              type: TextInputType.text,
               validateEmptyMSG: AppStrings.carAHintEmptyMSG,
             ),
           ),
@@ -161,7 +173,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
             child: CustomTextFormField(
               hint: AppStrings.carLicensePlateHint,
               controller: licensePlateController,
-              type: TextInputType.text,
+              type: TextInputType.number,
               validateEmptyMSG: AppStrings.carLicensePlateHintEmptyMSG,
             ),
           ),

@@ -58,9 +58,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       height: 650.h,
                       child: Card(
                         margin: EdgeInsets.only(
-                          top: context.height / 4.5,
+                          top: context.height / 5.7,
                           right: context.width * 0.05,
                           left: context.width * 0.05,
+                          bottom: context.height/11.5
                         ),
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
@@ -77,7 +78,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               Center(
                                   child: Image.asset(
                                 ImagesManger.logoVertical,
-                                height: 90.0.h,
+                                width: 90.0,
                               )),
                               const HelloThere(
                                   subtitle: AppStrings.pleaseLoginOrSignUp),
@@ -254,13 +255,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                         AppStrings.continueWithoutRegistration,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headlineSmall,
+                                            .headlineSmall!.copyWith(
+                                          fontSize: 14
+                                        ),
                                       )))
                             ],
                           ),
                         ),
                       ),
                     ),
+
                   ],
                 ),
               ],

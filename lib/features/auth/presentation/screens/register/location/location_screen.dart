@@ -170,6 +170,7 @@ class _LocationScreenState extends State<LocationScreen> {
                           child: ListView(
                             physics: const BouncingScrollPhysics(),
                             children: [
+                              SizedBox(height: 16.h,),
                               const Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: HelloThere(
@@ -205,7 +206,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                               AppStrings.registeredCompounds,
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .headline5,
+                                                  .headlineSmall,
                                             ),
                                             const Spacer(),
                                             const Icon(

@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'package:dropeg/core/utils/app_colors.dart';
+import 'package:dropeg/core/utils/assets_manger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dropeg/core/shared_prefs/app_prefs.dart';
 import 'package:dropeg/injection_container.dart' as di ;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../config/route/app_route.dart';
+import 'package:lottie/lottie.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
   @override
@@ -13,15 +17,10 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Timer? _timer;
-  Timer? _timer2;
-  double op = 0;
+
+
   _startDelay() {
     _timer = Timer( const Duration(seconds: 5), _goNext);
-    _timer2 = Timer(const Duration(milliseconds: 50) , (){
-      setState(() {
-        op = 1 ;
-      });
-    });
   }
 
   _goNext() async {
@@ -38,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _startDelay();
     SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
-      statusBarColor: AppColors.primaryColor,
+      statusBarColor: AppColors.white,
       statusBarBrightness: Brightness.light,
     ));
   }
@@ -47,35 +46,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+
       child: Scaffold(
+        backgroundColor: AppColors.white,
         appBar: AppBar(
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.white,
           elevation: 0.0,
         ),
         body: Container(
-          decoration:   BoxDecoration(
-            gradient:  LinearGradient(
-              colors: [
-                AppColors.primaryColor,
-                AppColors.lightPrimaryColor,
-              ] ,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              stops: const [
-                0.3,
-                0.9
-              ],
-            ),
-          ),
           child: Center(
-            child: AnimatedOpacity(
-                duration: const Duration(seconds: 5),
-                opacity: op,
-                child: Image.asset("assets/images/logo.png" , width: 200, height: 50,color: AppColors.white,)),
-          ),
+            child: LottieBuilder.asset(JsonManger.checkStatusButton , width: 180.w,),
         ),
       ),
-    );
+    ));
   }
 
 
@@ -83,8 +66,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void dispose() {
     _timer?.cancel();
-    _timer2?.cancel();
     super.dispose();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+    SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
+      statusBarColor: AppColors.lightPrimaryColor,
+      statusBarBrightness: Brightness.light,
+    ));
   }
 }

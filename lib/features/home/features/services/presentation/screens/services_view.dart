@@ -1,5 +1,6 @@
 import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/config/route/app_route_arguments.dart';
+import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/components/img_network_with_cached.dart';
 import 'package:dropeg/features/home/features/services/domain/entity/service_entity.dart';
 import 'package:dropeg/features/home/bloc/home_cubit.dart';
@@ -70,7 +71,7 @@ class ServicesListView extends StatelessWidget {
                                             services[index].title,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .headline3,
+                                                .displaySmall,
                                           ),
                                           SizedBox(
                                             height: 5.0.h,
@@ -79,13 +80,17 @@ class ServicesListView extends StatelessWidget {
                                             services[index].details,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 3,
+                                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                              color: AppColors.subTitleColor,
+                                            ),
                                           ),
                                         ],
                                       )),
                                       const Icon(
                                         Icons.arrow_forward_ios_outlined,
-                                        size: 22,
+                                        size: 18,
                                       )
+
                                     ],
                                   ),
                                 ),

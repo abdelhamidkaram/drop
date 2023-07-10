@@ -13,6 +13,8 @@ class ImagesManger {
   static const String refar = "$imagePath/friend2.png";
   static const String eventScreen = "$imagePath/exotics_driver.png";
   static const String pirvacy = "$imagePath/pirvacy.png";
+  static const String user = "$imagePath/user.png";
+
 }
 
 const iconsPath = "assets/icons";
@@ -47,5 +49,6 @@ class JsonManger {
   static const String washDone = "$jsonPath/wash_done.json";
   static const String workShopAppointment = "$jsonPath/workshop_appointment.json";
   static const String checkStatusButton = "$jsonPath/moving_tricycle.json";
-  
+  static const String launch = "$jsonPath/Launch_Screen.json";
+
 }

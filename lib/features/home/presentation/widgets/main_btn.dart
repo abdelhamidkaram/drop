@@ -32,16 +32,19 @@ class MainButton extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Card(
+                elevation: 12,
+                shadowColor: Colors.black,
                 child: Container(
                   height: 150.h,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: <Color>[
-                          AppColors.blueDark,
-                          AppColors.primaryColor
+                          AppColors.primaryColor,
+                          AppColors.primaryColor.withOpacity(0.75),
                         ],
+
                       ),
-                      borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(20)),
                   child: Row(
                     children: [
                       Stack(
@@ -63,7 +66,7 @@ class MainButton extends StatelessWidget {
                                         AppStrings.wash,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline1!
+                                            .displayLarge!
                                             .copyWith(
                                                 color: AppColors.white,
                                                 fontWeight: FontWeight.w700),
@@ -72,7 +75,7 @@ class MainButton extends StatelessWidget {
                                         AppStrings.drop,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline1!
+                                            .displayLarge!
                                             .copyWith(
                                                 color: AppColors.white,
                                                 fontWeight: FontWeight.w300),
@@ -86,12 +89,15 @@ class MainButton extends StatelessWidget {
                                     AppStrings.carWashAnyWhere,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headline5!
-                                        .copyWith(color: AppColors.white),
+                                        .headlineSmall!
+                                        .copyWith(
+                                      color: AppColors.white2,
+                                      fontWeight: FontWeight.w600
+                                    ),
                                   ),
                                 ],
                               )
-                            
+
                             ],
                           ),
                         ],
@@ -102,10 +108,12 @@ class MainButton extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20.0),
+              padding: const EdgeInsets.only(right: 30.0),
               child: Icon(
+
                 Icons.arrow_forward_ios_outlined,
                 color: AppColors.white,
+                size: 20,
               ),
             )
           ],

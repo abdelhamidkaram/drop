@@ -432,6 +432,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  freshchat_sdk:
+    dependency: "direct main"
+    description:
+      name: freshchat_sdk
+      sha256: "1a09e77e00d5252404b451d6c02568d0108d79f1da43f259e4675b1964e0099d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.5"
   get_it:
     dependency: "direct main"
     description:

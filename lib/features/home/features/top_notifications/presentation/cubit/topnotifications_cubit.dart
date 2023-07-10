@@ -18,10 +18,10 @@ class TopNotificationsCubit extends Cubit<TopNotificationsState> {
   bool showEvents() => appPreferences.isShowEvent();
   bool showOrder() => appPreferences.isShowOrderTopNotification();
   bool showAppointment() => appPreferences.isShowAppointmentTopNotification();
-
+  bool successRegister() => appPreferences.isRegisterEvent() ;
   EventEntity? eventEntity;
-  Future getLastEvent({EventEntity? event}) async {
-    if (eventEntity == null) {
+  Future getLastEvent({ required bool isFirstBuild,EventEntity? event } ) async {
+    if (eventEntity == null   ) {
       await FirebaseFirestore.instance
           .collection(FirebaseStrings.eventsCollection)
           .get()
@@ -79,5 +79,12 @@ class TopNotificationsCubit extends Cubit<TopNotificationsState> {
     emit(GetAppointmentEventNotificationLoading());
     await appPreferences.setShowAppointmentTopNotification(value);
     emit(GetAppointmentEventNotificationSuccess());
+  }
+
+
+  changeSuccessRegister(bool value) async {
+    emit(successRegisterLoading());
+    appPreferences.setRegisterEvent(value);
+    emit(successRegisterSuccess());
   }
 }

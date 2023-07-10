@@ -133,8 +133,9 @@ class AppPreferences {
 
 // Top notifications
 
-  Future<void> setShowEvent(bool isShow) async {
-    await _sharedPreferences.setBool(AppPrefsKes.showEvent, isShow);
+  Future<void> setShowEvent(bool isShow ) async {
+    bool notShow = isNotShowEventAgain();
+    await _sharedPreferences.setBool(AppPrefsKes.showEvent,  notShow ? false : isShow);
     debugPrint(" preference : set show event => $isShow ");
   }
 
@@ -142,9 +143,20 @@ class AppPreferences {
     return _sharedPreferences.getBool(AppPrefsKes.showEvent) ?? true;
   }
 
-  Future<void> setShowOrderTopNotification(bool isShow) async {
+  Future<void> notShowEventAgain({  bool? status}) async {
+    await _sharedPreferences.setBool(AppPrefsKes.notShowEventAgain,status != null ? status :true);
+    debugPrint(" preference : Not Show Event Again => true  ");
+  }
+
+
+  bool isNotShowEventAgain()  {
+    return _sharedPreferences.getBool(AppPrefsKes.notShowEventAgain) ?? false;
+  }
+
+  Future<void> setShowOrderTopNotification(bool isShow ,
+     ) async {
     await _sharedPreferences.setBool(
-        AppPrefsKes.showTopNotificationOrder, isShow);
+        AppPrefsKes.showTopNotificationOrder,isShow);
     debugPrint(" preference : set show order => $isShow ");
   }
 
@@ -162,6 +174,19 @@ class AppPreferences {
   bool isShowAppointmentTopNotification()  {
     return _sharedPreferences
             .getBool(AppPrefsKes.showTopNotificationAppointment) ??
+        false;
+  }
+
+
+  Future<void> setRegisterEvent(bool isRegister) async {
+    await _sharedPreferences.setBool(
+        AppPrefsKes.eventRegister, isRegister);
+    debugPrint(" preference : eventRegister => $isRegister ");
+  }
+
+  bool isRegisterEvent()  {
+    return _sharedPreferences
+            .getBool(AppPrefsKes.eventRegister) ??
         false;
   }
 

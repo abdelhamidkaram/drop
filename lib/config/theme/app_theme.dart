@@ -35,13 +35,23 @@ ThemeData appTheme() => ThemeData(
       cardTheme: CardTheme(
         elevation: 10,
         color: AppColors.cardBackGround,
+        shadowColor: Colors.black,
         shape: const RoundedRectangleBorder(
+          
           borderRadius: BorderRadius.all(
-            Radius.circular(12.0),
+            Radius.circular(20.0),
           ),
         ),
       ),
       textTheme: TextTheme(
+
+        bodyMedium: TextStyle(
+              fontFamily: AppStrings.fontFamily,
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.grey,
+              overflow: TextOverflow.ellipsis
+          ),
         displayLarge: TextStyle(
             fontFamily: AppStrings.fontFamily,
             fontSize: 20.sp,
@@ -59,6 +69,7 @@ ThemeData appTheme() => ThemeData(
             fontSize: 16.sp,
             fontWeight: FontWeight.bold,
             color: AppColors.black,
+
             overflow: TextOverflow.ellipsis),
         headlineSmall: TextStyle(
             fontFamily: AppStrings.fontFamily,
@@ -71,5 +82,8 @@ ThemeData appTheme() => ThemeData(
             fontWeight: FontWeight.w700,
             color: AppColors.grey,
             overflow: TextOverflow.ellipsis),
-      ), bottomAppBarTheme: BottomAppBarTheme(color: AppColors.backGround),
+
+      ),
+
+  bottomAppBarTheme: BottomAppBarTheme(color: AppColors.backGround),
     );

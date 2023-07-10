@@ -1,5 +1,6 @@
 import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/config/route/app_route_arguments.dart';
+import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/components/img_network_with_cached.dart';
 import 'package:dropeg/features/home/features/services/domain/entity/service_entity.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class ServicesProviderListItem extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: SizedBox(
-                height: 69.h,
+                height: 87.h,
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -51,7 +52,8 @@ class ServicesProviderListItem extends StatelessWidget {
                           ),
                           Text(
                             serviceEntity.serviceProviders[index].details,
-                            style: const TextStyle(
+                            style:  TextStyle(
+                                color: AppColors.subTitleColor,
                                 overflow: TextOverflow.ellipsis),
                             maxLines: 3,
                           ),
@@ -61,7 +63,8 @@ class ServicesProviderListItem extends StatelessWidget {
                         height: 100.h,
                         imgUrl: serviceEntity.serviceProviders[index].img,
                       ),
-                      const Icon(Icons.arrow_forward_ios_outlined),
+                      const SizedBox(width: 7,),
+                      const Icon(Icons.arrow_forward_ios_outlined , size: 18,),
                     ],
                   ),
                 ),

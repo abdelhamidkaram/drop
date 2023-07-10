@@ -25,6 +25,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dropeg/injection_container.dart' as di;
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -64,68 +65,82 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              CustomAppbars.homeAppBar(
-                  context: context,
-                  helloTitle: "${AppStrings.hello} ${userInfo?.nameForView ?? ''},",
-                  hellosubTitle: AppStrings.welcomeBack,
-                  onTap: () {
-                    homeScaffoldStateKey.currentState?.openDrawer();
-                  }),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16.0, bottom: 20.0),
-                child: locations != null
-                    ? MainLocation(
-                  onTap: () {
-                    if (location != null) {
-                      showLocationChoose(
-                        homeScaffoldStateKey: homeScaffoldStateKey,
-                        location: location,
-                        locations: locations,
-                      );
-                    }
-                  },
-                )
-                    : null,
+              Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  CustomAppbars.homeAppBar(
+                      context: context,
+                      helloTitle: "${AppStrings.hello} ${userInfo?.nameForView ?? ''},",
+                      hellosubTitle: AppStrings.welcomeBack,
+                      onTap: () {
+                        homeScaffoldStateKey.currentState?.openDrawer();
+                      }),
+                  Column(
+                    children: [
+                      SizedBox(height: 208,),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 16.0, right: 16.0, bottom: 20.0),
+                        child: locations != null
+                            ? MainLocation(
+                          onTap: () {
+                            if (location != null) {
+                              showLocationChoose(
+                                homeScaffoldStateKey: homeScaffoldStateKey,
+                                location: location,
+                                locations: locations,
+                              );
+                            }
+                          },
+                        )
+                            : null,
+                      ),
+                      BlocConsumer<HomeCubit, HomeStates>(
+                        listener: (context, state) => di.sl<HomeCubit>(),
+                        builder: (context, state) {
+                          var location = HomeCubit.get(context).mainLocation;
+                          return MainButton(
+                              location: location ??
+                                  LocationEntity(
+                                    address: "address",
+                                    state: "state",
+                                    city: "city",
+                                    type: "Home",
+                                    id: "id",
+                                  ));
+                        },
+                      ),
+                      SizedBox(
+                        height: 16.0.h,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          children: [
+                            const TopNotificationsView(),
+                            const SizedBox(height: 16,),
+                            const ServicesListView(),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            const CategoryTitle(title: AppStrings.notifications),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            const Notifications(),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 10.h,
-              ),
-              BlocConsumer<HomeCubit, HomeStates>(
-                listener: (context, state) => di.sl<HomeCubit>(),
-                builder: (context, state) {
-                  var location = HomeCubit.get(context).mainLocation;
-                  return MainButton(
-                      location: location ??
-                          LocationEntity(
-                            address: "address",
-                            state: "state",
-                            city: "city",
-                            type: "Home",
-                            id: "id",
-                          ));
-                },
-              ),
-              SizedBox(
-                height: 20.0.h,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  children: [
-                    const TopNotificationsView(),
-                    const ServicesListView(),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    const CategoryTitle(title: AppStrings.notifications),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    const Notifications()
-                  ],
-                ),
-              ),
+
+
+
             ],
           ),
         ),

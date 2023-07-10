@@ -83,6 +83,7 @@ class _CustomDropDownFieldState extends State<CustomDropDownField> {
                       }
                     });
                   },
+                  icon: Icon(Icons.keyboard_arrow_down),
                   items:
                   widget.list.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(

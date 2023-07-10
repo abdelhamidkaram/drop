@@ -137,7 +137,7 @@ class CalenderWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 250.h,
+                height: 240.h,
                 child: TableCalendar(
                   shouldFillViewport: true,
                   currentDay: DateTime.parse(
@@ -205,6 +205,9 @@ class CalenderWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: 10.h,
+                    ),
                     GestureDetector(
                       onTap: () {
                               showTimePiker(context);
@@ -233,11 +236,7 @@ class CalenderWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          AppChangeButton(
-                              text: AppStrings.change + AppStrings.time,
-                              onTap: () {
-                              showTimePiker(context);
-                              })
+
                         ],
                       ),
                     ),
@@ -249,6 +248,7 @@ class CalenderWidget extends StatelessWidget {
                         onTap: () {
                           Navigator.pop(context);
                         }),
+
                   ],
                 ),
               )

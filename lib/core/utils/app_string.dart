@@ -1,6 +1,8 @@
 class AppStrings {
   static const String appName = "Drop App ";
   static const String fontFamily = "ridley";
+  static const String fontFamily_2_rubik = "rubik";
+  static const String done = "Done";
   static const String unDefinedRouteMSG = " No Route Found ... ";
   static const String authErrorPasswordWeakMSG =
       "The password provided is too weak.";
@@ -29,7 +31,7 @@ class AppStrings {
       "Continue without registration";
   static const String loginHere = "Login here";
   static const String helloThere = "Hello there,";
-  static const String hello = "Hello,";
+  static const String hello = "Hello";
   static const String locationDetails = "Location Details";
   static const String locationSubtitle = "Add a frequented location";
   static const String registeredCompounds = "Registered Compounds";
@@ -43,17 +45,17 @@ class AppStrings {
   static const String addressHIT = "Address";
   static const String addressEmptyMSG = "choose $addressHIT";
   static const String manufacturerHint = "Manufacturer";
-  static const String manufacturerEmptyMSG = "choose $manufacturerHint";
-  static const String carModelHint = "model";
-  static const String carModelHintEmptyMSG = "Enter $carModelHint";
+  static const String manufacturerEmptyMSG = "Please add car's  $manufacturerHint";
+  static const String carModelHint = "Model";
+  static const String carModelHintEmptyMSG = "Please add car's $carModelHint";
   static const String carColorHint = "Color";
-  static const String carColorHintEmptyMSG = "Enter $carColorHint";
-  static const String carLicenseNumberHint = "licenseNumber ";
-  static const String carAHintEmptyMSG = "Enter $carLicenseNumberHint";
+  static const String carColorHintEmptyMSG = "Please add car's $carColorHint";
+  static const String carLicenseNumberHint = "license Letter ";
+  static const String carAHintEmptyMSG = "Please add plat's $carLicenseNumberHint";
 
   static const String carLicensePlateHint = "License Plate";
   static const String carLicensePlateHintEmptyMSG =
-      " Enter $carLicensePlateHint ";
+      " Please add plat's $carLicensePlateHint ";
   static const String welcome = "welcome";
   static const String firstNameHINT = "First Name";
   static const String nameHINT = "Your Name";
@@ -118,8 +120,8 @@ class AppStrings {
   static const String egp = "EGP";
   static const String noOrders = "No Orders";
   static const String noVoucher = "No Voucher now";
-  static const String noServices = "No Services now";
-  static const String get1FreeWash = "Get 1 Free Wash";
+  static const String noServices = "Nothing to see here";
+  static const String get1FreeWash = "Get a Free Wash";
   static const String forEveryFriendYouRefer = "For every friend you refer";
   static const String share = "Share";
   static const String copied = "Copied";
@@ -205,6 +207,7 @@ class AppStrings {
   static const String letsGo = "Let’s Go!";
   static const String mustAgreeTerms = "you must agree to terms & privacy";
   static const String forgetPassword = "Forgot Password?";
+  static const String voucherRedeemed = "Voucher Redeemed";
 }
 
 class FirebaseErrorMessage {

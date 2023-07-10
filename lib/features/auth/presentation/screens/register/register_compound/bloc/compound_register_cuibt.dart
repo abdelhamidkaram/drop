@@ -18,6 +18,7 @@ static CompoundCubit get(context) => BlocProvider.of(context);
 List<Compound> compounds = [];
 List<Compound> chooseCompounds = [];
 
+
   getCompounds() async {
     emit(CompoundRegisterLoading());
     await FirebaseFirestore.instance

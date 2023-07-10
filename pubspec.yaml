@@ -37,6 +37,7 @@ dependencies:
   table_calendar: ^3.0.8
   percent_indicator: ^4.2.2
   webview_flutter: ^4.0.6
+  freshchat_sdk: ^0.10.5
   
 
 dev_dependencies:
@@ -83,16 +84,18 @@ flutter:
           weight: 400
         - asset: assets/fonts/RidleyGroteskSemiBold.ttf
           weight: 600
-#        - asset: assets/fonts/RidleyGroteskBlack.ttf
- #       - asset: assets/fonts/RidleyGroteskExtraBold.ttf
- #       - asset: assets/fonts/RidleyGroteskThin.ttf
- #       - asset: assets/fonts/RidleyGroteskultraLight.ttf
- #       - asset: assets/fonts/RidleyGroteskBlackItalic.ttf
- #       - asset: assets/fonts/RidleyGroteskThinItalic.ttf
- #       - asset: assets/fonts/RidleyGroteskBoldItalic.ttf
- #       - asset: assets/fonts/RidleyGroteskExtraBoldItalic.ttf
-  #      - asset: assets/fonts/RidleyGroteskItalic.ttf
-  #      - asset: assets/fonts/RidleyGroteskLightItalic.ttf
-  #      - asset: assets/fonts/RidleyGroteskmediumItalic.ttf
-  #      - asset: assets/fonts/RidleyGroteskSemiBoldItalic.ttf
+
+    - family: rubik
+      fonts:
+        - asset: assets/fonts/rubik/rubik-light.ttf
+          weight: 300
+        - asset: assets/fonts/rubik/rubik-regular.ttf
+          weight: 400
+        - asset: assets/fonts/rubik/rubik-medium.ttf
+          weight: 500
+        - asset: assets/fonts/rubik/rubik-semiBold.ttf
+          weight: 600
+        - asset: assets/fonts/rubik/rubik-bold.ttf
+          weight: 700
+
 

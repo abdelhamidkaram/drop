@@ -4,6 +4,7 @@ import 'package:dropeg/features/auth/domain/entities/user.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'app.dart';
 import 'bloc_observer.dart';
 import 'firebase_options.dart';
@@ -28,6 +29,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await di.sl<ProfileCubit>().getProfileDetails(isRefresh: true , firstbuild: true);
+  EasyLoading.instance..loadingStyle = EasyLoadingStyle.dark;
   AppPreferences appPreferences = AppPreferences(di.sl());
   token = await appPreferences.getToken();
   uId = await appPreferences.getUid();

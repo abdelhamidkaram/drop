@@ -23,7 +23,7 @@ class LocationEntity extends Equatable {
   }
 
   String get addressForView {
-    return (this.city ?? "") + '-' + (this.state ?? "");
+    return (this.city ?? "");
   }
 
   Map<String, dynamic> toJson() => {

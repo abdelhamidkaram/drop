@@ -48,11 +48,11 @@ class MainLocation extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              AppStrings.deliveringTo,
+                              location?.type ?? "",
                               style: Theme.of(context).textTheme.displaySmall,
                             ),
                             Text(
-                              "${location?.type ?? ""}:${location?.addressForView ?? ""}",
+                              "${location?.addressForView ?? "" }",
                               maxLines: 2,
                               style: const TextStyle(
                                  height: 0.99,

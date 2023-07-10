@@ -34,7 +34,7 @@ class _SingleProviderServicesScreenState
             child: Column(
               children: [
                 SizedBox(
-                  height: 250,
+                  height: 190.h,
                   child: CustomAppbars.appBarWithCard(
                       context: context,
                       title:

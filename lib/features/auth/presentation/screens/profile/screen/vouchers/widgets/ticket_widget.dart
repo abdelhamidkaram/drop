@@ -1,21 +1,29 @@
+import 'package:dropeg/config/route/app_route.dart';
+import 'package:dropeg/config/route/app_route_arguments.dart';
 import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
-import 'package:dropeg/core/utils/toasts.dart';
+import 'package:dropeg/core/utils/assets_manger.dart';
+import 'package:dropeg/features/auth/domain/entities/location.dart';
 import 'package:dropeg/features/auth/domain/entities/vouchers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../../../core/utils/components/app_buttons.dart';
 import '../../../../../../../order/presentation/cubit/order_cubit.dart';
+import 'package:flutter_svg/svg.dart';
+
 
 class TicketWidgetBuildItem extends StatelessWidget {
   final List<Color> colors;
   final int index;
   final List<Voucher> vouchers;
+  final LocationEntity? location ;
+
   const TicketWidgetBuildItem(
       {super.key,
       required this.colors,
       required this.index,
-      required this.vouchers});
+      required this.vouchers , this.location});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -100,7 +108,7 @@ class TicketWidgetBuildItem extends StatelessWidget {
                       vouchers[index].title ?? "..",
                       style: Theme.of(context)
                           .textTheme
-                          .headline1!
+                          .displayLarge!
                           .copyWith(color: AppColors.white),
                     ),
                     SizedBox(
@@ -110,7 +118,7 @@ class TicketWidgetBuildItem extends StatelessWidget {
                       vouchers[index].discount ?? "..",
                       style: Theme.of(context)
                           .textTheme
-                          .headline1!
+                          .displayLarge!
                           .copyWith(color: AppColors.white, fontSize: 60.sp),
                     ),
                     SizedBox(
@@ -120,7 +128,7 @@ class TicketWidgetBuildItem extends StatelessWidget {
                       AppStrings.off,
                       style: Theme.of(context)
                           .textTheme
-                          .headline1!
+                          .displayLarge!
                           .copyWith(color: AppColors.white, fontSize: 40.sp),
                     ),
                     const Spacer(),
@@ -136,7 +144,82 @@ class TicketWidgetBuildItem extends StatelessWidget {
                                   1;
                           OrderCubit.get(context).promoCodeController.text =
                               vouchers[index].code!.split("%").first;
-                          AppToasts.successToast(AppStrings.success);
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      side: BorderSide(
+                                          color: AppColors.primaryColor,
+                                          width: 2)),
+                                  child: Container(
+                                    padding: EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                          color: AppColors.primaryColor),
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(
+                                          height: 25,
+                                        ),
+                                        SvgPicture.asset(
+                                          IconsManger.vouchers,
+                                          width: 40.h,
+                                          height: 40.h,
+                                        ),
+                                        SizedBox(
+                                          height: 16,
+                                        ),
+                                        Divider(
+                                          color: AppColors.black,
+                                        ),
+                                        SizedBox(
+                                          height: 16,
+                                        ),
+                                        Text(
+                                          AppStrings.voucherRedeemed,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displayMedium,
+                                        ),
+                                        SizedBox(
+                                          height: 16,
+                                        ),
+                                        Text(
+                                          'You’ll get ${vouchers[index].discount!} off your next order.',
+                                        ),
+                                        SizedBox(
+                                          height: 32,
+                                        ),
+                                        AppButtonBlue(
+                                            text: AppStrings.done,
+                                            onTap: () {
+                                              Navigator.pushNamed(context,
+                                                  AppRouteStrings.order,
+                                                  arguments: OrderMainArgs(
+                                                      locationEntity:
+                                                          location ??
+                                                              LocationEntity(
+                                                                address:
+                                                                    "address",
+                                                                state: "state",
+                                                                city: "city",
+                                                                type: "Home",
+                                                                id: "id",
+                                                              )));
+                                            }),
+                                        SizedBox(
+                                          height: 32,
+                                        ),
+                                      ],
+                                    ),
+                                  ));
+                            },
+                          );
                         }),
                     SizedBox(
                       height: 10.0.h,

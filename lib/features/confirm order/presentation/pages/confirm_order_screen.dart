@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/core/api/firestore_strings.dart';
@@ -238,7 +237,7 @@ class OrderedServicesView extends StatelessWidget {
             height: 10.h,
           ),
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: CategoryTitle(title: AppStrings.orderedServices),
           ),
           SizedBox(
@@ -248,7 +247,7 @@ class OrderedServicesView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: isFree ? [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
                     Text('Standard Exterior') , Text('Standard Interior'),
@@ -257,10 +256,11 @@ class OrderedServicesView extends StatelessWidget {
               )] : List.generate(
                 order.requiredServices.length,
                     (index) =>  Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal:16.0),
                       child: Text(order.requiredServices[index].name),
                     )),
           ),
+          SizedBox(height: 16.h,)
         ],
       ),
     );
@@ -342,10 +342,13 @@ class OrderConfirmIconsView extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: SvgPicture.asset(
-                    IconsManger.orderOnWay,
-                    height: 32.h,
-                    width: 32.h,
+                  child: Transform.scale(
+                    scaleX: -1,
+                    child: SvgPicture.asset(
+                      IconsManger.orderOnWay,
+                      height: 32.h,
+                      width: 32.h,
+                    ),
                   ),
                 ),
               )),

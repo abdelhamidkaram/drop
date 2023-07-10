@@ -298,7 +298,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
     userInfo = null;
     AuthCubit.get(context).userDetails = null;
 
-    Navigator.pushNamed(context, AppRouteStrings.home);
+    Navigator.pushNamed(context, AppRouteStrings.welcome);
 
   }
 }

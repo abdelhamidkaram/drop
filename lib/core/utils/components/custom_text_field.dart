@@ -12,9 +12,11 @@ class CustomTextFormField extends StatefulWidget {
   final TextEditingController controller ;
   final bool? isPassword;
   final bool? isPhone;
+  final bool? isOneChar;
   final TextInputType type ;
   final bool validation; 
   const CustomTextFormField({
+     this.isOneChar = false,
      this.validation = true,
     this.isPassword ,
     Key? key, required this.hint, required this.controller,required this.validateEmptyMSG, required this.type, this.isPhone,
@@ -41,6 +43,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Center(
             child: TextFormField(
+              maxLength: widget.isOneChar! ? 1  :null ,
               controller: widget.controller,
               validator: widget.validation ? (value) {
                 if(value == null || value.isEmpty){

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../../../../../core/utils/app_colors.dart';
 
 class TapBuildItem extends StatelessWidget {
@@ -26,11 +25,12 @@ class TapBuildItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SvgPicture.asset(assetSvgIcon ,height: 26.h, ),
+          SizedBox(height: 10.h,),
           Text(
             text,
             style: Theme.of(context)
                 .textTheme
-                .headline6!
+                .bodyMedium!
                 .copyWith(color: AppColors.black),
           ),
         ],

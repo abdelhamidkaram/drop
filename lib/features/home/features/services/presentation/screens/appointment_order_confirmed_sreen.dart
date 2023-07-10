@@ -42,8 +42,11 @@ class _SingleProviderOrderConfirmedScreenState extends State<SingleProviderOrder
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Row(
-                  children:const [
+                  children: [
                      HelloThere(
+                       style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                         fontSize: 24.sp
+                       ),
                         title: AppStrings.whooraaay,
                         subtitle: AppStrings.yourAppointmentIsConfirmed),
                   ],
@@ -85,22 +88,25 @@ class _SingleProviderOrderConfirmedScreenState extends State<SingleProviderOrder
                                         children: [
                                           ImageNetworkWithCached(
                                               imgUrl: widget.serviceProvideList!.img ,
-                                              width: 20.h,
-                                              height: 20.h,
+                                              width: 30.h,
+                                              height:30.h,
                                               ),
                                           SizedBox(
                                             width: 16.h,
                                           ),
                                           Text(
                                             widget.serviceProvideList!.serviceName,
-                                            style:Theme.of(context).textTheme.headlineSmall,
+                                            style:Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                              fontWeight: FontWeight.w600
+                                            ),
                                           ),
                                           const Spacer(),
                                           Row(
                                             children: [
                                               Text(
                                                 AppStrings.egp,
-                                                style: Theme.of(context).textTheme.headlineSmall,
+                                                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                                  fontWeight: FontWeight.w600,)
                                               ),
                                               const SizedBox(width: 5),
                                               Text(

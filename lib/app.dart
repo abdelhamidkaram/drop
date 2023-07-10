@@ -1,5 +1,6 @@
 import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/config/theme/app_theme.dart';
+import 'package:dropeg/core/shared_prefs/app_prefs.dart';
 import 'package:dropeg/core/utils/app_string.dart';
 import 'package:dropeg/features/order/presentation/cubit/order_cubit.dart';
 import 'package:dropeg/features/confirm%20order/presentation/cubit/confirm_order_cubit.dart';
@@ -24,43 +25,59 @@ class DropApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
+          bool isFirstBuild = true;
+          di.sl<AppPreferences>().isOnBoardingScreenViewed()
+              .then((value) =>isFirstBuild = value);
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => di.sl<AuthCubit>(),),
               BlocProvider(
-                create: (context) => di.sl<ProfileCubit>()
+                create: (context) =>
+                di.sl<ProfileCubit>()
                   ..getProfileDetails(firstbuild: true)
                   ..getLocations()
                   ..getCars()
                   ..getCompounds(),
               ),
               BlocProvider(
-                create: (context) => OrderCubit()
+                create: (context) =>
+                OrderCubit()
                   ..getRequiredServices()
                   ..getEssential(),
               ),
-              BlocProvider(create: 
-              (context) => ConfirmOrderCubit(),
+              BlocProvider(create:
+                  (context) => ConfirmOrderCubit(),
               ),
               BlocProvider(
-                create: (context) => TopNotificationsCubit()
-                    ..getLastEvent()
-                    ..getLastAppomintment(),),
+                create: (context) =>
+                TopNotificationsCubit()
+                  ..getLastEvent(isFirstBuild:di.sl<AppPreferences>().isShowEvent())
+                  ..getLastAppomintment(),),
               BlocProvider(create: (context) => PaymentCubit(),),
             ],
             child: BlocConsumer<ProfileCubit, ProfileStates>(
               listener: (context, state) =>
-               di.sl<ProfileCubit>()
-              ..getProfileDetails(),
-              builder: (context, state) => MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: AppStrings.appName,
-                theme: appTheme(),
-                onGenerateRoute: AppRoute.onGenerateRoute,
-                builder: EasyLoading.init(),
-              ),
+              di.sl<ProfileCubit>()
+                ..getProfileDetails(),
+              builder: (context, state) =>
+                  MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    title: AppStrings.appName,
+                    theme: appTheme(),
+                    onGenerateRoute: AppRoute.onGenerateRoute,
+                    builder: EasyLoading.init(builder: (context, child) {
+                      return MediaQuery(
+                        child: child!,
+                        data: MediaQuery.of(context).copyWith(
+                            textScaleFactor: 1.0),
+                      );
+                    }),
+
+
+                  ),
             ),
           );
-        });
+        }
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:dropeg/config/route/app_route.dart';
 import 'package:dropeg/core/utils/app_colors.dart';
 import 'package:dropeg/core/utils/app_string.dart';
+import 'package:dropeg/core/utils/components/app_buttons.dart';
 import 'package:dropeg/core/utils/components/custom_appbar.dart';
 import 'package:dropeg/features/auth/presentation/screens/profile/bloc/cubit.dart';
 import 'package:dropeg/features/auth/presentation/screens/register/register_compound/bloc/compound_register_cuibt.dart';
@@ -9,6 +10,7 @@ import 'package:dropeg/features/auth/presentation/widgets/sign_up_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../../core/utils/components/custom_text_field.dart';
 import '../../../../domain/entities/compound.dart';
 
 class CompoundsScreen extends StatefulWidget {
@@ -49,7 +51,7 @@ class _CompoundsScreenState extends State<CompoundsScreen> {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       AppStrings.registeredCompoundsSubtitle,
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
                   ),
                   Column(
@@ -69,17 +71,17 @@ class _CompoundsScreenState extends State<CompoundsScreen> {
                                       .then((value) => null);
                                   widget.toAddCarScreen
                                       ? Navigator.pushReplacementNamed(
-                                          context, AppRouteStrings.addCar)
+                                      context, AppRouteStrings.addCar)
                                       : Navigator.pushNamed(
-                                          context,
-                                          AppRouteStrings.account,
-                                        );
+                                    context,
+                                    AppRouteStrings.account,
+                                  );
                                 });
                               },
                               isEdit: false,
                               editOnPressed: () {},
                             ),
-                          ]),
+                                                      ]),
                 ],
               ),
             );
@@ -123,20 +125,65 @@ class _BuildCompoundItemState extends State<BuildCompoundItem> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: GestureDetector(
             onTap: () {
-              setState(() {
-                isSelected = !isSelected;
-                if (CompoundCubit.get(context)
-                    .chooseCompounds
-                    .contains(widget.compounds[widget.index])) {
-                  CompoundCubit.get(context)
-                      .chooseCompounds
-                      .remove(widget.compounds[widget.index]);
-                } else {
-                  CompoundCubit.get(context)
-                      .chooseCompounds
-                      .add(widget.compounds[widget.index]);
+
+              var unitNumberController = TextEditingController();
+              showDialog(context: context, builder: (context) => Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(22)
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("Enter your unit Number" , style: Theme.of(context).textTheme.displaySmall , maxLines: 2,),
+                      SizedBox(height: 25.h,),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'UnitNumber',
+                          border: OutlineInputBorder(),
+
+                        ),
+                        controller: unitNumberController,
+                        onChanged: (value) {
+                          CompoundCubit.get(context)
+                              .chooseCompounds;
+                        },
+                      ),
+                     SizedBox(height: 25.h,),
+                      AppButtonBlue(text: "DONE", onTap: (){
+                       Navigator.pop(context);
+                      })
+                    ],
+
+
+                  ),
+                ),
+
+              ),
+
+
+              ).then((value)  {
+                if (unitNumberController != null ) {
+                  setState(() {
+                    isSelected = !isSelected;
+                    if (CompoundCubit.get(context)
+                        .chooseCompounds
+                        .contains(widget.compounds[widget.index])) {
+                      CompoundCubit.get(context)
+                          .chooseCompounds
+                          .remove(widget.compounds[widget.index]);
+                    } else {
+                      var comp = widget.compounds[widget.index];
+                      comp.unitNumber = unitNumberController.text ?? '';
+                      CompoundCubit.get(context)
+                          .chooseCompounds
+                          .add(widget.compounds[widget.index]);
+                    }
+                  });
                 }
               });
+
             },
             child: Card(
               color: isSelected ? AppColors.blueLight : AppColors.white,

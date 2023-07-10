@@ -57,12 +57,22 @@ class _LocationsShowState extends State<LocationsShow> {
                       children: [
                         Text(
                           widget.locations[index].type ?? "",
-                          style: Theme.of(context).textTheme.headline3,
+                          style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                            color: widget.locations[index] ==
+                                HomeCubit.get(context).mainLocation
+                                ? AppColors.white
+                                : null,
+                          ),
                         ),
                         SizedBox(
                           height: 10.h,
                         ),
-                        Text(widget.locations[index].address ?? ""),
+                        Text(widget.locations[index].address ?? "" , style: TextStyle(
+                          color: widget.locations[index] ==
+                              HomeCubit.get(context).mainLocation
+                              ? AppColors.white
+                              : null
+                        ),),
                       ],
                     ),
                   ),

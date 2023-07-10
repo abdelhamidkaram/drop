@@ -5,9 +5,10 @@ class AppToasts{
   }
   static loadingToast(){
 
-    EasyLoading.show(dismissOnTap: true);
+    EasyLoading.showToast("waiting" , duration: Duration(seconds: 1) , toastPosition: EasyLoadingToastPosition.bottom);
   }
   static successToast(String msg){
-    EasyLoading.showSuccess(msg);
+    /// disable after v1 beta comments
+    //EasyLoading.showSuccess(msg);
   }
 }

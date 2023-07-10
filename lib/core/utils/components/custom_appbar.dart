@@ -31,8 +31,8 @@ class CustomAppbars {
               image: isLocationScreen
                   ? null
                   : DecorationImage(
-                      image: Image.asset(ImagesManger.backgroundAppbar).image,
-                      fit: BoxFit.fitWidth)),
+                  image: Image.asset(ImagesManger.backgroundAppbar).image,
+                  fit: BoxFit.fitWidth)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -44,21 +44,21 @@ class CustomAppbars {
                     CustomBackButton(
                         onPressed: isEditAccountScreen
                             ? () async {
-                                Navigator.pushReplacementNamed(
-                                    context, AppRouteStrings.account);
-                              }
+                          Navigator.pushReplacementNamed(
+                              context, AppRouteStrings.account);
+                        }
                             : null),
                     const Spacer(),
                     isAddCompoundsScreen
                         ? Image.asset(
-                            ImagesManger.logo,
-                            color: Colors.white,
-                          )
+                      ImagesManger.logo,
+                      color: Colors.white,
+                    )
                         : Text(isLocationScreen ? "" : title!,
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayLarge!
-                                .copyWith(color: AppColors.white)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayLarge!
+                            .copyWith(color: AppColors.white)),
                     const Spacer(),
                     const SizedBox(
                       width: 40,
@@ -76,25 +76,25 @@ class CustomAppbars {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     (isAddCompoundsScreen ||
-                            isEditAccountScreen ||
-                            isMyOrdersScreen)
+                        isEditAccountScreen ||
+                        isMyOrdersScreen)
                         ? SizedBox(
-                            height: 30.h,
-                          )
+                      height: 30.h,
+                    )
                         : Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              isAddScreen
-                                  ? const HelloThere(
-                                      title: AppStrings.carDetails,
-                                      subtitle:
-                                          AppStrings.pleaseEnterYourCarDetails)
-                                  :  HelloThere(
-                                          subtitle: isLoginScreen
-                                              ? AppStrings.loginHere
-                                              : AppStrings.pleaseCreateAccount),
-                            ],
-                          ),
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        isAddScreen
+                            ? const HelloThere(
+                            title: AppStrings.carDetails,
+                            subtitle:
+                            AppStrings.pleaseEnterYourCarDetails)
+                            :  HelloThere(
+                            subtitle: isLoginScreen
+                                ? AppStrings.loginHere
+                                : AppStrings.pleaseCreateAccount),
+                      ],
+                    ),
                     const SizedBox(height: 33),
                   ],
                 ),
@@ -136,16 +136,16 @@ class CustomAppbars {
                     const Spacer(),
                     title == null
                         ? Image.asset(
-                            ImagesManger.logo,
-                            color: Colors.white,
-                          )
+                      ImagesManger.logo,
+                      color: Colors.white,
+                    )
                         : Text(title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayLarge!
-                                .copyWith(color: AppColors.white)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayLarge!
+                            .copyWith(color: AppColors.white)),
                     const Spacer(),
-                     const SizedBox(
+                    const SizedBox(
                       width: 40,
                     ),
                   ],
@@ -157,20 +157,20 @@ class CustomAppbars {
                 children: [
                   helloTitle == null
                       ? SizedBox(
-                          height: 40.h,
-                          width: double.infinity,
-                        )
+                    height: 40.h,
+                    width: double.infinity,
+                  )
                       : SizedBox(
-                          height: height!=null ? 70.h  : 45.h,
-                          width: double.infinity,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: HelloThere(
-                                title: helloTitle,
-                                subtitle: hellosubTitle ?? ""),
-                          ),
-                        ),
+                    height: height!=null ? 70.h  : 45.h,
+                    width: double.infinity,
+                    child: Padding(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: HelloThere(
+                          title: helloTitle,
+                          subtitle: hellosubTitle ?? ""),
+                    ),
+                  ),
                   height!=null ? const SizedBox() : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
@@ -248,7 +248,7 @@ class CustomAppbars {
                                   Text(
                                     title ?? "",
                                     style:
-                                        Theme.of(context).textTheme.displayMedium,
+                                    Theme.of(context).textTheme.displayMedium,
                                   ),
                                   SizedBox(
                                     height: 5.0.h,
@@ -265,7 +265,7 @@ class CustomAppbars {
                             ),
                             img != null
                                 ? ImageNetworkWithCached(
-                                    imgUrl: img, width: 85.w)
+                                imgUrl: img, width: 85.w)
                                 : const SizedBox(),
                           ],
                         ),

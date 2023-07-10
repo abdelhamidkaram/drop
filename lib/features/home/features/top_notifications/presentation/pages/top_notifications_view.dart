@@ -26,8 +26,8 @@ class _TopNotificationsViewState extends State<TopNotificationsView> {
       builder: (context, state) {
         return Column(
           children: const [
-           EventsTopNotificationsButton(),
            OrderStatusTopNotificationsButton(),
+           EventsTopNotificationsButton(),
            AppointmentTopNotificationButton(),
           ],
         );
