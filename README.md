@@ -1,6 +1,5 @@
 # dropeg
 
-
 ![Drop App](https://drop-eg.com/assets/logo.png)  
 
 **Drop App** is a modern and user-friendly application designed to simplify delivery and logistics services in Egypt.
@@ -29,8 +28,18 @@
    npm start
    ```
 
-## 📸 Screenshots
+## 📸 Screenshots & Videos
 ![Drop App Screenshot](https://drop-eg.com/assets/screenshot.png)
+
+### 📷 Images
+![Drop App Image](https://drop-eg.com/assets/home/Image_374.webp)
+
+### 🎥 Videos
+#### Website Animation
+[![Website Animation](https://drop-eg.com/assets/home/Image_374.webp)](https://drop-eg.com/assets/home/Wesbite%20AnimationFC.mp4)
+
+#### Book Drop Animation
+[![Book Drop Animation](https://drop-eg.com/assets/home/Image_374.webp)](https://drop-eg.com/assets/home/BookDropAnimation.mp4)
 
 ## 🛠 Technologies Used
 - ReactJS
