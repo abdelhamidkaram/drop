@@ -1,16 +1,51 @@
 # dropeg
 
-A new Flutter project.
 
-## Getting Started
+![Drop App](https://drop-eg.com/assets/logo.png)  
 
-This project is a starting point for a Flutter application.
+**Drop App** is a modern and user-friendly application designed to simplify delivery and logistics services in Egypt.
 
-A few resources to get you started if this is your first Flutter project:
+## 🚀 Features
+- Easy and fast delivery requests
+- Real-time tracking
+- Secure payments
+- User-friendly interface
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 📥 Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/drop-app.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd drop-app
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Run the app:
+   ```bash
+   npm start
+   ```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📸 Screenshots
+![Drop App Screenshot](https://drop-eg.com/assets/screenshot.png)
+
+## 🛠 Technologies Used
+- ReactJS
+- TailwindCSS
+- Node.js
+- Firebase
+
+## 📜 License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## 🌐 Live Demo
+[Visit Drop App](https://drop-eg.com/index.html)
+
+## 👥 Contributors
+- [Your Name](https://github.com/yourusername)
+
+## 📬 Contact
+For inquiries, reach out at: [contact@drop-eg.com](mailto:contact@drop-eg.com)
